@@ -2,7 +2,7 @@ import React from 'react'
 
 function Banner() {
   return (
-    <div>Banner</div>
+    <div className='h-[800px]'>Banner</div>
   )
 }
 
