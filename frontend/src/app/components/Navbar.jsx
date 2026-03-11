@@ -8,13 +8,16 @@ import { FaChevronDown, FaBars, FaTimes, FaChevronRight } from 'react-icons/fa';
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState(null); // Main Dropdown
-  const [activeSubMenu, setActiveSubMenu] = useState(null); // Nested Side Dropdown
-  const [mobileAccordion, setMobileAccordion] = useState(null); 
+  const [activeDropdown, setActiveDropdown] = useState(null);
+  const [activeSubMenu, setActiveSubMenu] = useState(null);
+  const [mobileAccordion, setMobileAccordion] = useState(null);
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    const handleScroll = () => {
+      // Trigger the sticky state after scrolling 100px
+      setIsScrolled(window.scrollY > 100);
+    };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -43,14 +46,15 @@ function Navbar() {
   ];
 
   return (
-    <nav className='fixed top-0 left-0 w-full z-[100] transition-all duration-300'>
+    // Wrapper: Fixed when scrolled, Relative when at top
+    <nav className={`left-0 w-full z-[100] transition-all duration-500 ${
+      isScrolled ? 'fixed top-0 animate-slideDown' : 'relative'
+    }`}>
       <div className={`
-        m-4 md:m-6 lg:mx-12 xl:mx-24 
-        h-[85px] px-6 md:px-10 
-        transition-all duration-500 rounded-3xl flex items-center justify-between gap-6 border
+        transition-all h-[85px]  px-6 md:px-10 duration-500 flex items-center justify-between gap-6 border rounded-3xl m-4 md:m-6 lg:mx-12 xl:mx-24 
         ${isScrolled 
-          ? 'bg-white/90 backdrop-blur-xl shadow-2xl border-white/40 py-2' 
-          : 'bg-white/60 backdrop-blur-md shadow-lg border-white/20 py-4'}
+          ? '   bg-white/90 backdrop-blur-xl shadow-2xl border-white/40 py-2' 
+          : '  bg-white border-transparent py-4'}
       `}>
         
         <div className="shrink-0">
@@ -80,7 +84,6 @@ function Navbar() {
                         {item.sub && <FaChevronRight size={10} />}
                       </Link>
                       
-                      {/* Nested Side Menu for Destinations */}
                       {item.sub && activeSubMenu === item.name && (
                         <div className='absolute left-full top-0 ml-1 w-56 bg-white shadow-2xl rounded-2xl py-4 border border-gray-100 grid grid-cols-1'>
                            {item.sub.map(s => (
@@ -111,7 +114,6 @@ function Navbar() {
                         {item.sub && <FaChevronRight size={10} />}
                       </Link>
 
-                      {/* Nested Side Menu for Packages */}
                       {item.sub && activeSubMenu === item.name && (
                         <div className='absolute left-full top-0 ml-1 w-56 bg-white shadow-2xl rounded-2xl py-4 border border-gray-100'>
                            {item.sub.map(s => (
@@ -148,12 +150,11 @@ function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-            className='xl:hidden mx-4 mt-3 bg-white/95 backdrop-blur-xl rounded-[2rem] shadow-2xl border border-white/50 overflow-hidden flex flex-col max-h-[85vh]'>
+            className='xl:hidden mx-4 mt-3 bg-white/95 backdrop-blur-xl rounded-4xl shadow-2xl border border-white/50 overflow-hidden flex flex-col max-h-[85vh]'>
             <div className='p-6 flex flex-col gap-4 overflow-y-auto'>
               <Link href="/" onClick={() => setIsOpen(false)} className="text-lg font-bold text-black border-b border-black/5 pb-2">Home</Link>
               <Link href="#" onClick={() => setIsOpen(false)} className="text-lg font-bold text-black border-b border-black/5 pb-2">Our Journey</Link>
               
-              {/* Destinations Mobile */}
               <div>
                 <button onClick={() => setMobileAccordion(mobileAccordion === 'dest' ? null : 'dest')} className="flex justify-between items-center w-full text-lg font-bold text-black border-b border-black/5 pb-2">
                   Destinations <FaChevronDown className={`text-xs transition-transform ${mobileAccordion === 'dest' ? 'rotate-180' : ''}`} />
@@ -172,7 +173,6 @@ function Navbar() {
                 )}
               </div>
 
-              {/* Packages Mobile */}
               <div>
                 <button onClick={() => setMobileAccordion(mobileAccordion === 'pkg' ? null : 'pkg')} className="flex justify-between items-center w-full text-lg font-bold text-black border-b border-black/5 pb-2">
                   Travel Packages <FaChevronDown className={`text-xs transition-transform ${mobileAccordion === 'pkg' ? 'rotate-180' : ''}`} />
