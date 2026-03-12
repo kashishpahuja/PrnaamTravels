@@ -13,14 +13,13 @@ body {
   font-style: normal;
 }
 
-
-/* From Uiverse.io by adamgiebl */ 
+/* From Uiverse.io by adamgiebl - Modified for Prnaam Travels */ 
 .mainbutton {
   display: flex;
   align-items: center;
   font-family: inherit;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 600; /* Made slightly bolder for readability */
   font-size: 17px;
   padding: 0.8em 1.3em 0.8em 0.9em;
   color: black;
@@ -29,11 +28,17 @@ body {
   border: none;
   letter-spacing: 0.05em;
   border-radius: 16px;
+  overflow: hidden;
+  transition: background 0.3s ease;
 }
 
-.mainbutton svg {
-  margin-right: 3px;
-  transform: rotate(30deg);
+.mainbutton .helicopter-wrapper {
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+  margin-top: 1px;
+  /* Initial tilt for the helicopter */
+  transform: rotate(-10deg); 
   transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
 }
 
@@ -41,13 +46,19 @@ body {
   transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
 }
 
-.mainbutton:hover svg {
-  transform: translateX(5px) rotate(90deg);
+/* Hover Effects */
+.mainbutton:hover .helicopter-wrapper {
+  /* Helicopter tilts up and moves forward on hover */
+  transform: translateX(8px) translateY(-2px) rotate(45deg);
 }
 
 .mainbutton:hover span {
-  transform: translateX(7px);
+  transform: translateX(10px);
 }
+
+/* .mainbutton:hover {
+  background: #257a38; 
+} */
 
 @keyframes slideDown {
   from { transform: translateY(-100%); opacity: 0; }

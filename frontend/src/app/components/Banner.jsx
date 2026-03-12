@@ -3,55 +3,99 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { FaMapMarkerAlt, FaCalendarAlt, FaSearch } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaHandsHelping, FaMountain } from 'react-icons/fa';
 
 function Banner() {
   return (
-    <section className='m-4 md:mx-6 lg:mx-12 xl:mx-24'>
-      {/* Main Hero Container */}
-      <div className='relative w-full h-[600px] md:h-[750px] rounded-[2.5rem] overflow-hidden shadow-2xl'>
+    <section className="m-4 md:mx-6 lg:mx-12 xl:mx-24">
+      <div className="relative w-full rounded-3xl overflow-hidden shadow-2xl bg-sky-100">
         
-        {/* Main Background Image - High Quality priority loading */}
+        {/* Main Background Image - Your generated temple landscape */}
         <Image 
-          alt='Prnaam Travels Himalayan Banner' 
-          src='/Banner.webp' 
-          fill
+          alt="Uttarakhand Char Dham Yatra" 
+          src="/bannermobile.webp" 
+          width={1080} height={1920}
           priority
-          quality={100}
-          className='object-cover object-center'
+          className="block lg:hidden  object-cover object-center"
+        />
+        <Image 
+          alt="Uttarakhand Char Dham Yatra" 
+          src="/banner2.webp" 
+          width={1920} height={1080}
+          priority
+          className="hidden lg:block object-cover object-center"
         />
 
-        {/* Multi-layered Overlays for depth (Inspired by DailyWebDesign ref) */}
-        <div className='absolute inset-0 bg-linear-to-r from-black/60 via-black/20 to-transparent z-10' />
-        <div className='absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-black/30 z-10' />
-
-        {/* Content Layer */}
-        <div className='relative z-20 h-full w-full flex flex-col justify-between p-8 md:p-16'>
+        {/*
+        <div className="relative z-20 h-full w-full flex flex-col items-center pt-10 md:pt-20 px-6 text-center">
           
-          {/* Top Section: Main Headlines */}
           <motion.div 
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1 }}
-            className='max-w-3xl mt-12 md:mt-20'
+            animate={{ y: [0, -15, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-4 right-4 md:top-10 md:right-20 w-40 md:w-72 lg:w-96 h-auto"
           >
-            <span className='inline-block px-4 py-2 rounded-2xl bg-[#58CB5E]/20 backdrop-blur-md border border-[#58CB5E]/30 text-[#58CB5E] text-xs  tracking-widest uppercase mb-6'>
-              Uttarakhand's Premier Tour Operator
-            </span>
-            <h1 className='text-5xl md:text-5xl font-black text-white  mb-6 drop-shadow-2xl'>
-              CHAR DHAM <br />
-              <span className='text-transparent bg-clip-text bg-linear-to-r from-[#58CB5E] to-white italic'>
-                & Himalayan Tours
-              </span>
-            </h1>
-            <p className='text-white/80 text-[12px] md:text-[17px] font-medium max-w-xl leading-relaxed'>
-              Embark on a soul-stirring journey through the heart of Devbhoomi with 
-              Prnaam Travels' curated spiritual experiences.
-            </p>
+            <Image 
+              src="/helicopter-cutout.png" // Ensure you have a transparent helicopter png
+              alt="Helicopter Tour"
+              width={400}
+              height={200}
+              className="object-contain"
+            />
           </motion.div>
 
-    
-        </div>
+          {/* Main Titles */}
+          {/* <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h3 className="text-[#FFD700] text-3xl md:text-5xl lg:text-6xl font-serif italic mb-2 drop-shadow-md">
+              Explore
+            </h3>
+            <h1 className="text-white text-4xl md:text-7xl lg:text-8xl font-black leading-none tracking-tighter drop-shadow-[0_5px_5px_rgba(0,0,0,0.5)]">
+              UTTARAKHAND &
+            </h1>
+            <h2 className="text-[#FFD700] text-3xl md:text-6xl lg:text-7xl font-black mt-2 drop-shadow-[0_3px_3px_rgba(0,0,0,0.5)] uppercase">
+              Char Dham Yatra
+            </h2>
+          </motion.div> */}
+
+          {/* Helicopter Tour Ribbon */}
+          {/* <motion.div 
+            initial={{ width: 0 }}
+            animate={{ width: "auto" }}
+            className="mt-6 flex items-center justify-center"
+          >
+            <div className="bg-[#FFD700] px-8 py-2 md:px-12 md:py-3 rounded-md shadow-lg transform -skew-x-12 border-y-2 border-white/50">
+              <div className="transform skew-x-12 flex items-center gap-2">
+                 <span className="text-red-700 text-lg md:text-2xl">🍁</span>
+                 <span className="text-red-800 font-black text-lg md:text-2xl uppercase tracking-tighter">
+                   Helicopter Tour
+                 </span>
+              </div>
+            </div>
+          </motion.div> */}
+
+          {/* Feature Badges */}
+          {/* <div className="mt-8 flex flex-wrap justify-center gap-4 md:gap-10">
+            <div className="flex items-center gap-2 bg-white/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/30">
+              <FaMapMarkerAlt className="text-red-600" />
+              <span className="text-black font-bold text-xs md:text-sm">Spiritual Journey</span>
+            </div>
+            <div className="flex items-center gap-2 bg-white/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/30">
+              <FaHandsHelping className="text-red-800" />
+              <span className="text-black font-bold text-xs md:text-sm">Sacred Temples</span>
+            </div>
+            <div className="flex items-center gap-2 bg-white/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/30">
+              <FaMountain className="text-red-900" />
+              <span className="text-black font-bold text-xs md:text-sm">Majestic Himalayas</span>
+            </div>
+          </div> */}
+
+        {/* </div>  */}
+
+        {/* Bottom Fade for better transition to next section */}
+        {/* <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white/20 to-transparent z-10" /> */}
       </div>
     </section>
   );
