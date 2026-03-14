@@ -1,109 +1,99 @@
-"use client";
-
 import React from 'react';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import { FaCheckCircle, FaAward, FaMapMarkedAlt } from 'react-icons/fa';
+import { MapPin, Plane, ShieldCheck, Headphones, Heart, Car } from 'lucide-react';
 
-const AboutSection = () => {
-  const highlights = [
-    "Professional Planning & Expertise",
-    "Seamless Helicopter & Road Transport",
-    "24/7 On-Ground Assistance"
-  ];
+const PrnaamTravelsTemplate = () => {
+  const destinationImages = [
+    "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?q=80&w=600",
+    "https://images.unsplash.com/photo-1590766940554-634a7ed41450?q=80&w=600",
+    "https://images.unsplash.com/photo-1621621667797-e06afc217fb0?q=80&w=600",
+      "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?q=80&w=600",
+    "https://images.unsplash.com/photo-1590766940554-634a7ed41450?q=80&w=600",
+   ];
 
   return (
-    <section className="py-16 md:py-24 px-4 md:px-6 lg:px-12 xl:mx-24 overflow-hidden">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <section className="w-full bg-[#f4faff] py-12 px-4 md:px-10 font-sans text-slate-900">
+      
+      {/* --- TOP SECTION: CENTERED CONTENT --- */}
+      <div className="max-w-4xl mx-auto text-center mb-12 relative">
+        <h2 className="text-3xl md:text-5xl font-serif italic mb-4 leading-tight">
+          Experience the True Essence <br /> of Uttarakhand
+        </h2>
+        <p className="text-slate-600 text-sm md:text-base max-w-2xl mx-auto mb-8 leading-relaxed">
+          Uttarakhand is not just a destination—it is a spiritual calling. 
+          At Prnaam Travels, we understand the emotional and spiritual value of your journey to Dev Bhoomi.
+        </p>
+        <button className="bg-[#00a3e0] text-white px-8 py-3 rounded-full text-sm font-bold shadow-md active:scale-95">
+          Plan Your Perfect Trip
+        </button>
+
+        {/* Decorative Dashed Line (Visible on Desktop) */}
+        <div className="absolute top-1/2 left-0 w-full -z-10 opacity-20 hidden lg:block">
+          <svg viewBox="0 0 1000 100" className="w-full h-24">
+            <path d="M0,80 Q250,10 500,80 T1000,80" stroke="#00a3e0" strokeWidth="2" strokeDasharray="10,10" fill="none" />
+          </svg>
+        </div>
+      </div>
+
+<div className="max-w-7xl pt-16 mx-auto overflow-x-hidden grid grid-cols-2 lg:grid-cols-5 gap-4 mb-24 px-4">
+  {destinationImages.slice(0, 5).map((src, index) => (
+    <div
+      key={index}
+      className={`
+        ${index === 4 ? "hidden lg:block" : "block"}
+        ${index % 2 !== 0 ? "lg:-translate-y-10" : ""}
+      `}
+    >
+      <img
+        src={src}
+        alt="Uttarakhand Destination"
+        className="w-full aspect-[3/4] object-cover rounded-4xl shadow-sm"
+      />
+    </div>
+  ))}
+</div>
+      {/* --- BOTTOM SECTION: TWO-COLUMN CONTENT --- */}
+      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
         
-        {/* Left Side: Visual Storytelling */}
-        <motion.div 
-          initial={{ opacity: 0, x: -50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="relative group"
-        >
-          {/* Main Image - Himalayan Scenic Reference */}
-          <div className="relative h-[400px] md:h-[550px] w-full rounded-[2rem] overflow-hidden shadow-2xl">
-            <Image 
-              src="/image_aad87b.jpg" // Using the enhanced valley image
-              alt="Majestic Uttarakhand Valley"
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-          </div>
+        {/* Left Column: Detailed About Text */}
+        <div className="space-y-6">
+          <h3 className="text-3xl md:text-4xl font-serif italic leading-snug">
+            Your Reliable Partner for <br /> Uttarakhand Tours
+          </h3>
+          <p className="text-slate-600 text-sm leading-relaxed">
+            Prnaam Travels is a professionally managed travel company committed to delivering authentic 
+            and well-organized experiences. We specialize in Char Dham Yatra, Do Dham Yatra, 
+            and Kedarnath helicopter tours designed for families and seekers.
+          </p>
+          <p className="text-slate-600 text-sm leading-relaxed">
+            Our goal is to provide safe, transparent, and stress-free travel services so you can 
+            focus on devotion and exploration in the heart of the Himalayas.
+          </p>
+          <button className="mainbutton ">
+            About Us
+          </button>
+        </div>
 
-          {/* Floating Experience Card */}
-          <div className="absolute -bottom-6 -right-4 md:right-10 bg-white p-6 rounded-2xl shadow-2xl z-20 border-b-4 border-[#2D9344]">
-            <div className="flex items-center gap-4">
-              <div className="bg-[#58CB5E]/10 p-3 rounded-full">
-                <FaAward className="text-3xl text-[#2D9344]" />
+        {/* Right Column: Feature List with Icons */}
+        <div className="space-y-4">
+          {[
+            { icon: <ShieldCheck size={20} />, title: 'Safe and reliable transportation with local guides' },
+            { icon: <Plane size={20} />, title: 'Helicopter services for Kedarnath & Char Dham' },
+            { icon: <Heart size={20} />, title: 'Comfortable accommodations and personalized itineraries' },
+            { icon: <Car size={20} />, title: 'Transparent pricing and 24/7 on-ground assistance' }
+          ].map((item, idx) => (
+            <div key={idx} className="flex items-center gap-4 group">
+              <div className="p-3 bg-white text-[#00a3e0] rounded-xl shadow-sm border border-blue-50">
+                {item.icon}
               </div>
-              <div>
-                <p className="text-2xl font-black text-gray-800">12+ Years</p>
-                <p className="text-xs text-gray-500 uppercase tracking-widest font-bold">Of Local Expertise</p>
-              </div>
+              <p className="text-slate-700 text-sm font-medium border-b border-blue-100 pb-2 flex-1">
+                {item.title}
+              </p>
             </div>
-          </div>
-        </motion.div>
-
-        {/* Right Side: Content */}
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="flex flex-col space-y-6"
-        >
-          <div className="space-y-2">
-            <span className="text-[#58CB5E] font-black uppercase tracking-[0.3em] text-xs md:text-sm flex items-center gap-2">
-              <span className="w-8 h-[2px] bg-[#58CB5E]"></span> 
-              Welcome to Prnaam Travels
-            </span>
-            <h2 className="text-3xl md:text-5xl font-black text-gray-900 leading-tight">
-              Your Reliable Partner for <br />
-              <span className="text-[#2D9344]">Uttarakhand Tours</span>
-            </h2>
-          </div>
-
-          <p className="text-gray-600 leading-relaxed text-base md:text-lg">
-            Prnaam Travels is a professionally managed <strong>Uttarakhand travel company</strong> committed to delivering authentic, comfortable, and well-organized travel experiences across the Dev Bhoomi. As a trusted <strong>Uttarakhand tour operator</strong>, we specialize in Char Dham Yatra, Do Dham Yatra, and Kedarnath helicopter tours.
-          </p>
-
-          <p className="text-gray-600 leading-relaxed text-sm md:text-base italic border-l-4 border-[#58CB5E] pl-4">
-            "With in-depth local knowledge, we take care of every detail—from travel planning to on-ground assistance in Haridwar, Rishikesh, Badrinath, and beyond."
-          </p>
-
-          {/* Icon List */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
-            {highlights.map((item, index) => (
-              <div key={index} className="flex items-center gap-3 text-gray-800 font-bold text-sm">
-                <FaCheckCircle className="text-[#58CB5E]" />
-                {item}
-              </div>
-            ))}
-          </div>
-
-          {/* Action Button */}
-          <div className="pt-4">
-             <button className="mainbutton bg-[#2D9344]">
-               <div className="helicopter-wrapper">
-                 <Image 
-                   src="/helicopter.png" 
-                   alt="Helicopter Icon" 
-                   width={24} 
-                   height={24} 
-                   className="helicopter-img"
-                 />
-               </div>
-               <span className="font-bold text-white">Learn More About Us</span>
-             </button>
-          </div>
-        </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   );
 };
 
-export default AboutSection;
+export default PrnaamTravelsTemplate;

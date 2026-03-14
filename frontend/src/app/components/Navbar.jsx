@@ -198,7 +198,7 @@ function Navbar() {
               </div>
 
               <Link href="#" onClick={() => setIsOpen(false)} className="text-lg font-bold text-black border-b border-black/5 pb-2">Contact Us</Link>
-              <button className='mainbutton w-full bg-[#2D9344] text-white py-4 rounded-2xl font-bold mt-2 shadow-lg'>Plan My Trip</button>
+              <button className='mainbutton w-full  text-white py-4 rounded-2xl font-bold mt-2 shadow-lg'>Plan My Trip</button>
             </div>
           </motion.div>
         )}

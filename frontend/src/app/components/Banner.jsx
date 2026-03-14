@@ -1,9 +1,7 @@
 "use client";
 
 import React from 'react';
-import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { FaMapMarkerAlt, FaHandsHelping, FaMountain } from 'react-icons/fa';
 
 function Banner() {
   return (
