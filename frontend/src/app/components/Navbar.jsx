@@ -47,14 +47,15 @@ function Navbar() {
 
   return (
     // Wrapper: Fixed when scrolled, Relative when at top
-    <nav className={`left-0 w-full z-[100] transition-all duration-500 ${
-      isScrolled ? 'fixed top-0 animate-slideDown' : 'relative'
+    <nav className={`left-0 z-[100]  transition-all duration-500  ${
+      isScrolled ? 'fixed top-0 animate-slideDown w-full' : 'relative'
     }`}>
       <div className={`
-        transition-all h-[85px]  px-6 md:px-10 duration-500 flex items-center justify-between gap-6 border rounded-3xl m-4 md:m-6 lg:mx-12 xl:mx-24 
+        transition-all h-[75px] lg:h-[85px]  px-6 md:px-10 duration-500 rounded-3xl flex items-center justify-between gap-6 
+
         ${isScrolled 
-          ? '   bg-white/90 backdrop-blur-xl shadow-2xl border-white/40 py-2' 
-          : '  bg-white border-transparent py-4'}
+          ? '   bg-white/90 backdrop-blur-xl shadow-2xl border-white/40 py-2  m-4 md:m-6 lg:mx-12 xl:mx-24  ' 
+          : '  bg-white border-transparent py-4  my-2 mx-4 md:mx-6 lg:mx-12 xl:mx-24 '}
       `}>
         
         <div className="shrink-0">
@@ -131,6 +132,7 @@ function Navbar() {
           <Link href="#" className="playpen600 text-black/90 hover:text-[#2D9344] transition-colors">Contact Us</Link>
         </div>
 
+      
   <div className='hidden md:block'>
   <button className='mainbutton bg-[#2D9344]'>
     {/* Replaced SVG with Helicopter Image */}
@@ -147,9 +149,34 @@ function Navbar() {
   </button>
 </div>
 
-        <button onClick={() => setIsOpen(!isOpen)} className='xl:hidden p-2 text-black/90'>
-          {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
-        </button>
+       <button
+      onClick={() => setIsOpen(!isOpen)}
+      className="xl:hidden p-2 flex flex-col justify-center items-center w-10 h-10 group"
+      aria-label="Toggle Menu"
+    >
+      <div className="relative w-6 h-5">
+        {/* Top Line */}
+        <span
+          className={`absolute block h-0.5 w-6 bg-black transition-all duration-300 ease-in-out ${
+            isOpen ? 'rotate-45 top-2' : 'top-0'
+          }`}
+        ></span>
+
+        {/* Middle Line (Hides when open) */}
+        <span
+          className={`absolute block h-0.5 w-6 bg-black top-2 transition-all duration-300 ease-in-out ${
+            isOpen ? 'opacity-0' : 'opacity-100'
+          }`}
+        ></span>
+
+        {/* Bottom Line */}
+        <span
+          className={`absolute block h-0.5 w-6 bg-black transition-all duration-300 ease-in-out ${
+            isOpen ? '-rotate-45 top-2' : 'top-4'
+          }`}
+        ></span>
+      </div>
+    </button>
       </div>
 
       {/* --- MOBILE MENU --- */}
@@ -208,3 +235,5 @@ function Navbar() {
 }
 
 export default Navbar;
+
+// border rounded-3xl m-4 md:m-6 lg:mx-12 xl:mx-24

@@ -1,13 +1,15 @@
 import React from 'react';
 import { MapPin, Plane, ShieldCheck, Headphones, Heart, Car } from 'lucide-react';
+import Image from 'next/image';
 
 const PrnaamTravelsTemplate = () => {
   const destinationImages = [
-    "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?q=80&w=600",
-    "https://images.unsplash.com/photo-1590766940554-634a7ed41450?q=80&w=600",
-    "https://images.unsplash.com/photo-1621621667797-e06afc217fb0?q=80&w=600",
-      "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?q=80&w=600",
-    "https://images.unsplash.com/photo-1590766940554-634a7ed41450?q=80&w=600",
+   "/puri.webp",
+"/uttrakhand.webp",   
+   "/rameshwaram.webp",
+"/dwarka.webp",   
+"/badrinath.webp",   
+
    ];
 
   return (
@@ -22,9 +24,21 @@ const PrnaamTravelsTemplate = () => {
           Uttarakhand is not just a destination—it is a spiritual calling. 
           At Prnaam Travels, we understand the emotional and spiritual value of your journey to Dev Bhoomi.
         </p>
-        <button className="bg-[#00a3e0] text-white px-8 py-3 rounded-full text-sm font-bold shadow-md active:scale-95">
-          Plan Your Perfect Trip
-        </button>
+         <div className='hidden md:block '>
+          <button className='mainbutton mx-auto'>
+            {/* Replaced SVG with Helicopter Image */}
+            <div className="helicopter-wrapper">
+              <Image
+                src="/plain.png" 
+                alt="Helicopter" 
+                width={16} 
+                height={16} 
+                className="helicopter-img"
+              />
+            </div>
+            <span className='font-medium'>Plan Your Perfect Trip</span>  
+          </button>
+        </div>
 
         {/* Decorative Dashed Line (Visible on Desktop) */}
         <div className="absolute top-1/2 left-0 w-full -z-10 opacity-20 hidden lg:block">
@@ -68,9 +82,7 @@ const PrnaamTravelsTemplate = () => {
             Our goal is to provide safe, transparent, and stress-free travel services so you can 
             focus on devotion and exploration in the heart of the Himalayas.
           </p>
-          <button className="mainbutton ">
-            About Us
-          </button>
+       
         </div>
 
         {/* Right Column: Feature List with Icons */}
@@ -82,7 +94,7 @@ const PrnaamTravelsTemplate = () => {
             { icon: <Car size={20} />, title: 'Transparent pricing and 24/7 on-ground assistance' }
           ].map((item, idx) => (
             <div key={idx} className="flex items-center gap-4 group">
-              <div className="p-3 bg-white text-[#00a3e0] rounded-xl shadow-sm border border-blue-50">
+              <div className="p-3 bg-white text-[#144487] rounded-xl shadow-sm border border-blue-50">
                 {item.icon}
               </div>
               <p className="text-slate-700 text-sm font-medium border-b border-blue-100 pb-2 flex-1">
