@@ -17,7 +17,7 @@ const PrnaamTravelsTemplate = () => {
       
       {/* --- TOP SECTION: CENTERED CONTENT --- */}
       <div className="max-w-4xl mx-auto text-center mb-12 relative">
-        <h2 className="text-3xl md:text-5xl font-serif italic mb-4 leading-tight">
+        <h2 className="text-3xl md:text-4xl font-serif italic mb-4 leading-tight">
           Experience the True Essence <br /> of Uttarakhand
         </h2>
         <p className="text-slate-600 text-sm md:text-base max-w-2xl mx-auto mb-8 leading-relaxed">
@@ -36,7 +36,7 @@ const PrnaamTravelsTemplate = () => {
                 className="helicopter-img"
               />
             </div>
-            <span className='font-medium'>Plan Your Perfect Trip</span>  
+            <span className='font-normal'>Plan Your Perfect Trip</span>  
           </button>
         </div>
 
@@ -70,7 +70,7 @@ const PrnaamTravelsTemplate = () => {
         
         {/* Left Column: Detailed About Text */}
         <div className="space-y-6">
-          <h3 className="text-3xl md:text-4xl font-serif italic leading-snug">
+          <h3 className="text-2xl md:text-3xl font-serif italic leading-snug">
             Your Reliable Partner for <br /> Uttarakhand Tours
           </h3>
           <p className="text-slate-600 text-sm leading-relaxed">
