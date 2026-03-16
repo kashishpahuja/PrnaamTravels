@@ -59,9 +59,9 @@ function Navbar() {
       `}>
         
         <div className="shrink-0">
-          {/* <Link href="/">
+          <Link href="/">
             <Image src='/logo.webp' width={160} height={50} alt='Travel Logo' className='w-auto h-10 md:h-12 object-contain' />
-          </Link> */}
+          </Link>
         </div>
 
         {/* --- DESKTOP NAVIGATION --- */}

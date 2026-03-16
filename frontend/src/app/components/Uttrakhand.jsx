@@ -2,10 +2,10 @@ import React from "react";
 import { ShieldCheck, MapPin, Users, Award, CheckCircle } from "lucide-react";
 
 const DESTINATIONS = [
-  { title: "Mana Village", image: "/mana.webp" },
-  { title: "Harsil Valley", image: "/harsil.webp" },
-  { title: "Hot Water Springs", image: "/springs.webp" },
-  { title: "Hidden Himalayan Gems", image: "/hidden.webp" }
+  { title: "Mana Village", image: "/Mana.webp" },
+  { title: "Harsil Valley", image: "/Harsil.webp" },
+  { title: "Hot Water Springs", image: "/HotWater.webp" },
+  { title: "Hidden Himalayan Gems", image: "/HiddenGems.webp" }
 ];
 
 const PACKAGE_INCLUDES = [

@@ -63,7 +63,7 @@ export default function YatraPackages() {
         </div>
 
         {/* Grid */}
-        <div className="grid md:grid-cols-2 2xl:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 gap-8">
 
           {YATRA_PACKAGES.map((pkg, index) => (
             <Link
@@ -74,14 +74,14 @@ export default function YatraPackages() {
               <img
                 src={pkg.image}
                 alt={pkg.title}
-                className="absolute inset-0 w-full h-full object-cover"
+                className="absolute inset-0 w-full h-full object-cover "
               />
 
               <div className="absolute inset-0 bg-linear-to-b from-transparent via-black/40 to-black/60" />
 
               <div className="relative z-10 p-8 flex flex-col justify-end h-full text-white">
 
-                <h3 className=" font-serif text-3xl mb-2">
+                <h3 className="  text-2xl mb-2">
                   {pkg.title}
                 </h3>
 
@@ -101,7 +101,7 @@ export default function YatraPackages() {
 
           <Link
             href={HELICOPTER_PACKAGE.href}
-            className="relative md:col-span-2 overflow-hidden rounded-3xl h-[320px] group"
+            className="relative md:col-span-2 overflow-hidden rounded-3xl h-[340px] group"
           >
             <img
               src={HELICOPTER_PACKAGE.image}
@@ -111,9 +111,9 @@ export default function YatraPackages() {
 
             <div className="absolute inset-0 bg-linear-to-r from-black/60 via-black/20 to-transparent" />
 
-            <div className="relative z-10 h-full flex flex-col justify-center px-12 text-white max-w-2xl">
+            <div className="relative z-10 h-full flex flex-col justify-end px-4 pb-8 lg:px-12 text-white max-w-2xl">
 
-              <h3 className="text-4xl font-serif mb-3">
+              <h3 className="text-2xl  mb-3">
                 {HELICOPTER_PACKAGE.title}
               </h3>
 
