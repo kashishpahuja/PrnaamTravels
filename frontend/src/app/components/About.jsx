@@ -13,7 +13,7 @@ const PrnaamTravelsTemplate = () => {
    ];
 
   return (
-    <section className="w-full bg-[#f4faff] py-12 px-4 md:px-10 font-sans text-slate-900">
+    <section className="w-full bg-[#f4faff] py-24 font-sans text-slate-900 px-4 md:px-6 lg:px-12 xl:px-24">
       
       {/* --- TOP SECTION: CENTERED CONTENT --- */}
       <div className="max-w-4xl mx-auto text-center mb-12 relative">
@@ -48,7 +48,7 @@ const PrnaamTravelsTemplate = () => {
         </div>
       </div>
 
-<div className="max-w-7xl pt-16 mx-auto overflow-x-hidden grid grid-cols-2 lg:grid-cols-5 gap-4 mb-24 px-4">
+<div className="max-w-full pt-16 mx-auto overflow-x-hidden grid grid-cols-2 lg:grid-cols-5 gap-4 mb-24 px-4">
   {destinationImages.slice(0, 5).map((src, index) => (
     <div
       key={index}
@@ -66,10 +66,10 @@ const PrnaamTravelsTemplate = () => {
   ))}
 </div>
       {/* --- BOTTOM SECTION: TWO-COLUMN CONTENT --- */}
-      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+      <div className="w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
         
         {/* Left Column: Detailed About Text */}
-        <div className="space-y-6">
+        <div className="space-y-6 px-6">
           <h3 className="text-2xl md:text-3xl font-serif italic leading-snug">
             Your Reliable Partner for <br /> Uttarakhand Tours
           </h3>
@@ -86,7 +86,7 @@ const PrnaamTravelsTemplate = () => {
         </div>
 
         {/* Right Column: Feature List with Icons */}
-        <div className="space-y-4">
+        <div className="space-y-4 px-6">
           {[
             { icon: <ShieldCheck size={20} />, title: 'Safe and reliable transportation with local guides' },
             { icon: <Plane size={20} />, title: 'Helicopter services for Kedarnath & Char Dham' },

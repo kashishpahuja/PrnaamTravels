@@ -55,13 +55,13 @@ function Navbar() {
 
         ${isScrolled 
           ? '   bg-white/90 backdrop-blur-xl shadow-2xl border-white/40 py-2  m-4 md:m-6 lg:mx-12 xl:mx-24  ' 
-          : '  bg-white border-transparent py-4  my-2 mx-4 md:mx-6 lg:mx-12 xl:mx-24 '}
+          : '  bg-white border-transparent py-4  my-4 mx-4 md:mx-6 lg:mx-12 xl:mx-24 '}
       `}>
         
         <div className="shrink-0">
-          <Link href="/">
+          {/* <Link href="/">
             <Image src='/logo.webp' width={160} height={50} alt='Travel Logo' className='w-auto h-10 md:h-12 object-contain' />
-          </Link>
+          </Link> */}
         </div>
 
         {/* --- DESKTOP NAVIGATION --- */}

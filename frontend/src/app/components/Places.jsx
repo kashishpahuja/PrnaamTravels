@@ -42,8 +42,8 @@ const HELICOPTER_PACKAGE = {
 
 export default function YatraPackages() {
   return (
-    <section className="py-24 bg-slate-50 px-6 md:px-10">
-      <div className="max-w-7xl mx-auto">
+    <section className="py-24 bg-white px-4 md:px-6 lg:px-12 xl:px-24">
+      <div className="max-w-full mx-auto">
 
         {/* Heading */}
         <div className="text-center max-w-3xl mx-auto mb-16">
@@ -63,7 +63,7 @@ export default function YatraPackages() {
         </div>
 
         {/* Grid */}
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 2xl:grid-cols-3 gap-8">
 
           {YATRA_PACKAGES.map((pkg, index) => (
             <Link

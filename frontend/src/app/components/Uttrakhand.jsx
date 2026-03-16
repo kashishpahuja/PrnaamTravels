@@ -19,19 +19,19 @@ const PACKAGE_INCLUDES = [
 
 const AuthorityTrustSection = () => {
   return (
-    <section className="bg-[#fff9ed] rounded-3xl m-4 md:m-6 lg:mx-12 xl:mx-24 p-10 md:p-20 border border-[#f0e6d2]">
-
+    <section className="bg-white py-24">
+<div className="bg-[#fff9ed] rounded-3xl mx-4 md:mx-6 lg:mx-12 xl:mx-24 p-10 md:p-20 border border-[#f0e6d2]">
       <div className="max-w-6xl mx-auto">
 
         {/* HEADER */}
 
         <div className="text-center mb-14">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <span className="w-8 h-[1px] bg-[#d8841a]" />
+            <span className="w-8 h-px bg-[#d8841a]" />
             <span className="text-[#d8841a] text-xs font-bold uppercase tracking-[0.2em]">
               Discover Uttarakhand
             </span>
-            <span className="w-8 h-[1px] bg-[#d8841a]" />
+            <span className="w-8 h-px bg-[#d8841a]" />
           </div>
 
           <h3 className="text-3xl md:text-5xl font-serif italic text-[#144487] leading-tight">
@@ -109,6 +109,7 @@ const AuthorityTrustSection = () => {
           ))}
         </div>
 
+      </div>
       </div>
     </section>
   );

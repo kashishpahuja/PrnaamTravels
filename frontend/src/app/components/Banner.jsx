@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 function Banner() {
   return (
-    <div className="relative h-[500px] md:h-[500px] lg:h-[600px] overflow-hidden rounded-3xl my-2 mx-4 md:mx-6 lg:mx-12 xl:mx-24 ">
+    <div className="relative h-[500px] md:h-[500px] lg:h-[600px] 2xl:min-h-screen overflow-hidden rounded-3xl my-4 mx-4 md:mx-6 lg:mx-12 xl:mx-24 ">
       {/* Background Images */}
       <div className="absolute inset-0">
         {/* Mobile image */}
