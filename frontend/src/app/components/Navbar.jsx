@@ -154,7 +154,7 @@ function Navbar() {
       className="xl:hidden p-2 flex flex-col justify-center items-center w-10 h-10 group"
       aria-label="Toggle Menu"
     >
-      <div className="relative w-6 h-5">
+      <div className="relative w-6 h-5 cursor-pointer">
         {/* Top Line */}
         <span
           className={`absolute block h-0.5 w-6 bg-black transition-all duration-300 ease-in-out ${
@@ -185,18 +185,18 @@ function Navbar() {
           <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
             className='xl:hidden mx-4 mt-3 bg-white/95 backdrop-blur-xl rounded-4xl shadow-2xl border border-white/50 overflow-hidden flex flex-col max-h-[85vh]'>
             <div className='p-6 flex flex-col gap-4 overflow-y-auto'>
-              <Link href="/" onClick={() => setIsOpen(false)} className="text-lg font-bold text-black border-b border-black/5 pb-2">Home</Link>
-              <Link href="#" onClick={() => setIsOpen(false)} className="text-lg font-bold text-black border-b border-black/5 pb-2">Our Journey</Link>
+              <Link href="/" onClick={() => setIsOpen(false)} className="text-md  text-black border-b border-black/5 pb-2">Home</Link>
+              <Link href="#" onClick={() => setIsOpen(false)} className="text-md  text-black border-b border-black/5 pb-2">Our Journey</Link>
               
               <div>
-                <button onClick={() => setMobileAccordion(mobileAccordion === 'dest' ? null : 'dest')} className="flex justify-between items-center w-full text-lg font-bold text-black border-b border-black/5 pb-2">
+                <button onClick={() => setMobileAccordion(mobileAccordion === 'dest' ? null : 'dest')} className="flex justify-between items-center w-full text-md text-black border-b border-black/5 pb-2">
                   Destinations <FaChevronDown className={`text-xs transition-transform ${mobileAccordion === 'dest' ? 'rotate-180' : ''}`} />
                 </button>
                 {mobileAccordion === 'dest' && (
                   <div className="pl-4 py-3 space-y-3 bg-black/5 rounded-xl mt-2">
                     {destinations.map(d => (
                       <div key={d.name}>
-                        <Link href="#" className="block text-gray-700 font-medium">{d.name}</Link>
+                        <Link href="#" className="block text-black/80 font-medium">{d.name}</Link>
                         {d.sub && <div className="pl-4 mt-2 space-y-2 border-l-2 border-[#2D9344]/30">
                           {d.sub.map(s => <Link key={s} href="#" onClick={() => setIsOpen(false)} className="block text-sm text-gray-500">{s}</Link>)}
                         </div>}
@@ -207,14 +207,14 @@ function Navbar() {
               </div>
 
               <div>
-                <button onClick={() => setMobileAccordion(mobileAccordion === 'pkg' ? null : 'pkg')} className="flex justify-between items-center w-full text-lg font-bold text-black border-b border-black/5 pb-2">
+                <button onClick={() => setMobileAccordion(mobileAccordion === 'pkg' ? null : 'pkg')} className="flex justify-between items-center w-full text-md text-black/80 border-b border-black/5 pb-2">
                   Travel Packages <FaChevronDown className={`text-xs transition-transform ${mobileAccordion === 'pkg' ? 'rotate-180' : ''}`} />
                 </button>
                 {mobileAccordion === 'pkg' && (
                   <div className="pl-4 py-3 space-y-4 bg-black/5 rounded-xl mt-2">
                     {packages.map(p => (
                       <div key={p.name}>
-                        <Link href="#" className="block text-gray-800 font-bold text-sm leading-tight">{p.name}</Link>
+                        <Link href="#" className="block text-black/80 text-sm leading-tight">{p.name}</Link>
                         {p.sub && <div className="pl-4 mt-2 space-y-2 border-l-2 border-[#2D9344]/30">
                           {p.sub.map(s => <Link key={s} href="#" onClick={() => setIsOpen(false)} className="block text-xs text-gray-500">{s}</Link>)}
                         </div>}
@@ -224,8 +224,24 @@ function Navbar() {
                 )}
               </div>
 
-              <Link href="#" onClick={() => setIsOpen(false)} className="text-lg font-bold text-black border-b border-black/5 pb-2">Contact Us</Link>
-              <button className='mainbutton w-full  text-white py-4 rounded-2xl font-bold mt-2 shadow-lg'>Plan My Trip</button>
+              <Link href="#" onClick={() => setIsOpen(false)} className="text-md text-black border-b border-black/5 pb-2">Contact Us</Link>
+              
+              <div className=' '>
+                       <button className='mainbutton mx-auto'>
+                         {/* Replaced SVG with Helicopter Image */}
+                         <div className="helicopter-wrapper">
+                           <Image
+                             src="/plain.png" 
+                             alt="Helicopter" 
+                             width={16} 
+                             height={16} 
+                             className="helicopter-img"
+                           />
+                         </div>
+                         <span className='font-normal'>Plan Your Perfect Trip</span>  
+                       </button>
+                     </div>
+             
             </div>
           </motion.div>
         )}

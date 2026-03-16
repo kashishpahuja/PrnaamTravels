@@ -24,7 +24,7 @@ const PrnaamTravelsTemplate = () => {
           Uttarakhand is not just a destination—it is a spiritual calling. 
           At Prnaam Travels, we understand the emotional and spiritual value of your journey to Dev Bhoomi.
         </p>
-         <div className='hidden md:block '>
+         <div className=' '>
           <button className='mainbutton mx-auto'>
             {/* Replaced SVG with Helicopter Image */}
             <div className="helicopter-wrapper">
