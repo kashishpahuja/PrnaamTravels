@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import Image from "next/image";
 
 const YATRA_PACKAGES = [
   {
@@ -36,7 +37,7 @@ const HELICOPTER_PACKAGE = {
   title: "Helicopter Yatra Packages",
   description:
     "Luxury helicopter pilgrimage covering Char Dham, Kedarnath and Do Dham with priority darshan.",
-  image: "/banner2.png",
+  image: "/helicopter.webp",
   href: "/char-dham-yatra-by-helicopter",
 };
 
@@ -63,7 +64,7 @@ export default function YatraPackages() {
         </div>
 
         {/* Grid */}
-        <div className="grid md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8">
 
           {YATRA_PACKAGES.map((pkg, index) => (
             <Link
@@ -101,15 +102,17 @@ export default function YatraPackages() {
 
           <Link
             href={HELICOPTER_PACKAGE.href}
-            className="relative md:col-span-2 overflow-hidden rounded-3xl h-[340px] group"
+            className="relative md:col-span-4 overflow-hidden rounded-3xl h-[400px] group"
           >
-            <img
+            <Image
+            width={1920}
+            height={499}
               src={HELICOPTER_PACKAGE.image}
               alt={HELICOPTER_PACKAGE.title}
               className="absolute inset-0 w-full h-full object-cover object-right"
             />
 
-            <div className="absolute inset-0 bg-linear-to-r from-black/60 via-black/20 to-transparent" />
+            {/* <div className="absolute inset-0 bg-linear-to-r from-[#223130c4] via-black/40 to-transparent" /> */}
 
             <div className="relative z-10 h-full flex flex-col justify-end px-4 pb-8 lg:px-12 text-white max-w-2xl">
 
