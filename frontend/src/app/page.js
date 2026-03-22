@@ -9,9 +9,9 @@ import KedarnathAuthorityHub from './components/Kedarnath'
 function page() {
   return (
     <div>
-      {/* <Navbar/>
+      <Navbar/>
       <Banner/>
-      <About/> */}
+      <About/> 
       <Places/>
       <Uttrakhand/>
       <KedarnathAuthorityHub/>
