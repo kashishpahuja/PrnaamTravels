@@ -92,7 +92,23 @@ const stats = [
 
       </div>
     </div>
-  
+   <div className="relative h-[240px] xl:h-[380px]  overflow-hidden">
+      {/* Background Images */}
+      <div className="absolute inset-0">        
+        
+        <div className="relative h-full w-full">
+          <Image
+            src="/helicopter.webp"
+            alt="Desktop banner"
+            width={1920} height={1080}
+            className="object-cover h-full w-full "
+            priority
+          />
+        </div>
+      </div>
+
+     
+    </div>
     </>
 
   )

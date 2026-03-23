@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { MapPin, Plane, ShieldCheck, Headphones, Heart, Car } from 'lucide-react';
 import Image from 'next/image';
@@ -11,6 +12,66 @@ const PrnaamTravelsTemplate = () => {
 "/badrinath.webp",   
 
    ];
+   const packages = [
+  {
+    title: "Chopta Tungnath Trek",
+    category: "Treks",
+    duration: "2N / 3D",
+    price: 7999,
+    originalPrice: 8499,
+    discount: "₹500 Off",
+    dates: ["Mar 27", "Apr 2", "Apr 10"],
+    image: "/chopta.jpg"
+  },
+  {
+    title: "Kedarnath Luxury",
+    category: "Spiritual",
+    duration: "3N / 4D",
+    price: 18499,
+    originalPrice: 20499,
+    discount: "₹2000 Off",
+    dates: ["Apr 29", "May 6"],
+    image: "/kedarnath.jpg"
+  },
+  {
+    title: "Valley of Flowers",
+    category: "Treks",
+    duration: "5N / 6D",
+    price: 10499,
+    originalPrice: 12499,
+    discount: "₹2000 Off",
+    dates: ["Jul 3", "Jul 10"],
+    image: "/valley.jpg"
+  },
+  {
+    title: "Kedarkantha Trek",
+    category: "Treks",
+    duration: "5N / 6D",
+    price: 7999,
+    originalPrice: 8999,
+    discount: "₹1000 Off",
+    dates: ["On Request"],
+    image: "/kedarkantha.jpg"
+  },
+  {
+    title: "Jim Corbett + Nainital",
+    category: "Weekend",
+    duration: "2N / 3D",
+    price: 22000,
+    originalPrice: 25000,
+    discount: "₹3000 Off",
+    dates: ["On Request"],
+    image: "/corbett.jpg"
+  },
+  {
+    title: "Kedarnath Helicopter",
+    category: "Spiritual",
+    duration: "2N / 3D",
+    price: null,
+    dates: ["On Request"],
+    image: "/heli.jpg"
+  }
+];
 
   return (
     <section className="w-full bg-[#f4faff] py-24 font-sans text-slate-900 px-4 md:px-6 lg:px-12 xl:px-24">
@@ -66,6 +127,9 @@ const PrnaamTravelsTemplate = () => {
   ))}
 </div>
       {/* --- BOTTOM SECTION: TWO-COLUMN CONTENT --- */}
+      
+      
+      
       <div className="w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
         
         {/* Left Column: Detailed About Text */}

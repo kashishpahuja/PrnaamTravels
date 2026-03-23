@@ -2,6 +2,8 @@ import React from 'react'
 import Navbar from './components/Navbar'
 import Banner from './components/Banner'
 import About from './components/About'
+import Packages from './components/Packages'
+
 import Places from './components/Places'
 import Uttrakhand from './components/Uttrakhand'
 import KedarnathAuthorityHub from './components/Kedarnath'
@@ -11,8 +13,9 @@ function page() {
     <div>
       <Navbar/>
       <Banner/>
-      <About/> 
-      <Places/>
+      <Packages/>
+      {/* <About/> 
+      <Places/> */}
       <Uttrakhand/>
       <KedarnathAuthorityHub/>
     </div>
