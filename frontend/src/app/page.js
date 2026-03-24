@@ -3,21 +3,23 @@ import Navbar from './components/Navbar'
 import Banner from './components/Banner'
 import About from './components/About'
 import Packages from './components/Packages'
-
 import Places from './components/Places'
 import Uttrakhand from './components/Uttrakhand'
 import KedarnathAuthorityHub from './components/Kedarnath'
+import Logo from './components/Logo'
 
 function page() {
   return (
     <div>
-      <Navbar/>
+      {/* <Navbar/> */}
       <Banner/>
       <Packages/>
+    
+      <Logo/>
       {/* <About/> 
-      <Places/> */}
+      <Places/>
       <Uttrakhand/>
-      <KedarnathAuthorityHub/>
+      <KedarnathAuthorityHub/> */}
     </div>
   )
 }

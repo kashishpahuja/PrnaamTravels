@@ -17,8 +17,34 @@ const stats = [
     <>
     <div className="relative h-[300px] md:h-[300px] xl:h-[420px]  overflow-hidden">
       {/* Background Images */}
-      <div className="absolute inset-0">
-        {/* Mobile image */}
+    {/* <div className="absolute inset-0 overflow-hidden">
+  <iframe
+    src="https://www.youtube.com/embed/hkrbS3ZJ-tg?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=hkrbS3ZJ-tg&modestbranding=1"
+    title="Char Dham Yatra Video"
+    className="absolute top-1/2 left-1/2 w-[200%] h-[200%] -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+    frameBorder="0"
+    allow="autoplay; encrypted-media"
+    allowFullScreen
+  ></iframe>
+
+
+  <div className="absolute inset-0 bg-black/30"></div>
+</div> */}
+
+
+{/* 
+<video
+  autoPlay
+  muted
+  loop
+  playsInline
+  className="absolute inset-0 w-full h-full object-cover"
+>
+  <source src="/chardham.mp4" type="video/mp4" />
+</video> */}
+
+
+     <div className="absolute inset-0">
         <div className="md:hidden relative h-full w-full">
           <Image
             src="/b9mobile.webp"
@@ -29,7 +55,6 @@ const stats = [
           />
         </div>
         
-        {/* Desktop image */}
         <div className="hidden md:block relative h-full w-full">
           <Image
             src="/b9.webp"

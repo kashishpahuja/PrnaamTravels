@@ -48,7 +48,7 @@ export default function YatraPackages() {
   );
 
   return (
-    <section className="py-24 bg-slate-50 px-4 md:px-6 lg:px-12 xl:px-24 overflow-hidden">
+    <section className="py-12 bg-slate-50 px-4 md:px-6 lg:px-12 xl:px-24 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         
         {/* --- HEADING SECTION --- */}
@@ -63,7 +63,7 @@ export default function YatraPackages() {
 
         {/* --- MOBILE: EFFECT CARDS (Smooth UI) --- */}
         {/* --- MOBILE: EFFECT CARDS --- */}
-<div className="md:hidden flex justify-center items-center py-12 overflow-visible">
+<div className="md:hidden flex justify-center items-center overflow-visible">
   <Swiper
     effect={'cards'}
     grabCursor={true}
