@@ -8,6 +8,7 @@ const stats = [
   { img: "/group.png", title: "50k+", sub: "Yatri Served Across India" },
   { img: "/group.png", title: "Dehradun Based", sub: "7+ Years Experience" },
   { img: "/group.png", title: "24x7 Support", sub: "Always Here to Help" }
+  
 ];
 
   // Duplicate the array for a seamless infinite loop
@@ -17,23 +18,21 @@ const stats = [
     <>
     <div className="relative h-[300px] md:h-[300px] xl:h-[420px]  overflow-hidden">
       {/* Background Images */}
-    {/* <div className="absolute inset-0 overflow-hidden">
+   <div className="absolute inset-0 overflow-hidden">
   <iframe
     src="https://www.youtube.com/embed/hkrbS3ZJ-tg?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=hkrbS3ZJ-tg&modestbranding=1"
     title="Char Dham Yatra Video"
     className="absolute top-1/2 left-1/2 w-[200%] h-[200%] -translate-x-1/2 -translate-y-1/2 pointer-events-none"
     frameBorder="0"
     allow="autoplay; encrypted-media"
-    allowFullScreen
+    // allowFullScreen
   ></iframe>
 
 
   <div className="absolute inset-0 bg-black/30"></div>
-</div> */}
+</div> 
 
-
-{/* 
-<video
+{/*<video
   autoPlay
   muted
   loop
@@ -43,8 +42,8 @@ const stats = [
   <source src="/chardham.mp4" type="video/mp4" />
 </video> */}
 
-
-     <div className="absolute inset-0">
+{/* Image section  */}
+     {/* <div className="absolute inset-0">
         <div className="md:hidden relative h-full w-full">
           <Image
             src="/b9mobile.webp"
@@ -64,11 +63,11 @@ const stats = [
             priority
           />
         </div>
-      </div>
+      </div> */}
 
      
     </div>
-<div className='w-full bg-white/50 border-b border-gray-100 py-4 overflow-hidden'>
+<div className='bg w-full   py-6 overflow-hidden'>
       <div className='max-w-7xl mx-auto md:px-6 lg:px-12 xl:px-40'>
         
         {/* MOBILE: INFINITE MARQUEE (Hidden on XL) */}
@@ -104,12 +103,12 @@ const stats = [
                 <Image src={item.img} alt={item.title} fill className="object-contain" />
               </div>
               <div className='flex flex-col text-[#144487]'>
-                <span className='text-[15px] font-bold font-serif leading-tight whitespace-nowrap'>{item.title}</span>
+                <span className='text-[15px]  font-serif leading-tight whitespace-nowrap'>{item.title}</span>
                 <span className='text-[11px] font-semibold tracking-wide whitespace-nowrap'>{item.sub}</span>
               </div>
               {/* Divider */}
               {index !== stats.length - 1 && (
-                <div className="h-8 w-[1px] bg-gray-100 ml-12" />
+                <div className="h-8 w-[1px] bg-gray-200 ml-12" />
               )}
             </div>
           ))}
@@ -117,19 +116,18 @@ const stats = [
 
       </div>
     </div>
-   <div className="relative h-[240px] xl:h-[380px]  overflow-hidden">
-      {/* Background Images */}
-      <div className="absolute inset-0">        
+   <div className="relative h-auto lg:h-[230px] xl:h-[300px] overflow-hidden">
+        
         
         <div className="relative h-full w-full">
           <Image
-            src="/helicopter.webp"
+            src="/heli.webp"
             alt="Desktop banner"
-            width={1920} height={1080}
-            className="object-cover h-full w-full "
+            width={1635} height={540}
+            className="object-cover object-bottom h-full w-full "
             priority
           />
-        </div>
+       
       </div>
 
      

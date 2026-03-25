@@ -13,18 +13,108 @@ import 'swiper/css';
 import 'swiper/css/effect-cards';
 
 const YATRA_PACKAGES = [
-  { title: "Char Dham Yatra", image: "/badrinath.webp", href: "/char-dham-yatra" },
-  { title: "Kedarnath Yatra", image: "/uttrakhand.webp", href: "/kedarnath-yatra" },
-  { title: "Badrinath Yatra", image: "/dwarka.webp", href: "/badrinath-yatra" },
-  { title: "Do Dham Yatra", image: "/puri.webp", href: "/do-dham-yatra" },
-  { title: "Yamunotri Yatra", image: "/badrinath.webp", href: "/yamunotri-yatra" },
-  { title: "Gangotri Yatra", image: "/badrinath.webp", href: "/gangotri-yatra" },
-    { title: "Char Dham Yatra", image: "/badrinath.webp", href: "/char-dham-yatra" },
-  { title: "Kedarnath Yatra", image: "/uttrakhand.webp", href: "/kedarnath-yatra" },
-  { title: "Badrinath Yatra", image: "/dwarka.webp", href: "/badrinath-yatra" },
-  { title: "Do Dham Yatra", image: "/puri.webp", href: "/do-dham-yatra" },
-  { title: "Yamunotri Yatra", image: "/badrinath.webp", href: "/yamunotri-yatra" },
-  { title: "Gangotri Yatra", image: "/badrinath.webp", href: "/gangotri-yatra" },
+   {
+    title: "Do Dham Yatra",
+    image: "/dwarka.webp",
+    href: "/do-dham-yatra",
+    locations: ["Haridwar", "Kedarnath", "Badrinath"]
+  },
+  {
+    title: "Yamunotri Yatra",
+    image: "/rameshwaram.webp",
+    href: "/yamunotri-yatra",
+    locations: ["Haridwar", "Barkot", "Janki Chatti", "Yamunotri"]
+  }, {
+    title: "Kedarnath Yatra",
+    image: "/Images/packages/kedarnath.webp",
+    href: "/kedarnath-yatra",
+    locations: ["Haridwar", "Guptkashi", "Sonprayag", "Kedarnath"]
+  },
+  
+  {
+    title: "Valley of Flowers Trek",
+    image: "/b9mobile.webp",
+    href: "/valley-of-flowers",
+    locations: ["Govindghat", "Ghangaria", "Valley of Flowers", "Hemkund Sahib"]
+  },
+  {
+    title: "Char Dham Yatra",
+    image: "/uttrakhand.webp",
+    href: "/char-dham-yatra",
+    locations: ["Haridwar", "Yamunotri", "Gangotri", "Kedarnath", "Badrinath"]
+  },
+   {
+    title: "Mussoorie Tour Package",
+    image: "/Mana.webp",
+    href: "/mussoorie-tour",
+    locations: ["Dehradun", "Mussoorie", "Kempty Falls"]
+  },
+  {
+    title: "Auli Ski Tour",
+    image: "/banner2.png",
+    href: "/auli-tour",
+    locations: ["Joshimath", "Auli"]
+  },
+ 
+  
+  {
+    title: "Nainital Tour Package",
+    image: "/Harsil.webp",
+    href: "/nainital-tour",
+    locations: ["Kathgodam", "Nainital", "Bhimtal", "Sattal"]
+  },
+  {
+    title: "Chopta Tungnath Tour",
+    image: "/Mana.webp",
+    href: "/chopta-tour",
+    locations: ["Rudraprayag", "Chopta", "Tungnath", "Chandrashila"]
+  },
+  {
+    title: "Badrinath Yatra",
+    image: "/badrinath.webp",
+    href: "/badrinath-yatra",
+    locations: ["Haridwar", "Joshimath", "Badrinath"]
+  },
+  {
+    title: "Do Dham Yatra",
+    image: "/dwarka.webp",
+    href: "/do-dham-yatra",
+    locations: ["Haridwar", "Kedarnath", "Badrinath"]
+  },
+  {
+    title: "Yamunotri Yatra",
+    image: "/rameshwaram.webp",
+    href: "/yamunotri-yatra",
+    locations: ["Haridwar", "Barkot", "Janki Chatti", "Yamunotri"]
+  },
+  {
+    title: "Gangotri Yatra",
+    image: "/HotWater.webp",
+    href: "/gangotri-yatra",
+    locations: ["Haridwar", "Uttarkashi", "Gangotri"]
+  },
+
+  // Uttarakhand Tour Packages (Non-Dham mix)
+  {
+    title: "Haridwar Rishikesh Tour",
+    image: "/HiddenGems.webp",
+    href: "/haridwar-rishikesh-tour",
+    locations: ["Haridwar", "Rishikesh"]
+  },
+  {
+    title: "Kedarnath Yatra",
+    image: "/Images/packages/kedarnath.webp",
+    href: "/kedarnath-yatra",
+    locations: ["Haridwar", "Guptkashi", "Sonprayag", "Kedarnath"]
+  },
+  
+  {
+    title: "Valley of Flowers Trek",
+    image: "/b9mobile.webp",
+    href: "/valley-of-flowers",
+    locations: ["Govindghat", "Ghangaria", "Valley of Flowers", "Hemkund Sahib"]
+  },
+  
 ];
 
 export default function YatraPackages() {
@@ -36,24 +126,28 @@ export default function YatraPackages() {
         fill
         className="absolute inset-0 object-cover transition-transform duration-500"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-      <div className="relative z-10 p-6 flex flex-col justify-end h-full text-white">
-        <h3 className="italic text-xl font-medium mb-2">{pkg.title}</h3>
-        <div className="flex items-center gap-2 text-xs font-semibold tracking-wider uppercase opacity-80">
+      {/* <div className="absolute inset-0  bg-gradient-to-t from-black/90 via-black/20 to-transparent" /> */}
+      <div className="relative  z-10  flex flex-col justify-end h-full text-white">
+       <div className='bg-linear-to-t from-black via-black/80 to-black/10 px-6 py-4'>
+         <h3 className="x italic text-xl font-medium mb-2">{pkg.title}</h3>
+        <div className="flex items-center gap-2 text-xs font-semibold tracking-wider  opacity-80">
           Explore
           <ArrowUpRight size={14} />
         </div>
+        
+        </div>
+
       </div>
     </>
   );
 
   return (
-    <section className="py-12 bg-slate-50 px-4 md:px-6 lg:px-12 xl:px-24 overflow-hidden">
+    <section className="py-16 px-4 md:px-6 lg:px-12 xl:px-24 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         
         {/* --- HEADING SECTION --- */}
         <div className="max-w-4xl mx-auto text-center mb-12">
-          <h2 className="text-3xl md:text-5xl font-serif italic mb-6 leading-tight text-slate-900">
+          <h2 className="text-2xl md:text-3xl font-serif italic mb-6 leading-tight text-slate-900">
             Experience the True Essence <br /> of Uttarakhand
           </h2>
           <p className="text-slate-600 text-sm md:text-base max-w-xl mx-auto mb-8">
@@ -83,7 +177,7 @@ export default function YatraPackages() {
     className="w-[280px] h-[400px] sm:w-[320px] sm:h-[450px]"
   >
     {YATRA_PACKAGES.map((pkg, index) => (
-      <SwiperSlide key={index} className="rounded-[2rem] overflow-hidden shadow-xl">
+      <SwiperSlide key={index} className="rounded-4xl overflow-hidden shadow-xl">
         <Link href={pkg.href} className="relative block w-full h-full">
           <CardContent pkg={pkg} />
         </Link>
@@ -98,7 +192,7 @@ export default function YatraPackages() {
             <Link
               key={index}
               href={pkg.href}
-              className="group relative overflow-hidden rounded-[2rem] h-[380px] shadow-sm hover:shadow-2xl transition-all duration-500"
+              className="group relative overflow-hidden rounded-sm h-[380px] shadow-sm hover:shadow-xl transition-all duration-500"
             >
               <CardContent pkg={pkg} />
             </Link>

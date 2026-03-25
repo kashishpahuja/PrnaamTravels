@@ -11,15 +11,16 @@ import Logo from './components/Logo'
 function page() {
   return (
     <div>
-      {/* <Navbar/> */}
+      <Navbar/>
       <Banner/>
       <Packages/>
     
       <Logo/>
-      {/* <About/> 
-      <Places/>
+  
+      {/* <Places/> */}
       <Uttrakhand/>
-      <KedarnathAuthorityHub/> */}
+       <About/> 
+      {/* <KedarnathAuthorityHub/> */}
     </div>
   )
 }

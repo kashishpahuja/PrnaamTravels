@@ -74,7 +74,7 @@ const PrnaamTravelsTemplate = () => {
 ];
 
   return (
-    <section className="w-full bg-[#f4faff] py-24 font-sans text-slate-900 px-4 md:px-6 lg:px-12 xl:px-24">
+    <section className="w-full  py-24 font-sans text-slate-900 px-4 md:px-6 lg:px-12 xl:px-24">
       
       {/* --- TOP SECTION: CENTERED CONTENT --- */}
       <div className="max-w-4xl mx-auto text-center mb-12 relative">

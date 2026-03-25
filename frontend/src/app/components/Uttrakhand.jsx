@@ -5,7 +5,7 @@ const DESTINATIONS = [
   { title: "Mana Village", image: "/Mana.webp" },
   { title: "Harsil Valley", image: "/Harsil.webp" },
   { title: "Hot Water Springs", image: "/HotWater.webp" },
-  { title: "Hidden Himalayan Gems", image: "/HiddenGems.webp" }
+  // { title: "Hidden Himalayan Gems", image: "/HiddenGems.webp" }
 ];
 
 const PACKAGE_INCLUDES = [
@@ -19,7 +19,7 @@ const PACKAGE_INCLUDES = [
 
 const AuthorityTrustSection = () => {
   return (
-    <section className="bg-white py-24">
+    <section className=" py-16">
 <div className="bg-[#fff9ed] rounded-3xl mx-4 md:mx-6 lg:mx-12 xl:mx-24 p-10 md:p-20 border border-[#f0e6d2]">
       <div className="max-w-6xl mx-auto">
 
@@ -34,7 +34,7 @@ const AuthorityTrustSection = () => {
             <span className="w-8 h-px bg-[#d8841a]" />
           </div>
 
-          <h3 className="text-3xl md:text-5xl font-serif italic text-[#144487] leading-tight">
+          <h3 className="text-2xl md:text-3xl font-serif italic text-[#144487] leading-tight">
             Experience Dev Bhoomi <br /> with Prnaam Travels
           </h3>
 
@@ -49,26 +49,30 @@ const AuthorityTrustSection = () => {
 
         {/* DESTINATION IMAGE GRID */}
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
-          {DESTINATIONS.map((place, idx) => (
-            <div
-              key={idx}
-              className="relative aspect-square rounded-2xl overflow-hidden"
-            >
-              <img
-                src={place.image}
-                alt={place.title}
-                className="w-full h-full object-cover"
-              />
+     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+  {DESTINATIONS.map((place, idx) => (
+    <div
+      key={idx}
+      className="bg-white rounded-2xl p-2 shadow-md hover:shadow-xl transition-shadow duration-300 border border-slate-100 flex flex-col"
+    >
+      {/* Image Container */}
+      <div className="aspect-square rounded-xl overflow-hidden">
+        <img
+          src={place.image}
+          alt={place.title}
+          className="w-full h-full object-cover "
+        />
+      </div>
 
-              <div className="absolute inset-0 bg-black/30 flex items-end p-4">
-                <span className="text-white text-xs md:text-sm font-bold tracking-wide">
-                  {place.title}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
+      {/* Title Section */}
+      <div className="py-4 px-2">
+        <span className="text-slate-800 text-sm md:text-base tracking-tight">
+          {place.title}
+        </span>
+      </div>
+    </div>
+  ))}
+</div>
 
         {/* PACKAGE INCLUDES */}
 
