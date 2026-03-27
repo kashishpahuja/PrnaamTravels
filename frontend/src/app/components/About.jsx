@@ -74,7 +74,7 @@ const PrnaamTravelsTemplate = () => {
 ];
 
   return (
-    <section className="w-full  py-24 font-sans text-slate-900 px-4 md:px-6 lg:px-12 xl:px-24">
+    <section className="relative w-full  py-24 font-sans text-slate-900 px-4 md:px-6 lg:px-12 xl:px-24">
       
       {/* --- TOP SECTION: CENTERED CONTENT --- */}
       <div className="max-w-4xl mx-auto text-center mb-12 relative">
@@ -102,7 +102,7 @@ const PrnaamTravelsTemplate = () => {
         </div>
 
         {/* Decorative Dashed Line (Visible on Desktop) */}
-        <div className="absolute top-1/2 left-0 w-full -z-10 opacity-20 hidden lg:block">
+        <div className="absolute top-1/2 left-0 w-full -z-10 opacity-20 block">
           <svg viewBox="0 0 1000 100" className="w-full h-24">
             <path d="M0,80 Q250,10 500,80 T1000,80" stroke="#00a3e0" strokeWidth="2" strokeDasharray="10,10" fill="none" />
           </svg>

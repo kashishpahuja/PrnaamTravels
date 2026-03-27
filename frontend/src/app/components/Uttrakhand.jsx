@@ -1,120 +1,180 @@
+'use client';
 import React from "react";
-import { ShieldCheck, MapPin, Users, Award, CheckCircle } from "lucide-react";
+import { ShieldCheck, MapPin, Users, Award, CheckCircle, ChevronLeft, ChevronRight } from "lucide-react";
+
+// Swiper imports
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination } from 'swiper/modules';
+
+// Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 const DESTINATIONS = [
-  { title: "Mana Village", image: "/Mana.webp" },
-  { title: "Harsil Valley", image: "/Harsil.webp" },
-  { title: "Hot Water Springs", image: "/HotWater.webp" },
-  // { title: "Hidden Himalayan Gems", image: "/HiddenGems.webp" }
+  { price: "Starting 85,000/-", title: "Kedarnath Helicopter Yatra", image: "/Images/packages/kedarnath.webp" },
+  { price: "Starting 1,80,000/-", title: "Char Dham Helicopter Yatra", image: "/uttrakhand.webp" },
+  { price: "Starting 75,000/-", title: "Badrinath Helicopter Yatra", image: "/badrinath.webp" },
+  { price: "Starting 95,000/-", title: "Do Dham Helicopter Yatra", image: "/mana.webp" },
 ];
 
 const PACKAGE_INCLUDES = [
-  "Comfortable accommodation during the journey",
-  "Experienced local guides and drivers",
-  "Helicopter assistance for Kedarnath (optional)",
-  "Well planned Char Dham travel routes",
-  "Senior citizen friendly arrangements",
-  "24/7 travel support throughout the yatra"
+  "Helicopter transfers to sacred destinations",
+  "VIP Darshan assistance at temples",
+  "Luxury accommodation at premium locations",
+  "Priority boarding & minimal waiting time",
+  "All ground transfers and local logistics managed",
+  "Dedicated support team throughout the journey"
 ];
 
 const AuthorityTrustSection = () => {
   return (
-    <section className=" py-16">
-<div className="bg-[#fff9ed] rounded-3xl mx-4 md:mx-6 lg:mx-12 xl:mx-24 p-10 md:p-20 border border-[#f0e6d2]">
-      <div className="max-w-6xl mx-auto">
+    <section className="py-8 lg:py-12">
+      <div className="bg-[#fff9ed] rounded-3xl mx-4 md:mx-6 lg:mx-12 xl:mx-24 py-12 px-6 md:px-12 lg:px-20 border border-[#f0e6d2] overflow-hidden">
+        <div className="max-w-6xl mx-auto">
 
-        {/* HEADER */}
-
-        <div className="text-center mb-14">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <span className="w-8 h-px bg-[#d8841a]" />
-            <span className="text-[#d8841a] text-xs font-bold uppercase tracking-[0.2em]">
-              Discover Uttarakhand
-            </span>
-            <span className="w-8 h-px bg-[#d8841a]" />
+          {/* HEADER */}
+          <div className="text-center mb-8 lg:mb-14">
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <span className="w-8 h-px bg-[#d8841a]" />
+              <span className="text-[#d8841a] text-[10px] md:text-xs font-bold uppercase tracking-[0.2em]">
+                Discover Uttarakhand by Air
+              </span>
+              <span className="w-8 h-px bg-[#d8841a]" />
+            </div>
+            <h3 className="text-xl md:text-3xl font-serif italic text-[#144487] leading-tight">
+              Experience Dev Bhoomi Effortlessly<br className="hidden md:block" /> with Prnaam Travels
+            </h3>
+            <p className="max-w-3xl mx-auto text-slate-600 mt-4 text-sm md:text-base leading-relaxed">
+              Skip long journeys and reach sacred destinations in comfort with our exclusive helicopter packages.
+            </p>
           </div>
 
-          <h3 className="text-2xl md:text-3xl font-serif italic text-[#144487] leading-tight">
-            Experience Dev Bhoomi <br /> with Prnaam Travels
-          </h3>
-
-          <p className="max-w-3xl mx-auto text-slate-600 mt-6 text-sm md:text-base leading-relaxed">
-            From sacred temples to hidden Himalayan valleys, Uttarakhand offers
-            some of the most spiritual and breathtaking destinations in India.
-            Prnaam Travels organizes carefully planned Char Dham and Uttarakhand
-            journeys so pilgrims can focus on devotion while we handle the
-            logistics.
-          </p>
-        </div>
-
-        {/* DESTINATION IMAGE GRID */}
-
-     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-  {DESTINATIONS.map((place, idx) => (
-    <div
-      key={idx}
-      className="bg-white rounded-2xl p-2 shadow-md hover:shadow-xl transition-shadow duration-300 border border-slate-100 flex flex-col"
-    >
-      {/* Image Container */}
-      <div className="aspect-square rounded-xl overflow-hidden">
-        <img
-          src={place.image}
-          alt={place.title}
-          className="w-full h-full object-cover "
-        />
-      </div>
-
-      {/* Title Section */}
-      <div className="py-4 px-2">
-        <span className="text-slate-800 text-sm md:text-base tracking-tight">
-          {place.title}
-        </span>
-      </div>
-    </div>
-  ))}
-</div>
-
-        {/* PACKAGE INCLUDES */}
-
-        <div className="max-w-4xl mx-auto mb-16">
-          <h4 className="text-xl md:text-2xl font-serif text-[#144487] text-center mb-8">
-            What Our Uttarakhand Yatra Packages Include
-          </h4>
-
-          <div className="grid md:grid-cols-2 gap-4">
-            {PACKAGE_INCLUDES.map((item, index) => (
-              <div
-                key={index}
-                className="flex items-start gap-3 text-sm text-slate-700"
+          {/* DESTINATION SWIPER */}
+          <div className="relative mb-12">
+            {/* Wrapper to contain the overflow within the tan box */}
+            <div className="px-1 md:px-2">
+              <Swiper
+                modules={[Navigation, Pagination]}
+                spaceBetween={16}
+                slidesPerView={1.2} // Shows a peek of the next slide on mobile
+                speed={800}
+                grabCursor={true}
+                centeredSlides={false}
+                navigation={{
+                  nextEl: '.swiper-button-next-custom',
+                  prevEl: '.swiper-button-prev-custom',
+                }}
+                pagination={{ 
+                  clickable: true, 
+                  dynamicBullets: true,
+                  el: '.custom-swiper-pagination'
+                }}
+                breakpoints={{
+                  640: { slidesPerView: 2, spaceBetween: 20 },
+                  1024: { slidesPerView: 3, spaceBetween: 24 },
+                }}
+                className="pb-4" // Space for card shadows
               >
-                <CheckCircle size={18} className="text-[#d8841a] mt-0.5" />
-                <span>{item}</span>
+                {DESTINATIONS.map((place, idx) => (
+                  <SwiperSlide key={idx} className="h-auto">
+                    <div className="bg-white rounded-2xl p-2 shadow-md hover:shadow-xl transition-all duration-500 border border-slate-100 flex flex-col h-full group mb-2">
+                      <div className="aspect-square rounded-xl overflow-hidden">
+                        <img
+                          src={place.image}
+                          alt={place.title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="py-4 px-3">
+                        <p className="text-black font-medium text-sm md:text-base tracking-tight mb-1">
+                          {place.title}
+                        </p>
+                        <p className="text-[#144487] font-medium text-sm">
+                          {place.price}
+                        </p>
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+
+            {/* Pagination Container */}
+            <div className="custom-swiper-pagination flex justify-center mx-auto mt-6" />
+
+            {/* Custom Navigation Buttons (Hidden on small mobile) */}
+            <button className="swiper-button-prev-custom absolute left-[-15px] lg:left-[-40px] top-[40%] -translate-y-1/2 z-10 bg-white p-3 rounded-full shadow-lg border border-slate-100 text-[#144487] hover:bg-[#144487] hover:text-white transition-all hidden md:flex active:scale-95">
+              <ChevronLeft size={20} />
+            </button>
+            <button className="swiper-button-next-custom absolute right-[-15px] lg:right-[-40px] top-[40%] -translate-y-1/2 z-10 bg-white p-3 rounded-full shadow-lg border border-slate-100 text-[#144487] hover:bg-[#144487] hover:text-white transition-all hidden md:flex active:scale-95">
+              <ChevronRight size={20} />
+            </button>
+          </div>
+
+          {/* PACKAGE INCLUDES */}
+          <div className="max-w-4xl mx-auto mb-16">
+            <h4 className="text-xl md:text-2xl font-serif text-[#144487] text-center mb-8">
+              What Our Uttarakhand Yatra Packages Include
+            </h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {PACKAGE_INCLUDES.map((item, index) => (
+                <div
+                  key={index}
+                  className="flex items-start gap-3 text-sm text-slate-700 bg-white/60 p-4 rounded-2xl border border-white/40 shadow-sm"
+                >
+                  <CheckCircle size={18} className="text-[#d8841a] mt-0.5 flex-shrink-0" />
+                  <span className="leading-relaxed">{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* TRUST INDICATORS */}
+          <div className="flex flex-wrap justify-center gap-6 md:gap-10 lg:gap-12 border-t border-[#f0e6d2] pt-10">
+            {[
+              { icon: <ShieldCheck size={18} />, label: "Safe & Reliable" },
+              { icon: <MapPin size={18} />, label: "Local Expertise" },
+              { icon: <Users size={18} />, label: "Senior Friendly" },
+              { icon: <Award size={18} />, label: "Trusted Partner" }
+            ].map((item, i) => (
+              <div key={i} className="flex items-center gap-2 text-[#144487]">
+                <div className="text-[#d8841a]">{item.icon}</div>
+                <span className="text-[9px] md:text-xs font-bold uppercase tracking-widest whitespace-nowrap">
+                  {item.label}
+                </span>
               </div>
             ))}
           </div>
+
         </div>
-
-        {/* TRUST INDICATORS */}
-
-        <div className="flex flex-wrap justify-center gap-8 md:gap-12 border-t border-[#f0e6d2] pt-10">
-          {[
-            { icon: <ShieldCheck size={20} />, label: "Safe & Reliable Travel" },
-            { icon: <MapPin size={20} />, label: "Local Uttarakhand Expertise" },
-            { icon: <Users size={20} />, label: "Senior Friendly Yatra" },
-            { icon: <Award size={20} />, label: "Trusted Pilgrimage Partner" }
-          ].map((item, i) => (
-            <div key={i} className="flex items-center gap-3 text-[#144487]">
-              <div className="text-[#d8841a]">{item.icon}</div>
-
-              <span className="text-xs font-bold uppercase tracking-widest">
-                {item.label}
-              </span>
-            </div>
-          ))}
-        </div>
-
       </div>
-      </div>
+
+      <style jsx global>{`
+        .swiper-wrapper {
+          transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1) !important;
+        }
+
+        .custom-swiper-pagination .swiper-pagination-bullet {
+          background: #cbd5e1;
+          opacity: 1;
+          width: 8px;
+          height: 8px;
+          margin: 0 4px !important;
+          transition: all 0.3s ease;
+        }
+
+        .custom-swiper-pagination .swiper-pagination-bullet-active {
+          background: #144487 !important;
+          width: 20px;
+          border-radius: 4px;
+        }
+
+        .swiper-button-disabled {
+          opacity: 0;
+          pointer-events: none;
+        }
+      `}</style>
     </section>
   );
 };

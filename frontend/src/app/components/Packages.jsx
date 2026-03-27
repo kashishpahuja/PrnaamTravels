@@ -142,15 +142,15 @@ export default function YatraPackages() {
   );
 
   return (
-    <section className="py-16 px-4 md:px-6 lg:px-12 xl:px-24 overflow-hidden">
+    <section className="py-8 lg:py-12 px-4 md:px-6 lg:px-12 xl:px-24 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         
         {/* --- HEADING SECTION --- */}
         <div className="max-w-4xl mx-auto text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-serif italic mb-6 leading-tight text-slate-900">
+          <h2 className="text-2xl md:text-3xl font-serif italic mb-3 leading-tight text-slate-900">
             Experience the True Essence <br /> of Uttarakhand
           </h2>
-          <p className="text-slate-600 text-sm md:text-base max-w-xl mx-auto mb-8">
+          <p className="text-slate-600 text-sm md:text-base max-w-xl mx-auto ">
             Uttarakhand is not just a destination—it is a spiritual calling. 
           </p>
         </div>

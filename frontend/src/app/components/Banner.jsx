@@ -67,7 +67,7 @@ const stats = [
 
      
     </div>
-<div className='bg w-full   py-6 overflow-hidden'>
+<div className='w-full   py-6 overflow-hidden'>
       <div className='max-w-7xl mx-auto md:px-6 lg:px-12 xl:px-40'>
         
         {/* MOBILE: INFINITE MARQUEE (Hidden on XL) */}
@@ -116,7 +116,7 @@ const stats = [
 
       </div>
     </div>
-   <div className="relative h-auto lg:h-[230px] xl:h-[300px] overflow-hidden">
+   <div className="relative h-auto lg:h-[230px] xl:h-[300px] rounded-3xl mx-4 md:mx-6 lg:mx-12 xl:mx-24 overflow-hidden">
         
         
         <div className="relative h-full w-full">
@@ -124,7 +124,7 @@ const stats = [
             src="/heli.webp"
             alt="Desktop banner"
             width={1635} height={540}
-            className="object-cover object-bottom h-full w-full "
+            className="object-cover object-center h-full w-full "
             priority
           />
        
