@@ -51,9 +51,9 @@ const AuthorityTrustSection = () => {
           </div>
 
           {/* DESTINATION SWIPER */}
-          <div className="relative mb-12">
+          <div className="relative ">
             {/* Wrapper to contain the overflow within the tan box */}
-            <div className="px-1 md:px-2">
+            <div className="">
               <Swiper
                 modules={[Navigation, Pagination]}
                 spaceBetween={16}
@@ -79,7 +79,7 @@ const AuthorityTrustSection = () => {
                 {DESTINATIONS.map((place, idx) => (
                   <SwiperSlide key={idx} className="h-auto">
                     <div className="bg-white rounded-2xl p-2 shadow-md hover:shadow-xl transition-all duration-500 border border-slate-100 flex flex-col h-full group mb-2">
-                      <div className="aspect-square rounded-xl overflow-hidden">
+                      <div className="aspect-square rounded-t-2xl overflow-hidden">
                         <img
                           src={place.image}
                           alt={place.title}
@@ -101,19 +101,19 @@ const AuthorityTrustSection = () => {
             </div>
 
             {/* Pagination Container */}
-            <div className="custom-swiper-pagination flex justify-center mx-auto mt-6" />
+            {/* <div className="custom-swiper-pagination flex justify-center mx-auto mt-6" /> */}
 
             {/* Custom Navigation Buttons (Hidden on small mobile) */}
-            <button className="swiper-button-prev-custom absolute left-[-15px] lg:left-[-40px] top-[40%] -translate-y-1/2 z-10 bg-white p-3 rounded-full shadow-lg border border-slate-100 text-[#144487] hover:bg-[#144487] hover:text-white transition-all hidden md:flex active:scale-95">
+            {/* <button className="swiper-button-prev-custom absolute left-[-15px] lg:left-[-40px] top-[40%] -translate-y-1/2 z-10 bg-white p-3 rounded-full shadow-lg border border-slate-100 text-[#144487] hover:bg-[#144487] hover:text-white transition-all hidden md:flex active:scale-95">
               <ChevronLeft size={20} />
             </button>
             <button className="swiper-button-next-custom absolute right-[-15px] lg:right-[-40px] top-[40%] -translate-y-1/2 z-10 bg-white p-3 rounded-full shadow-lg border border-slate-100 text-[#144487] hover:bg-[#144487] hover:text-white transition-all hidden md:flex active:scale-95">
               <ChevronRight size={20} />
-            </button>
+            </button> */}
           </div>
 
           {/* PACKAGE INCLUDES */}
-          <div className="max-w-4xl mx-auto mb-16">
+          {/* <div className="max-w-4xl mx-auto mb-16">
             <h4 className="text-xl md:text-2xl font-serif text-[#144487] text-center mb-8">
               What Our Uttarakhand Yatra Packages Include
             </h4>
@@ -128,10 +128,10 @@ const AuthorityTrustSection = () => {
                 </div>
               ))}
             </div>
-          </div>
+          </div> */}
 
           {/* TRUST INDICATORS */}
-          <div className="flex flex-wrap justify-center gap-6 md:gap-10 lg:gap-12 border-t border-[#f0e6d2] pt-10">
+          {/* <div className="flex flex-wrap justify-center gap-6 md:gap-10 lg:gap-12 border-t border-[#f0e6d2] pt-10">
             {[
               { icon: <ShieldCheck size={18} />, label: "Safe & Reliable" },
               { icon: <MapPin size={18} />, label: "Local Expertise" },
@@ -145,12 +145,12 @@ const AuthorityTrustSection = () => {
                 </span>
               </div>
             ))}
-          </div>
+          </div> */}
 
         </div>
       </div>
 
-      <style jsx global>{`
+      {/* <style jsx global>{`
         .swiper-wrapper {
           transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1) !important;
         }
@@ -174,7 +174,7 @@ const AuthorityTrustSection = () => {
           opacity: 0;
           pointer-events: none;
         }
-      `}</style>
+      `}</style> */}
     </section>
   );
 };

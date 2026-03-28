@@ -15,7 +15,7 @@ const YATRA_PACKAGES = [
 
 export default function YatraPackages() {
   return (
-    <section className="py-8 lg:py-12 px-4 md:px-6 lg:px-12 xl:px-24 overflow-hidden bg-slate-50">
+    <section className="py-8 lg:py-12 px-4 md:px-6 lg:px-12 xl:px-24 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         
         {/* --- HEADING SECTION --- */}

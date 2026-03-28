@@ -6,9 +6,12 @@ import About from './components/About'
 import Packages from './components/Packages'
 import Places from './components/Places'
 import Uttrakhand from './components/Uttrakhand'
+import TripTales from './components/TripTales'
 import KedarnathAuthorityHub from './components/Kedarnath'
 import Logo from './components/Logo'
 import CategoryDiscovery from './components/Categories'
+import Poster from './components/Poster'
+import Footer from './components/Footer'
 
 function page() {
   return (
@@ -23,6 +26,9 @@ function page() {
       <Uttrakhand/>
       <Gallary/>
       <CategoryDiscovery/>
+      <Poster/>
+      <TripTales/>
+      <Footer/>
        {/* <About/>  */}
       {/* <KedarnathAuthorityHub/> */}
     </div>

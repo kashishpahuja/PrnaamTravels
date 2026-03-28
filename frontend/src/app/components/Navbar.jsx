@@ -28,16 +28,31 @@ function Navbar() {
   }, [isOpen]);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    if (latest < 50) {
-      setIsVisible(true);
-    } else if (latest > lastScrollY.current && latest > 150) {
-      setIsVisible(false);
-      setIsOpen(false); 
-    } else if (latest < lastScrollY.current) {
-      setIsVisible(true);
-    }
-    lastScrollY.current = latest;
-  });
+  // 1. If the menu is open, DON'T run the hide/show logic
+  if (isOpen) return; 
+
+  if (latest < 50) {
+    setIsVisible(true);
+  } else if (latest > lastScrollY.current && latest > 150) {
+    setIsVisible(false);
+    // Remove setIsOpen(false) from here; the 'if (isOpen) return' covers it better
+  } else if (latest < lastScrollY.current) {
+    setIsVisible(true);
+  }
+  lastScrollY.current = latest;
+});
+
+  // useMotionValueEvent(scrollY, "change", (latest) => {
+  //   if (latest < 50) {
+  //     setIsVisible(true);
+  //   } else if (latest > lastScrollY.current && latest > 150) {
+  //     setIsVisible(false);
+  //     setIsOpen(false); 
+  //   } else if (latest < lastScrollY.current) {
+  //     setIsVisible(true);
+  //   }
+  //   lastScrollY.current = latest;
+  // });
 
   const destinations = [
     { name: "Char Dham Yatra", href: "#" },
