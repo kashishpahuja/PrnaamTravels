@@ -13,109 +13,78 @@ import 'swiper/css';
 import 'swiper/css/effect-cards';
 
 const YATRA_PACKAGES = [
-
   {
-    title: "Badrinath",
-    image: "/Images/packages/badrinath.webp",
-    href: "/yamunotri-yatra",
-    locations: ["Haridwar", "Barkot", "Janki Chatti", "Yamunotri"]
-  }, {
-    title: "Kedarnath Yatra",
+    title: "Kedarnath",
     image: "/Images/packages/kedarnath1.webp",
     href: "/kedarnath-yatra",
     locations: ["Haridwar", "Guptkashi", "Sonprayag", "Kedarnath"]
   },
-  
   {
-    title: "Gangotri",
-    image: "/Images/packages/gangotri.webp",
-    href: "/valley-of-flowers",
-    locations: ["Govindghat", "Ghangaria", "Valley of Flowers", "Hemkund Sahib"]
-  },
-     {
-    title: "Yamunotri",
-    image: "/Images/packages/yamunotri.webp",
-    href: "/do-dham-yatra",
-    locations: ["Haridwar", "Kedarnath", "Badrinath"]
-  },
-  {
-    title: "Char Dham Yatra",
-    image: "/uttrakhand.webp",
-    href: "/char-dham-yatra",
-    locations: ["Haridwar", "Yamunotri", "Gangotri", "Kedarnath", "Badrinath"]
-  },
-   {
-    title: "Mussoorie Tour Package",
-    image: "/Mana.webp",
-    href: "/mussoorie-tour",
-    locations: ["Dehradun", "Mussoorie", "Kempty Falls"]
-  },
-  {
-    title: "Auli Ski Tour",
-    image: "/banner2.png",
-    href: "/auli-tour",
-    locations: ["Joshimath", "Auli"]
-  },
- 
-  
-  {
-    title: "Nainital Tour Package",
-    image: "/Harsil.webp",
-    href: "/nainital-tour",
-    locations: ["Kathgodam", "Nainital", "Bhimtal", "Sattal"]
-  },
-  {
-    title: "Chopta Tungnath Tour",
-    image: "/Mana.webp",
-    href: "/chopta-tour",
-    locations: ["Rudraprayag", "Chopta", "Tungnath", "Chandrashila"]
-  },
-  {
-    title: "Badrinath Yatra",
-    image: "/badrinath.webp",
+    title: "Badrinath",
+    image: "/Images/packages/badrinath.webp",
     href: "/badrinath-yatra",
     locations: ["Haridwar", "Joshimath", "Badrinath"]
   },
   {
-    title: "Do Dham Yatra",
-    image: "/dwarka.webp",
-    href: "/do-dham-yatra",
-    locations: ["Haridwar", "Kedarnath", "Badrinath"]
+    title: "Gangotri",
+    image: "/Images/packages/gangotri.webp",
+    href: "/gangotri-yatra",
+    locations: ["Haridwar", "Uttarkashi", "Gangotri"]
   },
   {
-    title: "Yamunotri Yatra",
-    image: "/rameshwaram.webp",
+    title: "Yamunotri",
+    image: "/Images/packages/yamunotri.webp",
     href: "/yamunotri-yatra",
     locations: ["Haridwar", "Barkot", "Janki Chatti", "Yamunotri"]
   },
   {
-    title: "Gangotri Yatra",
-    image: "/HotWater.webp",
-    href: "/gangotri-yatra",
-    locations: ["Haridwar", "Uttarkashi", "Gangotri"]
+    title: "Nainital",
+    image: "/Images/packages/nainital.webp",
+    href: "/nainital-tour",
+    locations: ["Kathgodam", "Nainital", "Bhimtal", "Sattal"]
   },
-
-  // Uttarakhand Tour Packages (Non-Dham mix)
   {
-    title: "Haridwar Rishikesh Tour",
-    image: "/HiddenGems.webp",
-    href: "/haridwar-rishikesh-tour",
+    title: "Mussoorie",
+    image: "/Images/packages/musoorie.webp",
+    href: "/mussoorie-tour",
+    locations: ["Dehradun", "Mussoorie", "Kempty Falls"]
+  },
+  {
+    title: "Rishikesh",
+    image: "/Images/packages/rishikesh.webp",
+    href: "/rishikesh-tour",
     locations: ["Haridwar", "Rishikesh"]
   },
   {
-    title: "Kedarnath Yatra",
-    image: "/Images/packages/kedarnath.webp",
-    href: "/kedarnath-yatra",
-    locations: ["Haridwar", "Guptkashi", "Sonprayag", "Kedarnath"]
+    title: "Haridwar",
+    image: "/Images/packages/haridwar.webp",
+    href: "/haridwar-tour",
+    locations: ["Haridwar", "Rishikesh"]
   },
-  
   {
-    title: "Valley of Flowers Trek",
-    image: "/b9mobile.webp",
-    href: "/valley-of-flowers",
-    locations: ["Govindghat", "Ghangaria", "Valley of Flowers", "Hemkund Sahib"]
+    title: "Ranikhet",
+    image: "/Images/packages/ranikhet.webp",
+    href: "/ranikhet-tour",
+    locations: ["Ranikhet", "Chaubatia Gardens"]
   },
-  
+  {
+    title: "Jim Corbett",
+    image: "/Images/packages/jimcorbett.webp",
+    href: "/jim-corbett-tour",
+    locations: ["Ramnagar", "Jim Corbett National Park"]
+  },
+  {
+    title: "Kanatal",
+    image: "/Images/packages/kanatal.webp",
+    href: "/kanatal-tour",
+    locations: ["Chamba", "Kanatal", "Dhanaulti"]
+  },
+  {
+    title: "Chopta",
+    image: "/Images/packages/chopta.webp",
+    href: "/chopta-tour",
+    locations: ["Rudraprayag", "Chopta", "Tungnath", "Chandrashila"]
+  }
 ];
 
 export default function YatraPackages() {

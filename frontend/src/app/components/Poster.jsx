@@ -4,7 +4,7 @@ import React from 'react'
 function Poster() {
   return (
     <div>
-         <div className="relative h-auto lg:h-auto rounded-3xl  px-4 md:px-6 lg:px-12 xl:px-24 max-w-7xl mx-auto overflow-hidden">
+     <div className="relative h-auto lg:h-[230px] xl:h-[300px] lg:rounded-3xl  lg:mx-12 xl:mx-24 overflow-hidden">
               
               
               <div className="relative h-full w-full">

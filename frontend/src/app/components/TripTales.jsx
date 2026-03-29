@@ -127,7 +127,7 @@ const VideoSlide = ({ item }) => {
   return (
     <div className="group block h-full select-none">
       <div 
-        className="relative aspect-[3/4] overflow-hidden rounded-sm bg-gray-100"
+        className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-gray-100"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >

@@ -25,7 +25,7 @@ function page() {
       {/* <Places/> */}
       <Uttrakhand/>
       <Gallary/>
-      <CategoryDiscovery/>
+      {/* <CategoryDiscovery/> */}
       <Poster/>
       <TripTales/>
       <Footer/>

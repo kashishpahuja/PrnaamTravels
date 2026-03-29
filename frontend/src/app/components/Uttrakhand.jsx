@@ -15,7 +15,7 @@ const DESTINATIONS = [
   { price: "Starting 85,000/-", title: "Kedarnath Helicopter Yatra", image: "/Images/packages/kedarnath.webp" },
   { price: "Starting 1,80,000/-", title: "Char Dham Helicopter Yatra", image: "/uttrakhand.webp" },
   { price: "Starting 75,000/-", title: "Badrinath Helicopter Yatra", image: "/badrinath.webp" },
-  { price: "Starting 95,000/-", title: "Do Dham Helicopter Yatra", image: "/mana.webp" },
+  // { price: "Starting 95,000/-", title: "Do Dham Helicopter Yatra", image: "/mana.webp" },
 ];
 
 const PACKAGE_INCLUDES = [

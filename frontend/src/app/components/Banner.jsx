@@ -6,8 +6,8 @@ import { motion } from 'framer-motion';
 function Banner() {
 const stats = [
   { img: "/group.png", title: "50k+", sub: "Yatri Served Across India" },
-  { img: "/group.png", title: "Dehradun Based", sub: "7+ Years Experience" },
-  { img: "/group.png", title: "24x7 Support", sub: "Always Here to Help" }
+  { img: "/map.png", title: "Dehradun Based", sub: "7+ Years Experience" },
+  { img: "/support.png", title: "24x7 Support", sub: "Always Here to Help" }
   
 ];
 
@@ -87,7 +87,7 @@ const stats = [
                   <Image src={item.img} alt={item.title} fill className="object-contain" />
                 </div>
                 <div className='flex flex-col text-[#144487]'>
-                  <span className='text-[13px] font-bold font-serif leading-tight whitespace-nowrap'>{item.title}</span>
+                  <span className='text-[13px] font-bold leading-tight whitespace-nowrap'>{item.title}</span>
                   <span className='text-[10px] font-semibold tracking-wide whitespace-nowrap'>{item.sub}</span>
                 </div>
               </div>

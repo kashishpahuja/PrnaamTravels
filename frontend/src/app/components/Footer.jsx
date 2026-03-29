@@ -69,7 +69,7 @@ const Footer = () => {
           <span className="w-8 h-px bg-[#d8841a]" />
           <span className="text-[#d8841a] text-[10px] font-bold uppercase tracking-[0.2em]">Quick Access</span>
         </div>
-        <h2 className="text-2xl md:text-4xl font-serif italic text-slate-900 leading-tight">
+        <h2 className="text-2xl lg:text-4xl font-serif italic text-slate-900 leading-tight">
           Explore Sacred Trails <br /> & Scenic Escapes
         </h2>
       </div>
@@ -179,8 +179,8 @@ const Footer = () => {
 
           {/* Column 2: Quick Links (Using shortened list for space) */}
           <div>
-            <h4 className="text-[#144487] font-bold mb-6 uppercase tracking-wider text-sm">Top Religious Tours</h4>
-            <ul className="space-y-4">
+            <h4 className="text-[#144487] font-bold mb-2 uppercase tracking-wider text-sm">Top Religious Tours</h4>
+            <ul className="space-y-2">
               {footerLinks.destinations.slice(0, 5).map((link) => (
                 <li key={link.name}>
                   <Link href={link.href} className="text-gray-600 hover:text-[#2D9344] text-sm transition-colors">
@@ -193,8 +193,8 @@ const Footer = () => {
 
           {/* Column 3: Company */}
           <div>
-            <h4 className="text-[#144487] font-bold mb-6 uppercase tracking-wider text-sm">Our Company</h4>
-            <ul className="space-y-4">
+            <h4 className="text-[#144487] font-bold mb-2 uppercase tracking-wider text-sm">Our Company</h4>
+            <ul className="space-y-2">
               {footerLinks.company.map((link) => (
                 <li key={link.name}>
                   <Link href={link.href} className="text-gray-600 hover:text-[#2D9344] text-sm transition-colors">
@@ -206,8 +206,8 @@ const Footer = () => {
           </div>
 
           {/* Column 4: Contact Info */}
-          <div className="space-y-5">
-            <h4 className="text-[#144487] font-bold mb-6 uppercase tracking-wider text-sm">Get In Touch</h4>
+          <div className="space-y-3">
+            <h4 className="text-[#144487] font-bold mb-4 uppercase tracking-wider text-sm">Get In Touch</h4>
             <div className="flex items-start gap-3 text-sm text-gray-600">
               <FaMapMarkerAlt className="text-[#2D9344] mt-1 shrink-0" />
               <p>123, Dev Bhoomi Tower, Main Road, Dehradun, Uttarakhand - 248001</p>

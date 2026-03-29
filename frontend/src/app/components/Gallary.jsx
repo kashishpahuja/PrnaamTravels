@@ -4,13 +4,14 @@ import Link from "next/link";
 import { ArrowUpRight, Send, Phone, User, MapPin, CheckCircle2 } from "lucide-react";
 import Image from "next/image";
 
+
 const YATRA_PACKAGES = [
-  { title: "Nainital Tour Package", image: "/Harsil.webp", href: "/nainital-tour" },
-  { title: "Chopta Tungnath Tour", image: "/Mana.webp", href: "/chopta-tour" },
-  { title: "Badrinath Yatra", image: "/badrinath.webp", href: "/badrinath-yatra" },
-  { title: "Gangotri Yatra", image: "/HotWater.webp", href: "/gangotri-yatra" },
-  { title: "Kedarnath Yatra", image: "/Images/packages/kedarnath.webp", href: "/kedarnath-yatra" },
-  { title: "Valley of Flowers Trek", image: "/b9mobile.webp", href: "/valley-of-flowers" },
+  { title: "Nainital Tour Package", image: "/Images/category/spiritual1.webp", href: "/spiritual" },
+  { title: "Chopta Tungnath Tour", image: "/Images/category/leisure1.webp", href: "/leisure" },
+  { title: "Badrinath Yatra", image: "/Images/category/adventure1.webp", href: "/adventure" },
+  { title: "Gangotri Yatra", image: "/Images/category/camping1.webp", href: "/camping" },
+  { title: "Kedarnath Yatra", image: "/Images/category/wildlife1.webp", href: "/wildlife" },
+  { title: "Valley of Flowers Trek", image: "/Images/category/family1.webp", href: "/family" },
 ];
 
 export default function YatraPackages() {
