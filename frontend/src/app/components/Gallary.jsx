@@ -42,7 +42,7 @@ export default function YatraPackages() {
               <Link
                 key={index}
                 href={pkg.href}
-                className="group relative overflow-hidden h-[200px] md:h-[260px] "
+                className="group relative overflow-hidden h-[200px] md:h-[260px] rounded-2xl"
               >
                 <Image
                   src={pkg.image}

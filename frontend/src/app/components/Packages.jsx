@@ -13,29 +13,30 @@ import 'swiper/css';
 import 'swiper/css/effect-cards';
 
 const YATRA_PACKAGES = [
-   {
-    title: "Do Dham Yatra",
-    image: "/dwarka.webp",
-    href: "/do-dham-yatra",
-    locations: ["Haridwar", "Kedarnath", "Badrinath"]
-  },
+
   {
-    title: "Yamunotri Yatra",
-    image: "/rameshwaram.webp",
+    title: "Badrinath",
+    image: "/Images/packages/badrinath.webp",
     href: "/yamunotri-yatra",
     locations: ["Haridwar", "Barkot", "Janki Chatti", "Yamunotri"]
   }, {
     title: "Kedarnath Yatra",
-    image: "/Images/packages/kedarnath.webp",
+    image: "/Images/packages/kedarnath1.webp",
     href: "/kedarnath-yatra",
     locations: ["Haridwar", "Guptkashi", "Sonprayag", "Kedarnath"]
   },
   
   {
-    title: "Valley of Flowers Trek",
-    image: "/b9mobile.webp",
+    title: "Gangotri",
+    image: "/Images/packages/gangotri.webp",
     href: "/valley-of-flowers",
     locations: ["Govindghat", "Ghangaria", "Valley of Flowers", "Hemkund Sahib"]
+  },
+     {
+    title: "Yamunotri",
+    image: "/Images/packages/yamunotri.webp",
+    href: "/do-dham-yatra",
+    locations: ["Haridwar", "Kedarnath", "Badrinath"]
   },
   {
     title: "Char Dham Yatra",
@@ -124,12 +125,12 @@ export default function YatraPackages() {
         src={pkg.image}
         alt={pkg.title}
         fill
-        className="absolute inset-0 object-cover transition-transform duration-500"
+        className="absolute inset-0 object-cover object-center transition-transform duration-500"
       />
       {/* <div className="absolute inset-0  bg-gradient-to-t from-black/90 via-black/20 to-transparent" /> */}
       <div className="relative  z-10  flex flex-col justify-end h-full text-white">
-       <div className='bg-linear-to-t from-black via-black/80 to-black/10 px-6 py-4'>
-         <h3 className="x italic text-xl font-medium mb-2">{pkg.title}</h3>
+       <div className='backdrop-blur-lg px-6 py-2'>
+         <h3 className="x italic text-lg font-medium mb-1">{pkg.title}</h3>
         <div className="flex items-center gap-2 text-xs font-semibold tracking-wider  opacity-80">
           Explore
           <ArrowUpRight size={14} />
@@ -150,9 +151,9 @@ export default function YatraPackages() {
           <h2 className="text-2xl md:text-3xl font-serif italic mb-3 leading-tight text-slate-900">
             Experience the True Essence <br /> of Uttarakhand
           </h2>
-          <p className="text-slate-600 text-sm md:text-base max-w-xl mx-auto ">
+          {/* <p className="text-slate-600 text-sm md:text-base max-w-xl mx-auto ">
             Uttarakhand is not just a destination—it is a spiritual calling. 
-          </p>
+          </p> */}
         </div>
 
         {/* --- MOBILE: EFFECT CARDS (Smooth UI) --- */}
@@ -177,7 +178,7 @@ export default function YatraPackages() {
     className="w-[280px] h-[400px] sm:w-[320px] sm:h-[450px]"
   >
     {YATRA_PACKAGES.map((pkg, index) => (
-      <SwiperSlide key={index} className="rounded-4xl overflow-hidden shadow-xl">
+      <SwiperSlide key={index} className="rounded-2xl overflow-hidden shadow-xl">
         <Link href={pkg.href} className="relative block w-full h-full">
           <CardContent pkg={pkg} />
         </Link>
@@ -187,12 +188,12 @@ export default function YatraPackages() {
 </div>
 
         {/* --- DESKTOP: GRID LAYOUT --- */}
-        <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
           {YATRA_PACKAGES.map((pkg, index) => (
             <Link
               key={index}
               href={pkg.href}
-              className="group relative overflow-hidden rounded-sm h-[380px] shadow-sm hover:shadow-xl transition-all duration-500"
+              className="group relative overflow-hidden rounded-2xl h-[300px] shadow-sm hover:shadow-xl transition-all duration-500"
             >
               <CardContent pkg={pkg} />
             </Link>

@@ -40,7 +40,7 @@ export default function YatraPackages() {
           <div className="">
             <Swiper
               modules={[Navigation, Pagination]}
-              spaceBetween={16}
+              // spaceBetween={10}
               slidesPerView={1.2} // Peek effect for mobile
               speed={800}
               grabCursor={true}
@@ -55,14 +55,14 @@ export default function YatraPackages() {
                 el: '.custom-yatra-pagination'
               }}
               breakpoints={{
-                640: { slidesPerView: 2, spaceBetween: 20 },
-                1024: { slidesPerView: 3, spaceBetween: 24 },
+                640: { slidesPerView: 2, spaceBetween: 0 },
+                1024: { slidesPerView: 4, spaceBetween: 0},
               }}
-              className="pb-10" 
+              className="pb-10 " 
             >
               {YATRA_PACKAGES.map((pkg, idx) => (
-                <SwiperSlide key={idx} className="h-auto ">
-                  <Link href={pkg.href} className="block h-full">
+                <SwiperSlide key={idx} className=" ">
+                  <Link href={pkg.href} className="w-[300px] h-[300px] pr-2 lg:pr-0">
                     <div className="h-full">
                       
                       {/* Image Container */}
@@ -70,7 +70,7 @@ export default function YatraPackages() {
                         <img
                           src={pkg.image}
                           alt={pkg.title}
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                          className="w-full h-full object-cover rounded-2xl"
                         />
                       </div>
 

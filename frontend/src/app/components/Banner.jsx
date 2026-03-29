@@ -116,7 +116,7 @@ const stats = [
 
       </div>
     </div>
-   <div className="relative h-auto lg:h-[230px] xl:h-[300px] rounded-3xl mx-4 md:mx-6 lg:mx-12 xl:mx-24 overflow-hidden">
+   <div className="relative h-auto lg:h-[230px] xl:h-[300px] lg:rounded-3xl  lg:mx-12 xl:mx-24 overflow-hidden">
         
         
         <div className="relative h-full w-full">
