@@ -26,10 +26,22 @@ const YATRA_PACKAGES = [
     locations: ["Haridwar", "Joshimath", "Badrinath"]
   },
   {
+    title: "Nainital",
+    image: "/Images/packages/nainital.webp",
+    href: "/nainital-tour",
+    locations: ["Kathgodam", "Nainital", "Bhimtal", "Sattal"]
+  },
+  {
     title: "Gangotri",
     image: "/Images/packages/gangotri.webp",
     href: "/gangotri-yatra",
     locations: ["Haridwar", "Uttarkashi", "Gangotri"]
+  },
+    {
+    title: "Chopta",
+    image: "/Images/packages/chopta.webp",
+    href: "/chopta-tour",
+    locations: ["Rudraprayag", "Chopta", "Tungnath", "Chandrashila"]
   },
   {
     title: "Yamunotri",
@@ -37,11 +49,12 @@ const YATRA_PACKAGES = [
     href: "/yamunotri-yatra",
     locations: ["Haridwar", "Barkot", "Janki Chatti", "Yamunotri"]
   },
+  
   {
-    title: "Nainital",
-    image: "/Images/packages/nainital.webp",
-    href: "/nainital-tour",
-    locations: ["Kathgodam", "Nainital", "Bhimtal", "Sattal"]
+    title: "Ranikhet",
+    image: "/Images/packages/ranikhet.webp",
+    href: "/ranikhet-tour",
+    locations: ["Ranikhet", "Chaubatia Gardens"]
   },
   {
     title: "Mussoorie",
@@ -61,12 +74,7 @@ const YATRA_PACKAGES = [
     href: "/haridwar-tour",
     locations: ["Haridwar", "Rishikesh"]
   },
-  {
-    title: "Ranikhet",
-    image: "/Images/packages/ranikhet.webp",
-    href: "/ranikhet-tour",
-    locations: ["Ranikhet", "Chaubatia Gardens"]
-  },
+  
   {
     title: "Jim Corbett",
     image: "/Images/packages/jimcorbett.webp",
@@ -79,12 +87,7 @@ const YATRA_PACKAGES = [
     href: "/kanatal-tour",
     locations: ["Chamba", "Kanatal", "Dhanaulti"]
   },
-  {
-    title: "Chopta",
-    image: "/Images/packages/chopta.webp",
-    href: "/chopta-tour",
-    locations: ["Rudraprayag", "Chopta", "Tungnath", "Chandrashila"]
-  }
+
 ];
 
 export default function YatraPackages() {
@@ -98,7 +101,7 @@ export default function YatraPackages() {
       />
       {/* <div className="absolute inset-0  bg-gradient-to-t from-black/90 via-black/20 to-transparent" /> */}
       <div className="relative  z-10  flex flex-col justify-end h-full text-white">
-       <div className='backdrop-blur-lg px-6 py-2'>
+       <div className='bg-linear-to-r from-black/40 via-black/10 to-transparent px-6 py-2'>
          <h3 className="x italic text-lg font-medium mb-1">{pkg.title}</h3>
         <div className="flex items-center gap-2 text-xs font-semibold tracking-wider  opacity-80">
           Explore
