@@ -116,12 +116,12 @@ const stats = [
 
       </div>
     </div>
-   <div className="relative h-auto lg:h-[230px] xl:h-[300px] lg:rounded-3xl  lg:mx-12 xl:mx-24 overflow-hidden">
+   <div className="relative h-auto lg:h-[230px] xl:h-auto lg:rounded-3xl  lg:mx-12 xl:mx-24 overflow-hidden">
         
         
         <div className="relative h-full w-full">
           <Image
-            src="/heli.webp"
+            src="/poster.webp"
             alt="Desktop banner"
             width={1635} height={540}
             className="object-cover object-center h-full w-full "

@@ -13,7 +13,7 @@ import 'swiper/css';
 import 'swiper/css/effect-cards';
 
 const YATRA_PACKAGES = [
-  {
+     {
     title: "Kedarnath",
     image: "/Images/packages/kedarnath1.webp",
     href: "/kedarnath-yatra",
@@ -24,12 +24,12 @@ const YATRA_PACKAGES = [
     image: "/Images/packages/badrinath.webp",
     href: "/badrinath-yatra",
     locations: ["Haridwar", "Joshimath", "Badrinath"]
-  },
-  {
-    title: "Nainital",
-    image: "/Images/packages/nainital.webp",
-    href: "/nainital-tour",
-    locations: ["Kathgodam", "Nainital", "Bhimtal", "Sattal"]
+  },  
+    {
+    title: "Yamunotri",
+    image: "/Images/packages/yamunotri.webp",
+    href: "/yamunotri-yatra",
+    locations: ["Haridwar", "Barkot", "Janki Chatti", "Yamunotri"]
   },
   {
     title: "Gangotri",
@@ -37,44 +37,6 @@ const YATRA_PACKAGES = [
     href: "/gangotri-yatra",
     locations: ["Haridwar", "Uttarkashi", "Gangotri"]
   },
-    {
-    title: "Chopta",
-    image: "/Images/packages/chopta.webp",
-    href: "/chopta-tour",
-    locations: ["Rudraprayag", "Chopta", "Tungnath", "Chandrashila"]
-  },
-  {
-    title: "Yamunotri",
-    image: "/Images/packages/yamunotri.webp",
-    href: "/yamunotri-yatra",
-    locations: ["Haridwar", "Barkot", "Janki Chatti", "Yamunotri"]
-  },
-  
-  {
-    title: "Ranikhet",
-    image: "/Images/packages/ranikhet.webp",
-    href: "/ranikhet-tour",
-    locations: ["Ranikhet", "Chaubatia Gardens"]
-  },
-  {
-    title: "Mussoorie",
-    image: "/Images/packages/musoorie.webp",
-    href: "/mussoorie-tour",
-    locations: ["Dehradun", "Mussoorie", "Kempty Falls"]
-  },
-  {
-    title: "Rishikesh",
-    image: "/Images/packages/rishikesh.webp",
-    href: "/rishikesh-tour",
-    locations: ["Haridwar", "Rishikesh"]
-  },
-  {
-    title: "Haridwar",
-    image: "/Images/packages/haridwar.webp",
-    href: "/haridwar-tour",
-    locations: ["Haridwar", "Rishikesh"]
-  },
-  
   {
     title: "Jim Corbett",
     image: "/Images/packages/jimcorbett.webp",
@@ -82,11 +44,52 @@ const YATRA_PACKAGES = [
     locations: ["Ramnagar", "Jim Corbett National Park"]
   },
   {
+    title: "Chopta",
+    image: "/Images/packages/chopta.webp",
+    href: "/chopta-tour",
+    locations: ["Rudraprayag", "Chopta", "Tungnath", "Chandrashila"]
+  },  
+  
+  {
+    title: "Haridwar",
+    image: "/Images/packages/haridwar.webp",
+    href: "/haridwar-tour",
+    locations: ["Haridwar", "Rishikesh"]
+  },
+    {
     title: "Kanatal",
     image: "/Images/packages/kanatal.webp",
     href: "/kanatal-tour",
     locations: ["Chamba", "Kanatal", "Dhanaulti"]
   },
+    {
+    title: "Nainital",
+    image: "/Images/packages/nainital.webp",
+    href: "/nainital-tour",
+    locations: ["Kathgodam", "Nainital", "Bhimtal", "Sattal"]
+  },
+    {
+    title: "Mussoorie",
+    image: "/Images/packages/musoorie.webp",
+    href: "/mussoorie-tour",
+    locations: ["Dehradun", "Mussoorie", "Kempty Falls"]
+  },  {
+    title: "Ranikhet",
+    image: "/Images/packages/ranikhet.webp",
+    href: "/ranikhet-tour",
+    locations: ["Ranikhet", "Chaubatia Gardens"]
+  },
+ 
+{
+    title: "Rishikesh",
+    image: "/Images/packages/rishikesh.webp",
+    href: "/rishikesh-tour",
+    locations: ["Haridwar", "Rishikesh"]
+  },
+
+
+
+  
 
 ];
 

@@ -59,8 +59,8 @@ const Footer = () => {
     <footer className=" border-t border-gray-200">
       
      {/* --- 1. SEO Site Directory Section (Prnaam Travels Theme) --- */}
-<section className="bg py-8 lg:py-12  px-4 md:px-6 lg:px-12 xl:px-24 border-y border-slate-200">
-  <div className="">
+<section className="bg py-8 lg:py-12 px-4 md:px-6 lg:px-12 xl:px-24 border-y border-slate-200">
+  <div className="max-w-7xl mx-auto">
     
     {/* Section Header */}
     <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
@@ -159,7 +159,7 @@ const Footer = () => {
 
       {/* 2. Main Footer Content */}
       <div className=" py-8 lg:py-12  px-4 md:px-6 lg:px-12 xl:px-24">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 max-w-7xl mx-auto ">
           
           {/* Column 1: Brand Info */}
           <div className="space-y-6">

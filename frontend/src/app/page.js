@@ -1,5 +1,4 @@
 import React from 'react'
-import Navbar from './components/Navbar'
 import Banner from './components/Banner'
 import Gallary from './components/Gallary'
 import About from './components/About'
@@ -11,25 +10,28 @@ import KedarnathAuthorityHub from './components/Kedarnath'
 import Logo from './components/Logo'
 import CategoryDiscovery from './components/Categories'
 import Poster from './components/Poster'
-import Footer from './components/Footer'
+import Blogs from './components/Blogs'
 
 function page() {
   return (
     <div>
-      <Navbar/>
       <Banner/>
       <Packages/>
     
       <Logo/>
+      <Uttrakhand/>
+
   
       {/* <Places/> */}
-      <Uttrakhand/>
+
       <Gallary/>
-      {/* <CategoryDiscovery/> */}
       <Poster/>
+
+       <About/> 
+
+      {/* <CategoryDiscovery/> */}
       <TripTales/>
-      <Footer/>
-       {/* <About/>  */}
+      <Blogs/>
       {/* <KedarnathAuthorityHub/> */}
     </div>
   )
