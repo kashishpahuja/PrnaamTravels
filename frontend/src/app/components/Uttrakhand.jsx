@@ -19,97 +19,112 @@ const DESTINATIONS = [
 
 const AuthorityTrustSection = () => {
   return (
-    <section 
-      className="relative bg-cover bg-center bg-no-repeat bg-fixed min-h-screen flex items-center"
-      style={{ backgroundImage: "url('/sky.webp')" }}
-    >
-      {/* OVERLAY: Gradient for better text contrast across the whole background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-blue-900/40 via-slate-900/20 to-blue-900/50 z-10" />
+    <>
+      {/* --- FULL WIDTH VIDEO BANNER --- */}
+      {/* <div className="relative w-full h-[300px] md:h-[450px] lg:h-[540px] overflow-hidden">
+        <video
+          src="/helicopter.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/20" />
+      </div> */}
 
-      {/* Main Content Container */}
-      <div className="relative z-20 w-full py-12 lg:py-24 px-4 md:px-12 lg:px-20 overflow-hidden">
-        <div className="max-w-6xl mx-auto">
+      {/* --- CONTENT SECTION --- */}
+      <section 
+        className="relative bg-cover bg-center bg-no-repeat bg-fixed min-h-screen flex items-center"
+        style={{ backgroundImage: "url('/sky.webp')" }}
+      >
+        {/* OVERLAY: Gradient for better text contrast */}
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-900/60 via-slate-900/40 to-blue-900/70 z-10" />
 
-          {/* HEADER */}
-          <div className="text-center mb-8 lg:mb-14">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <span className="w-8 h-px bg-[#d8841a]" />
-              <span className="text-[#d8841a] text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] drop-shadow-sm">
-                Discover Uttarakhand by Air
-              </span>
-              <span className="w-8 h-px bg-[#d8841a]" />
-            </div>
-            <h3 className="text-2xl md:text-4xl font-serif italic text-white leading-tight drop-shadow-lg">
-              Experience Dev Bhoomi Effortlessly<br className="hidden md:block" /> with Prnaam Travels
-            </h3>
-            <p className="max-w-3xl mx-auto text-white/90 mt-4 text-sm md:text-base leading-relaxed drop-shadow-md font-medium">
-              Skip long journeys and reach sacred destinations in comfort with our exclusive helicopter packages.
-            </p>
-          </div>
+        {/* Main Content Container */}
+        <div className="relative z-20 w-full py-12 lg:py-24 px-4 md:px-12 lg:px-20 overflow-hidden">
+          <div className="max-w-6xl mx-auto">
 
-          {/* DESTINATION SWIPER */}
-          <div className="relative">
-            <Swiper
-              modules={[Navigation, Pagination]}
-              spaceBetween={16}
-              slidesPerView={1.2}
-              speed={800}
-              grabCursor={true}
-              centeredSlides={false}
-              pagination={{ 
-                clickable: true, 
-                dynamicBullets: true,
-              }}
-              breakpoints={{
-                640: { slidesPerView: 2, spaceBetween: 20 },
-                1024: { slidesPerView: 3, spaceBetween: 24 },
-              }}
-              className="pb-12"
-            >
-              {DESTINATIONS.map((place, idx) => (
-                <SwiperSlide key={idx} className="h-auto">
-                  <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl transition-all duration-500 flex flex-col h-full group">
-                    <div className="aspect-square rounded-t-2xl overflow-hidden">
-                      <img
-                        src={place.image}
-                        alt={place.title}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                    </div>
-                    <div className="py-5 px-4">
-                      <p className="text-slate-900 font-bold text-sm md:text-base tracking-tight mb-1">
-                        {place.title}
-                      </p>
-                      <p className="text-[#144487] font-bold text-sm">
-                        {place.price}
-                      </p>
-                    </div>
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-
-          {/* TRUST INDICATORS */}
-          <div className="flex flex-wrap justify-center gap-6 md:gap-10 lg:gap-12 border-t border-white/20 pt-10 mt-4">
-            {[
-              { icon: <ShieldCheck size={20} />, label: "Safe & Reliable" },
-              { icon: <MapPin size={20} />, label: "Local Expertise" },
-              { icon: <Users size={20} />, label: "Senior Friendly" },
-              { icon: <Award size={20} />, label: "Trusted Partner" }
-            ].map((item, i) => (
-              <div key={i} className="flex items-center gap-2 text-white">
-                <div className="text-[#d8841a] drop-shadow-md">{item.icon}</div>
-                <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest whitespace-nowrap drop-shadow-md">
-                  {item.label}
+            {/* HEADER */}
+            <div className="text-center mb-8 lg:mb-14">
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <span className="w-8 h-px bg-[#d8841a]" />
+                <span className="text-[#d8841a] text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] drop-shadow-sm">
+                  Discover Uttarakhand by Air
                 </span>
+                <span className="w-8 h-px bg-[#d8841a]" />
               </div>
-            ))}
-          </div>
+              <h3 className="text-2xl md:text-4xl font-serif italic text-white leading-tight drop-shadow-lg">
+                Experience Dev Bhoomi Effortlessly<br className="hidden md:block" /> with Prnaam Travels
+              </h3>
+              <p className="max-w-3xl mx-auto text-white/90 mt-4 text-sm md:text-base leading-relaxed drop-shadow-md font-medium">
+                Skip long journeys and reach sacred destinations in comfort with our exclusive helicopter packages.
+              </p>
+            </div>
 
+            {/* DESTINATION SWIPER */}
+            <div className="relative">
+              <Swiper
+                modules={[Navigation, Pagination]}
+                spaceBetween={16}
+                slidesPerView={1.2}
+                speed={800}
+                grabCursor={true}
+                pagination={{ 
+                  clickable: true, 
+                  dynamicBullets: true,
+                }}
+                breakpoints={{
+                  640: { slidesPerView: 2, spaceBetween: 20 },
+                  1024: { slidesPerView: 3, spaceBetween: 24 },
+                }}
+                className="pb-12"
+              >
+                {DESTINATIONS.map((place, idx) => (
+                  <SwiperSlide key={idx} className="h-auto">
+                    <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl transition-all duration-500 flex flex-col h-full group hover:-translate-y-2">
+                      <div className="aspect-square rounded-t-2xl overflow-hidden">
+                        <img
+                          src={place.image}
+                          alt={place.title}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
+                      <div className="py-5 px-4">
+                        <p className="text-slate-900 font-bold text-sm md:text-base tracking-tight mb-1">
+                          {place.title}
+                        </p>
+                        <p className="text-[#144487] font-bold text-sm">
+                          {place.price}
+                        </p>
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+
+            {/* TRUST INDICATORS */}
+            <div className="flex flex-wrap justify-center gap-6 md:gap-10 lg:gap-12 border-t border-white/20 pt-10 mt-4">
+              {[
+                { icon: <ShieldCheck size={20} />, label: "Safe & Reliable" },
+                { icon: <MapPin size={20} />, label: "Local Expertise" },
+                { icon: <Users size={20} />, label: "Senior Friendly" },
+                { icon: <Award size={20} />, label: "Trusted Partner" }
+              ].map((item, i) => (
+                <div key={i} className="flex items-center gap-2 text-white">
+                  <div className="text-[#d8841a] drop-shadow-md">{item.icon}</div>
+                  <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest whitespace-nowrap drop-shadow-md">
+                    {item.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
 

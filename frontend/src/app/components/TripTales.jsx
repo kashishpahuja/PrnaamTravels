@@ -148,7 +148,7 @@ const VideoSlide = ({ item }) => {
   );
 };
 
-export default function StyleEdit() {
+export default function TripTales() {
   return (
     <section className="py-8 lg:py-12 mx-4 md:mx-6 lg:mx-12 xl:mx-24">
       <div className="max-w-7xl mx-auto">

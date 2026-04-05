@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-export default function ClienteleSection() {
+export default function Logo() {
   const clients = [
     { name: "The Mad House", logo: "/logo/bs.png" },
     { name: "Born16", logo: "/logo/dailyhunt.png" },

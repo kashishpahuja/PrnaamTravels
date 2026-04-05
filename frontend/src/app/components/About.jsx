@@ -3,7 +3,7 @@ import React from 'react';
 import { MapPin, Plane, ShieldCheck, Headphones, Heart, Car } from 'lucide-react';
 import Image from 'next/image';
 
-const PrnaamTravelsTemplate = () => {
+const About = () => {
   const destinationImages = [
    "/puri.webp",
 "/uttrakhand.webp",   
@@ -172,4 +172,4 @@ const PrnaamTravelsTemplate = () => {
   );
 };
 
-export default PrnaamTravelsTemplate;
+export default About;

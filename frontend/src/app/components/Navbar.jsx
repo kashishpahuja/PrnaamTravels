@@ -106,7 +106,7 @@ function Navbar() {
           {/* DESKTOP NAVIGATION */}
           <div className='hidden xl:flex items-center gap-8'>
             <Link href="/" className="playpen600 text-black/90 hover:text-[#2D9344] transition-colors">Home</Link>
-            <Link href="#" className="playpen600 text-black/90 hover:text-[#2D9344] transition-colors">Our Journey</Link>
+            <Link href="about" className="playpen600 text-black/90 hover:text-[#2D9344] transition-colors">Our Journey</Link>
 
             <NavItemWithDropdown title="Destinations" items={destinations} activeDropdown={activeDropdown} setActiveDropdown={setActiveDropdown} dropdownKey="dest" activeSubMenu={activeSubMenu} setActiveSubMenu={setActiveSubMenu} />
             <NavItemWithDropdown title="Travel Packages" items={packages} activeDropdown={activeDropdown} setActiveDropdown={setActiveDropdown} dropdownKey="pkg" activeSubMenu={activeSubMenu} setActiveSubMenu={setActiveSubMenu} isWide />

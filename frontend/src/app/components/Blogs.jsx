@@ -40,7 +40,7 @@ const BLOG_POSTS = [
   }
 ];
 
-export default function TravelBlog() {
+export default function Blogs() {
   const featured = BLOG_POSTS[0];
   const sidePosts = BLOG_POSTS.slice(1, 4);
 

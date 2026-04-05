@@ -14,7 +14,7 @@ const YATRA_PACKAGES = [
   { title: "Valley of Flowers Trek", image: "/Images/category/family1.webp", href: "/family" },
 ];
 
-export default function YatraPackages() {
+export default function Gallary() {
   return (
     <section className="py-8 lg:py-12 px-4 md:px-6 lg:px-12 xl:px-24 overflow-hidden">
       <div className="max-w-7xl mx-auto">
