@@ -106,14 +106,13 @@ function Navbar() {
           {/* DESKTOP NAVIGATION */}
           <div className='hidden xl:flex items-center gap-8'>
             <Link href="/" className="playpen600 text-black/90 hover:text-[#2D9344] transition-colors">Home</Link>
-            <Link href="about" className="playpen600 text-black/90 hover:text-[#2D9344] transition-colors">Our Journey</Link>
+            <Link href="/about" className="playpen600 text-black/90 hover:text-[#2D9344] transition-colors">Our Journey</Link>
 
             <NavItemWithDropdown title="Destinations" items={destinations} activeDropdown={activeDropdown} setActiveDropdown={setActiveDropdown} dropdownKey="dest" activeSubMenu={activeSubMenu} setActiveSubMenu={setActiveSubMenu} />
             <NavItemWithDropdown title="Travel Packages" items={packages} activeDropdown={activeDropdown} setActiveDropdown={setActiveDropdown} dropdownKey="pkg" activeSubMenu={activeSubMenu} setActiveSubMenu={setActiveSubMenu} isWide />
 
-            <Link href="#" className="playpen600 text-black/90 hover:text-[#2D9344] transition-colors">Contact Us</Link>
+            <Link href="/contact" className="playpen600 text-black/90 hover:text-[#2D9344] transition-colors">Contact Us</Link>
           </div>
-
 
 
 
@@ -186,7 +185,7 @@ function Navbar() {
                     Home
                      {/* <FaChevronRight className="text-gray-300 text-xs" /> */}
                   </Link>
-                  <Link href="#" onClick={() => setIsOpen(false)} className="py-2  text-[15px] playpen600 text-black/90 border-b border-gray-50 flex items-center justify-between">
+                  <Link href="/about" onClick={() => setIsOpen(false)} className="py-2  text-[15px] playpen600 text-black/90 border-b border-gray-50 flex items-center justify-between">
                     Our Journey
                      {/* <FaChevronRight className="text-gray-300 text-xs" /> */}
                   </Link>
@@ -229,7 +228,7 @@ function Navbar() {
                     </div>
                   </MobileAccordionItem>
 
-                  <Link href="#" onClick={() => setIsOpen(false)} className="py-2  text-[15px] playpen600 text-black/90 border-b border-gray-50 flex items-center justify-between">
+                  <Link href="/contact" onClick={() => setIsOpen(false)} className="py-2  text-[15px] playpen600 text-black/90 border-b border-gray-50 flex items-center justify-between">
                     Contact Us 
                     {/* <FaChevronRight className="text-gray-300 text-xs" /> */}
                   </Link>

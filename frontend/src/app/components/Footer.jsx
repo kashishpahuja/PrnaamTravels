@@ -42,10 +42,10 @@ const Footer = () => {
     ],
     company: [
       { name: "About Us", href: "/about" },
-      { name: "Our Journey", href: "/journey" },
-      { name: "Terms & Conditions", href: "/terms" },
-      { name: "Privacy Policy", href: "/privacy" },
-      { name: "Cancellation Policy", href: "/cancellation" },
+      // { name: "Our Journey", href: "/journey" },
+      { name: "Terms & Conditions", href: "/terms-and-conditions" },
+      { name: "Privacy Policy", href: "/privacy-policy" },
+      { name: "Cancellation Policy", href: "/cancellation-policy" },
     ],
     support: [
       { name: "Contact Us", href: "/contact" },
