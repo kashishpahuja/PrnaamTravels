@@ -10,6 +10,7 @@ import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import Image from "next/image";
 
 const DESTINATIONS = [
   { price: "Starting 85,000/-", title: "Kedarnath Helicopter Yatra", image: "/Images/packages/kedarnath.webp" },
@@ -84,7 +85,8 @@ const AuthorityTrustSection = () => {
                   <SwiperSlide key={idx} className="h-auto">
                     <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl transition-all duration-500 flex flex-col h-full group hover:-translate-y-2">
                       <div className="aspect-square rounded-t-2xl overflow-hidden">
-                        <img
+                        <Image
+                        width={440} height={440}
                           src={place.image}
                           alt={place.title}
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"

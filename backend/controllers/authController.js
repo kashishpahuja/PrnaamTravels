@@ -1,19 +1,32 @@
-import Admin from "../models/Admin.js";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+// backend/controllers/authController.js
+const User = require('../models/User');
+const jwt = require('jsonwebtoken');
+const { sendOTP } = require('../utils/email');
 
-export const loginAdmin = async (req, res) => {
-  const { email, password } = req.body;
+exports.requestOTP = async (req, res) => {
+  const { email } = req.body;
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  const otpExpires = Date.now() + 10 * 60 * 1000; // 10 mins
 
-  const admin = await Admin.findOne({ email });
-  if (!admin) return res.status(404).json("Admin not found");
+  let user = await User.findOne({ email });
+  if (!user) return res.status(404).json({ message: "Admin not found" });
 
-  const isMatch = await bcrypt.compare(password, admin.password);
-  if (!isMatch) return res.status(400).json("Wrong password");
+  user.otp = otp;
+  user.otpExpires = otpExpires;
+  await user.save();
 
-  const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, {
-    expiresIn: "7d",
-  });
+  await sendOTP(email, otp);
+  res.json({ message: "OTP sent to email" });
+};
 
-  res.json({ token });
+exports.verifyOTP = async (req, res) => {
+  const { email, otp } = req.body;
+  const user = await User.findOne({ email, otp, otpExpires: { $gt: Date.now() } });
+
+  if (!user) return res.status(400).json({ message: "Invalid or expired OTP" });
+
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+  
+  res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+  res.json({ message: "Login successful", admin: { name: user.name, email: user.email } });
 };

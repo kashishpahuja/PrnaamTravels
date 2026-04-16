@@ -1,9 +1,9 @@
-import Sidebar from '@/app/components/admin/Sidebar'
-import Topbar from '@/app/components/admin/Topbar'
+import Sidebar from '@/app/components/Sidebar'
+import Topbar from '@/app/components/Topbar'
 import React from 'react'
 
 // You can import your Dashboard home component here
-// import DashboardHome from '@/app/components/admin/DashboardHome'
+// import DashboardHome from '@/app/components/DashboardHome'
 
 function page() {
   return (
