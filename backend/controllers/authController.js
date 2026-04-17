@@ -1,32 +1,75 @@
-// backend/controllers/authController.js
-const User = require('../models/User');
+const Admin = require('../models/Admin');
 const jwt = require('jsonwebtoken');
-const { sendOTP } = require('../utils/email');
+const sendOTP = require('../utils/sendEmail');
 
 exports.requestOTP = async (req, res) => {
-  const { email } = req.body;
-  const otp = Math.floor(100000 + Math.random() * 900000).toString();
-  const otpExpires = Date.now() + 10 * 60 * 1000; // 10 mins
+  try {
+    const { email } = req.body;
+    // 1. Check if the email exists in the Admin collection
+    let admin = await Admin.findOne({ email: email.toLowerCase() });
+    
+    if (!admin) {
+      return res.status(401).json({ message: "Access Denied: Not a registered Admin." });
+    }
 
-  let user = await User.findOne({ email });
-  if (!user) return res.status(404).json({ message: "Admin not found" });
+    // 2. Generate OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    admin.otp = otp;
+    admin.otpExpires = Date.now() + 10 * 60 * 1000; // 10 mins
+    await admin.save();
 
-  user.otp = otp;
-  user.otpExpires = otpExpires;
-  await user.save();
-
-  await sendOTP(email, otp);
-  res.json({ message: "OTP sent to email" });
+    // 3. Send Email
+    await sendOTP(email, otp);
+    
+    res.json({ success: true, message: "OTP sent to email" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error while sending OTP" });
+  }
 };
 
 exports.verifyOTP = async (req, res) => {
-  const { email, otp } = req.body;
-  const user = await User.findOne({ email, otp, otpExpires: { $gt: Date.now() } });
+  try {
+    const { email, otp } = req.body;
+    const admin = await Admin.findOne({ 
+      email: email.toLowerCase(), 
+      otp, 
+      otpExpires: { $gt: Date.now() } 
+    });
 
-  if (!user) return res.status(400).json({ message: "Invalid or expired OTP" });
+    if (!admin) {
+      return res.status(400).json({ message: "Invalid or expired OTP" });
+    }
 
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
-  
-  res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
-  res.json({ message: "Login successful", admin: { name: user.name, email: user.email } });
+    // Clear OTP
+    admin.otp = undefined;
+    admin.otpExpires = undefined;
+    await admin.save();
+
+    // Create 24-hour Token
+    const token = jwt.sign({ id: admin._id, role: admin.role }, process.env.JWT_SECRET, { expiresIn: '24h' });
+    
+    // Set HTTP-Only Cookie
+    res.cookie('token', token, { 
+      httpOnly: true, 
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+      sameSite: 'lax',
+      path: '/',
+    });
+
+    res.json({ success: true, admin: { name: admin.name, email: admin.email } });
+  } catch (error) {
+    res.status(500).json({ message: "Server error during verification" });
+  }
+};
+
+// Add this for your layout's checkAuth function
+exports.getMe = async (req, res) => {
+    try {
+        const admin = await Admin.findById(req.user.id).select('-otp -otpExpires');
+        res.json({ user: admin });
+    } catch (error) {
+        res.status(500).json({ message: "Server error" });
+    }
 };
