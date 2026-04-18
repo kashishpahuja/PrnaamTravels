@@ -1,9 +1,8 @@
 'use client';
 import React, { useState } from 'react';
 import { 
-  ArrowLeft, UploadCloud, Plus, Trash2, Save, 
-  MapPin, Plane, Train, Hotel, Bed, 
-  ImageIcon
+  ArrowLeft, UploadCloud, Plus, Trash2, 
+  ImageIcon, MapPin, Plane, Train 
 } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
@@ -12,15 +11,15 @@ export default function AddDestinationPage() {
   // --- STATE MANAGEMENT ---
   const [destData, setDestData] = useState({
     name: '', slug: '', introHeading: '', introDescription: '',
-    placesToVisit: [{ id: Date.now(), heading: '', description: '', quickInfo: '' }],
+    placesToVisit: [{ id: Date.now(), heading: '', description: '', quickInfo: '', image: null }],
     gettingThere: [{ id: Date.now(), mode: 'Airport', detail: '' }],
     nearbyAttractions: [{ id: Date.now(), name: '', distance: '' }],
     locationMap: ''
   });
 
   const [hotels, setHotels] = useState([{
-    id: Date.now(), name: '', rating: 5, pricePerNight: '', about: '', facilities: '',
-    rooms: [{ id: Date.now(), type: 'Deluxe Double Room', bedType: 'Double Bed', capacity: '3', description: '' }]
+    id: Date.now(), name: '', rating: 5, pricePerNight: '', about: '', facilities: '', images: [],
+    rooms: [{ id: Date.now(), type: '', bedType: '', capacity: '', description: '', image: null }]
   }]);
 
   // --- HANDLERS ---
@@ -34,10 +33,17 @@ export default function AddDestinationPage() {
     }
   };
 
-  const addPlace = () => setDestData({ ...destData, placesToVisit: [...destData.placesToVisit, { id: Date.now(), heading: '', description: '', quickInfo: '' }] });
-  const addHotel = () => setHotels([...hotels, { id: Date.now(), name: '', rating: 5, pricePerNight: '', about: '', facilities: '', rooms: [] }]);
+  const addPlace = () => setDestData({ ...destData, placesToVisit: [...destData.placesToVisit, { id: Date.now(), heading: '', description: '', quickInfo: '', image: null }] });
+  const removePlace = (id) => setDestData({ ...destData, placesToVisit: destData.placesToVisit.filter(p => p.id !== id) });
+
+  const addHotel = () => setHotels([...hotels, { id: Date.now(), name: '', rating: 5, pricePerNight: '', about: '', facilities: '', images: [], rooms: [] }]);
+  const removeHotel = (id) => setHotels(hotels.filter(h => h.id !== id));
+  
   const addRoom = (hotelId) => {
-    setHotels(hotels.map(h => h.id === hotelId ? { ...h, rooms: [...h.rooms, { id: Date.now(), type: '', bedType: '', capacity: '', description: '' }] } : h));
+    setHotels(hotels.map(h => h.id === hotelId ? { ...h, rooms: [...h.rooms, { id: Date.now(), type: '', bedType: '', capacity: '', description: '', image: null }] } : h));
+  };
+  const removeRoom = (hotelId, roomId) => {
+    setHotels(hotels.map(h => h.id === hotelId ? { ...h, rooms: h.rooms.filter(r => r.id !== roomId) } : h));
   };
 
   const handleSave = () => {
@@ -47,10 +53,10 @@ export default function AddDestinationPage() {
   };
 
   return (
-    <div className="w-full min-h-screen pb-24 text-slate-800 font-sans">
+    <div className="w-full bg-[#f8f9fa] min-h-screen pb-24 text-slate-800 font-sans">
       
       {/* --- HEADER --- */}
-      <div className="px-8 py-5 flex items-center justify-between border-b border-slate-200 sticky top-0 z-40">
+      <div className="bg-white px-8 py-5 flex items-center justify-between border-b border-slate-200 sticky top-0 z-40">
         <div className="flex items-center gap-4">
           <Link href="/destinations" className="p-2 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors">
             <ArrowLeft size={18} className="text-slate-600" />
@@ -84,25 +90,36 @@ export default function AddDestinationPage() {
                   <input type="text" name="introHeading" value={destData.introHeading} onChange={handleDestChange} placeholder="Gateway to the Gods" className="w-full p-3 border border-slate-200 rounded-lg focus:outline-none focus:border-blue-500 text-sm" />
                 </div>
                 <div>
-                  <div className="flex justify-between items-center mb-1.5">
-                    <label className="block text-xs font-medium text-slate-500">Editorial Description</label>
-                  </div>
+                  <label className="block text-xs font-medium text-slate-500 mb-1.5">Editorial Description</label>
                   <textarea name="introDescription" value={destData.introDescription} onChange={handleDestChange} rows={4} className="w-full p-3 border border-slate-200 rounded-lg focus:outline-none focus:border-blue-500 text-sm resize-none" placeholder="Write a compelling introduction..." />
                 </div>
               </div>
             </div>
 
-            {/* 2. Places to Visit */}
+            {/* 2. Places to Visit (Multiple with specific image upload) */}
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
               <div className="flex justify-between items-center mb-5">
                 <h2 className="text-sm font-bold text-[#1a2b49] uppercase tracking-wide">Places to Visit</h2>
               </div>
               <div className="space-y-6">
                 {destData.placesToVisit.map((place, i) => (
-                  <div key={place.id} className="p-5 border border-slate-100 bg-slate-50/50 rounded-xl space-y-4">
-                    <input type="text" placeholder="Place Heading (e.g. Har Ki Pauri)" className="w-full p-3 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
-                    <textarea placeholder="Description..." rows={3} className="w-full p-3 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500 resize-none" />
-                    <input type="text" placeholder="Bullet Points (Comma separated, e.g. 2 Days, Entry Free)" className="w-full p-3 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+                  <div key={place.id} className="p-5 border border-slate-100 bg-slate-50/50 rounded-xl relative group">
+                    <button onClick={() => removePlace(place.id)} className="absolute top-4 right-4 text-slate-400 hover:text-red-500 hidden group-hover:block transition-colors"><Trash2 size={16}/></button>
+                    
+                    <div className="flex flex-col md:flex-row gap-5">
+                      {/* Place-specific Image Uploader */}
+                      <div className="w-full md:w-40 h-32 border-2 border-dashed border-slate-300 bg-white rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors flex-shrink-0">
+                        <UploadCloud className="text-slate-400 mb-2" size={20} />
+                        <span className="text-[10px] text-slate-500 font-medium">Place Photo</span>
+                      </div>
+                      
+                      {/* Place Details */}
+                      <div className="flex-1 space-y-3">
+                        <input type="text" placeholder="Place Heading (e.g. Har Ki Pauri)" className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+                        <textarea placeholder="Description..." rows={2} className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500 resize-none" />
+                        <input type="text" placeholder="Bullet Points (e.g. 2 Days, Entry Free)" className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+                      </div>
+                    </div>
                   </div>
                 ))}
                 <button onClick={addPlace} className="text-sm font-semibold text-blue-600 flex items-center gap-1 hover:underline">
@@ -111,7 +128,7 @@ export default function AddDestinationPage() {
               </div>
             </div>
 
-            {/* 3. Hotels & Rooms */}
+            {/* 3. Hotels & Rooms (Multiple with specific image uploads) */}
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
               <div className="flex justify-between items-center mb-5">
                 <h2 className="text-sm font-bold text-[#1a2b49] uppercase tracking-wide">Linked Hotels</h2>
@@ -119,20 +136,36 @@ export default function AddDestinationPage() {
               
               <div className="space-y-8">
                 {hotels.map((hotel, hIdx) => (
-                  <div key={hotel.id} className="p-5 border border-slate-200 rounded-xl space-y-5">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-xs font-medium text-slate-500 mb-1">Hotel Name</label>
-                        <input type="text" placeholder="e.g. Ganga Lahari" className="w-full p-3 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+                  <div key={hotel.id} className="p-5 border border-slate-200 rounded-xl space-y-5 relative group">
+                    <button onClick={() => removeHotel(hotel.id)} className="absolute top-4 right-4 text-slate-400 hover:text-red-500 hidden group-hover:block transition-colors"><Trash2 size={16}/></button>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                      {/* Hotel Multi-Image Uploader */}
+                      <div className="col-span-1">
+                        <label className="block text-xs font-medium text-slate-500 mb-1">Hotel Images</label>
+                        <div className="h-32 border-2 border-dashed border-slate-300 bg-slate-50 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors">
+                          <UploadCloud className="text-slate-400 mb-2" size={24} />
+                          <p className="text-[10px] text-slate-500 text-center px-2">Upload multiple gallery photos</p>
+                        </div>
                       </div>
-                      <div>
-                        <label className="block text-xs font-medium text-slate-500 mb-1">Price Per Night</label>
-                        <input type="text" placeholder="e.g. ₹5,000" className="w-full p-3 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+                      
+                      {/* Hotel Info */}
+                      <div className="col-span-2 space-y-3">
+                        <div className="grid grid-cols-2 gap-3">
+                          <div>
+                            <label className="block text-xs font-medium text-slate-500 mb-1">Hotel Name</label>
+                            <input type="text" placeholder="e.g. Ganga Lahari" className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-medium text-slate-500 mb-1">Price Per Night</label>
+                            <input type="text" placeholder="e.g. ₹5,000" className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+                          </div>
+                        </div>
+                        <div>
+                          <label className="block text-xs font-medium text-slate-500 mb-1">About Hotel</label>
+                          <textarea rows={3} placeholder="Brief description..." className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500 resize-none" />
+                        </div>
                       </div>
-                    </div>
-                    <div>
-                      <label className="block text-xs font-medium text-slate-500 mb-1">About Hotel</label>
-                      <textarea rows={2} placeholder="Brief description..." className="w-full p-3 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500 resize-none" />
                     </div>
                     
                     {/* Nested Rooms */}
@@ -142,13 +175,26 @@ export default function AddDestinationPage() {
                       </h3>
                       <div className="space-y-4">
                         {hotel.rooms.map((room, rIdx) => (
-                          <div key={room.id} className="grid grid-cols-1 md:grid-cols-3 gap-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
-                             <div className="col-span-1 space-y-3">
-                               <input type="text" placeholder="Type (e.g. Suite)" className="w-full p-2 border border-slate-200 rounded text-xs outline-none" />
-                               <input type="text" placeholder="Bed (e.g. Double)" className="w-full p-2 border border-slate-200 rounded text-xs outline-none" />
+                          <div key={room.id} className="flex flex-col md:flex-row gap-4 p-4 bg-slate-50 rounded-lg border border-slate-100 relative group/room">
+                             <button onClick={() => removeRoom(hotel.id, room.id)} className="absolute top-2 right-2 text-slate-400 hover:text-red-500 hidden group-hover/room:block transition-colors"><Trash2 size={14}/></button>
+                             
+                             {/* Room Specific Image */}
+                             <div className="w-full md:w-24 h-24 border-2 border-dashed border-slate-300 bg-white rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 transition-colors flex-shrink-0">
+                                <ImageIcon size={16} className="text-slate-400 mb-1" />
+                                <span className="text-[8px] text-slate-500">Room Photo</span>
                              </div>
-                             <div className="col-span-2">
-                               <textarea placeholder="Room Description..." rows={3} className="w-full p-2 border border-slate-200 rounded text-xs outline-none resize-none h-full" />
+
+                             <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-3">
+                               <div className="space-y-3">
+                                 <input type="text" placeholder="Room Type (e.g. Suite)" className="w-full p-2 border border-slate-200 rounded text-xs outline-none focus:border-blue-500" />
+                                 <div className="flex gap-2">
+                                   <input type="text" placeholder="Bed (e.g. Double)" className="w-1/2 p-2 border border-slate-200 rounded text-xs outline-none focus:border-blue-500" />
+                                   <input type="text" placeholder="Capacity (e.g. 3)" className="w-1/2 p-2 border border-slate-200 rounded text-xs outline-none focus:border-blue-500" />
+                                 </div>
+                               </div>
+                               <div>
+                                 <textarea placeholder="Room Description..." rows={3} className="w-full p-2 border border-slate-200 rounded text-xs outline-none resize-none h-full focus:border-blue-500" />
+                               </div>
                              </div>
                           </div>
                         ))}
@@ -175,7 +221,7 @@ export default function AddDestinationPage() {
               
               <div className="grid grid-cols-3 gap-3">
                 {/* Main Large Image Slot */}
-                <div className="col-span-1 bg-slate-100 rounded-lg h-32 flex items-center justify-center overflow-hidden">
+                <div className="col-span-1 bg-slate-100 rounded-lg h-32 flex items-center justify-center overflow-hidden border border-slate-200">
                    <div className="text-center p-2">
                      <ImageIcon className="mx-auto text-slate-400 mb-1" size={20} />
                      <p className="text-[9px] text-slate-500 font-medium">Banner</p>
@@ -207,20 +253,22 @@ export default function AddDestinationPage() {
               <div className="space-y-5">
                 <div>
                   <label className="block text-xs font-medium text-slate-500 mb-1.5">Getting There</label>
-                  <div className="flex gap-2">
-                    <select className="w-1/3 p-3 border border-slate-200 rounded-lg text-sm outline-none">
+                  <div className="flex gap-2 mb-2">
+                    <select className="w-1/3 p-3 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500">
                       <option>Airport</option>
                       <option>Train</option>
                     </select>
-                    <input type="text" placeholder="Detail (e.g. 34km)" className="w-2/3 p-3 border border-slate-200 rounded-lg text-sm outline-none" />
+                    <input type="text" placeholder="Detail (e.g. 34km)" className="w-2/3 p-3 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
                   </div>
+                  <button className="text-[10px] font-semibold text-blue-600 hover:underline">+ Add Another Option</button>
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-slate-500 mb-1.5">Nearby Attractions</label>
-                  <div className="flex gap-2">
-                    <input type="text" placeholder="Name" className="w-2/3 p-3 border border-slate-200 rounded-lg text-sm outline-none" />
-                    <input type="text" placeholder="KM" className="w-1/3 p-3 border border-slate-200 rounded-lg text-sm outline-none" />
+                  <div className="flex gap-2 mb-2">
+                    <input type="text" placeholder="Name" className="w-2/3 p-3 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+                    <input type="text" placeholder="KM" className="w-1/3 p-3 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
                   </div>
+                  <button className="text-[10px] font-semibold text-blue-600 hover:underline">+ Add Attraction</button>
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-slate-500 mb-1.5">Google Maps Iframe</label>
@@ -229,9 +277,9 @@ export default function AddDestinationPage() {
               </div>
             </div>
 
-            {/* 3. Action Buttons (Matches Reference) */}
+            {/* 3. Action Buttons */}
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-3">
-               <button onClick={handleSave} className="w-full py-3 bg-[#1a2b49] text-white rounded-lg text-sm font-semibold hover:bg-blue-900 transition-colors">
+               <button onClick={handleSave} className="w-full py-3 bg-[#1a2b49] text-white rounded-lg text-sm font-semibold hover:bg-[#111c33] transition-colors">
                  Add Destination
                </button>
                <button className="w-full py-3 bg-white border border-slate-200 text-slate-700 rounded-lg text-sm font-semibold hover:bg-slate-50 transition-colors">
