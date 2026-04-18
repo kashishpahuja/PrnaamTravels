@@ -15,11 +15,10 @@ const navItems = [
   { name: 'Pages', href: '/webpages', icon: LayoutDashboard },
   { name: 'Users', href: '/users', icon: Users },
 ]
-
+ 
 export default function Sidebar({ collapsed, setCollapsed }) {
   const pathname = usePathname()
   const [showLogoutModal, setShowLogoutModal] = useState(false)
-
   const handleLogout = async () => {
     try {
       // 1. Call Backend to clear cookie

@@ -84,12 +84,12 @@ export default function AdminLayout({ children }) {
 
           {/* Main Dashboard Area */}
           <main 
-            className={`flex-1 transition-all duration-300 min-h-screen overflow-y-auto ${
+            className={`flex-1 transition-all duration-300 h-screen overflow-y-auto ${
               collapsed ? "ml-20" : "ml-64"
             }`}
           >
             {/* The Rounded Content Container */}
-            <div className="m-4 bg-white rounded-[2.5rem] shadow-sm border border-gray-100 min-h-[calc(100vh-2rem)] relative">
+            <div className="min-h-[calc(100vh-2rem)] relative">
               <div className="p-8 lg:p-10">
                 {children}
               </div>

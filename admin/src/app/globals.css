@@ -2,6 +2,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 @import "tailwindcss";
 
+@layer components {
+  .admin-input {
+    @apply w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl outline-none 
+           focus:ring-2 focus:ring-[#144487]/10 focus:bg-white transition-all text-sm text-slate-700;
+  }
+  .section-card {
+    @apply bg-white p-6 md:p-10 rounded-[2.5rem] border border-slate-100 shadow-sm transition-all;
+  }
+
+}
+
 body {
   font-family: 'Inter', sans-serif;
   background: linear-gradient(110deg, #a9c0a26b 0%, #97e5f123 10%);;
@@ -44,3 +55,4 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(20, 68, 135, 0.2);
 }
+
