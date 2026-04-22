@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { 
-  Plus, Search, Edit, Trash2, Eye, MapPin, AlertCircle
+  Plus, Search, Edit, Trash2, Eye, MapPin, ArrowUpRight
 } from 'lucide-react';
 import { toast } from 'react-toastify';
 
@@ -37,11 +37,11 @@ export default function DestinationsPage() {
   }, []);
 
   // --- DELETE HANDLER ---
-  const handleDelete = async (id, name) => {
+  const handleDelete = async (e, id, name) => {
+    e.preventDefault(); // Prevent navigating to the destination page
     if (!window.confirm(`Are you sure you want to delete ${name}? This will also delete linked hotels.`)) return;
 
     try {
-      // NOTE: You will need to add this DELETE route to your backend
       const res = await fetch(`${apiUrl}/user/destinations/${id}`, {
         method: 'DELETE',
       });
@@ -116,63 +116,60 @@ export default function DestinationsPage() {
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
             {filteredDestinations.map((dest) => (
-              <div key={dest._id} className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow group flex flex-col">
-                
-                {/* Image Area */}
-                <div className="h-48 bg-slate-100 relative overflow-hidden">
+              <div 
+                key={dest._id} 
+                className="group relative overflow-hidden rounded-2xl h-[300px] shadow-sm hover:shadow-xl transition-all duration-500"
+              >
+                {/* View Link wraps the background and text overlay */}
+                <Link href={`/destinations/${dest.slug}`} className="absolute inset-0 z-0">
+                  
+                  {/* Background Image */}
                   {dest.bannerImage ? (
                     <img 
                       src={`${apiUrl}${dest.bannerImage}`} 
                       alt={dest.name} 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      onError={(e) => { e.target.src = 'https://via.placeholder.com/400x200?text=No+Image' }}
+                      className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                      onError={(e) => { e.target.src = 'https://via.placeholder.com/400x300?text=No+Image' }}
                     />
                   ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
-                      <MapPin size={24} className="mb-2 opacity-50" />
-                      <span className="text-xs">No Banner</span>
+                    <div className="absolute inset-0 bg-slate-200 flex flex-col items-center justify-center text-slate-400">
+                      <MapPin size={32} className="mb-2 opacity-40" />
+                      <span className="text-sm font-medium">No Image</span>
                     </div>
                   )}
-                  
-                  {/* Actions Overlay (Desktop) */}
-                  <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                    <Link href={`/destinations/${dest.slug}`} className="p-2 bg-white/90 backdrop-blur-sm text-slate-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors shadow-sm" title="View">
-                      <Eye size={16} />
-                    </Link>
-                    <Link href={`/destinations/edit/${dest.slug}`} className="p-2 bg-white/90 backdrop-blur-sm text-slate-700 rounded-lg hover:bg-amber-50 hover:text-amber-600 transition-colors shadow-sm" title="Edit">
-                      <Edit size={16} />
-                    </Link>
-                    <button onClick={() => handleDelete(dest._id, dest.name)} className="p-2 bg-white/90 backdrop-blur-sm text-slate-700 rounded-lg hover:bg-red-50 hover:text-red-600 transition-colors shadow-sm" title="Delete">
-                      <Trash2 size={16} />
-                    </button>
-                  </div>
-                </div>
 
-                {/* Content Area */}
-                <div className="p-5 flex-1 flex flex-col">
-                  <div className="flex justify-between items-start mb-2">
-                    <h2 className="text-lg font-bold text-[#1a2b49] truncate pr-2">{dest.name}</h2>
-                    <span className="text-[10px] font-mono bg-slate-100 text-slate-500 px-2 py-1 rounded">/{dest.slug}</span>
+                  {/* Text Overlay (Bottom) */}
+                  <div className="relative z-10 flex flex-col justify-end h-full text-white">
+                    <div className='bg-gradient-to-r from-black/70 via-black/30 to-transparent px-6 py-4'>
+                      <h3 className="italic text-xl font-medium mb-1 drop-shadow-md truncate">
+                        {dest.name}
+                      </h3>
+                      <div className="flex items-center gap-2 text-xs font-semibold tracking-wider opacity-90 drop-shadow-md">
+                        Explore
+                        <ArrowUpRight size={14} />
+                      </div>
+                    </div>
                   </div>
-                  
-                  <p className="text-sm text-slate-500 line-clamp-2 mb-4 flex-1">
-                    {dest.introHeading || "No intro heading provided."}
-                  </p>
+                </Link>
 
-                  {/* Mobile Actions (Visible on small screens) */}
-                  <div className="pt-4 border-t border-slate-100 flex justify-between gap-2 md:hidden">
-                    <Link href={`/destinations/${dest.slug}`} className="flex-1 py-2 flex justify-center items-center gap-1 bg-slate-50 text-slate-600 rounded-lg text-xs font-medium">
-                      <Eye size={14} /> View
-                    </Link>
-                    <Link href={`/destinations/edit/${dest.slug}`} className="flex-1 py-2 flex justify-center items-center gap-1 bg-amber-50 text-amber-600 rounded-lg text-xs font-medium">
-                      <Edit size={14} /> Edit
-                    </Link>
-                    <button onClick={() => handleDelete(dest._id, dest.name)} className="flex-1 py-2 flex justify-center items-center gap-1 bg-red-50 text-red-600 rounded-lg text-xs font-medium">
-                      <Trash2 size={14} /> Delete
-                    </button>
-                  </div>
+                {/* Management Actions (Top Right) */}
+                <div className="absolute top-3 right-3 flex flex-col gap-2 z-20 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-200">
+                  <Link 
+                    href={`/destinations/edit/${dest.slug}`} 
+                    className="p-2.5 bg-white/90 backdrop-blur-sm text-slate-700 rounded-lg hover:bg-amber-50 hover:text-amber-600 transition-colors shadow-lg" 
+                    title="Edit"
+                  >
+                    <Edit size={16} />
+                  </Link>
+                  <button 
+                    onClick={(e) => handleDelete(e, dest._id, dest.name)} 
+                    className="p-2.5 bg-white/90 backdrop-blur-sm text-slate-700 rounded-lg hover:bg-red-50 hover:text-red-600 transition-colors shadow-lg" 
+                    title="Delete"
+                  >
+                    <Trash2 size={16} />
+                  </button>
                 </div>
 
               </div>

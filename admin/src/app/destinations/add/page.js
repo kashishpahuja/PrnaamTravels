@@ -8,16 +8,17 @@ import Link from 'next/link';
 import { toast } from 'react-toastify';
 
 // Helper functions to generate clean initial state with fresh IDs
+// Note: descriptions and bullet points are now initialized as arrays ['']
 const getInitialDestData = () => ({
   name: '', slug: '', introHeading: '', introDescription: '', locationMap: '',
-  placesToVisit: [{ id: Date.now(), heading: '', description: '', quickInfo: '', imageFiles: [] }],
+  placesToVisit: [{ id: Date.now(), heading: '', description: [''], quickInfo: [''], imageFiles: [] }],
   gettingThere: [{ id: Date.now() + 1, mode: 'Airport', detail: '' }],
   nearbyAttractions: [{ id: Date.now() + 2, name: '', distance: '' }]
 });
 
 const getInitialHotels = () => [{
-  id: Date.now() + 3, name: '', rating: 5, pricePerNight: '', about: '', imageFiles: [],
-  rooms: [{ id: Date.now() + 4, type: '', bedType: '', capacity: '', description: '', imageFiles: [] }]
+  id: Date.now() + 3, name: '', rating: 5, pricePerNight: '', about: [''], facilities: [''], imageFiles: [],
+  rooms: [{ id: Date.now() + 4, type: '', bedType: '', capacity: '', description: [''], amenities: [''], imageFiles: [] }]
 }];
 
 export default function AddDestinationPage() {
@@ -45,14 +46,14 @@ export default function AddDestinationPage() {
     }));
   };
 
-  const addPlace = () => setDestData({ ...destData, placesToVisit: [...destData.placesToVisit, { id: Date.now(), heading: '', description: '', quickInfo: '', imageFiles: [] }] });
+  const addPlace = () => setDestData({ ...destData, placesToVisit: [...destData.placesToVisit, { id: Date.now(), heading: '', description: [''], quickInfo: [''], imageFiles: [] }] });
   const removePlace = (id) => setDestData({ ...destData, placesToVisit: destData.placesToVisit.filter(p => p.id !== id) });
 
   const addGettingThere = () => setDestData({ ...destData, gettingThere: [...destData.gettingThere, { id: Date.now(), mode: 'Airport', detail: '' }] });
   const addAttraction = () => setDestData({ ...destData, nearbyAttractions: [...destData.nearbyAttractions, { id: Date.now(), name: '', distance: '' }] });
 
   // --- HANDLERS: HOTELS & ROOMS ---
-  const addHotel = () => setHotels([...hotels, { id: Date.now(), name: '', rating: 5, pricePerNight: '', about: '', imageFiles: [], rooms: [] }]);
+  const addHotel = () => setHotels([...hotels, { id: Date.now(), name: '', rating: 5, pricePerNight: '', about: [''], facilities: [''], imageFiles: [], rooms: [] }]);
   const removeHotel = (id) => setHotels(hotels.filter(h => h.id !== id));
   
   const updateHotel = (id, field, value) => {
@@ -60,7 +61,7 @@ export default function AddDestinationPage() {
   };
 
   const addRoom = (hotelId) => {
-    setHotels(hotels.map(h => h.id === hotelId ? { ...h, rooms: [...h.rooms, { id: Date.now(), type: '', bedType: '', capacity: '', description: '', imageFiles: [] }] } : h));
+    setHotels(hotels.map(h => h.id === hotelId ? { ...h, rooms: [...h.rooms, { id: Date.now(), type: '', bedType: '', capacity: '', description: [''], amenities: [''], imageFiles: [] }] } : h));
   };
   const removeRoom = (hotelId, roomId) => {
     setHotels(hotels.map(h => h.id === hotelId ? { ...h, rooms: h.rooms.filter(r => r.id !== roomId) } : h));
@@ -76,21 +77,16 @@ export default function AddDestinationPage() {
     if (!destData.name) return toast.error("Destination name is required");
 
     const formData = new FormData();
-
-    // 1. Append JSON data
     formData.append('data', JSON.stringify({ destData, hotels }));
 
-    // 2. Append Banner Image
     if (bannerFile) formData.append('bannerImage', bannerFile);
 
-    // 3. Append Place Images (Now supports multiple)
     destData.placesToVisit.forEach((place, index) => {
       if (place.imageFiles) {
         Array.from(place.imageFiles).forEach(file => formData.append(`placeImage_${index}`, file));
       }
     });
 
-    // 4. Append Hotel & Room Images
     hotels.forEach((hotel, hIdx) => {
       if (hotel.imageFiles) {
         Array.from(hotel.imageFiles).forEach(file => formData.append(`hotel_${hIdx}_images`, file));
@@ -111,7 +107,6 @@ export default function AddDestinationPage() {
 
       if (data.success) {
         toast.success("Destination Saved Successfully!");
-        // Clear the form on success
         setDestData(getInitialDestData());
         setHotels(getInitialHotels());
         setBannerFile(null);
@@ -173,9 +168,9 @@ export default function AddDestinationPage() {
                   <div key={place.id} className="p-5 border border-slate-100 bg-slate-50/50 rounded-xl relative group">
                     <button onClick={() => removePlace(place.id)} className="absolute top-4 right-4 text-slate-400 hover:text-red-500 hidden group-hover:block transition-colors"><Trash2 size={16}/></button>
                     
-                    <div className="flex flex-col md:flex-row gap-5">
-                      {/* Multi-Image Uploader for Places */}
-                      <div className="relative w-full md:w-40 h-32 border-2 border-dashed border-slate-300 bg-white rounded-lg flex flex-col items-center justify-center hover:border-blue-500 transition-colors flex-shrink-0 overflow-hidden">
+                    <div className="flex flex-col lg:flex-row gap-5">
+                      {/* Place Images */}
+                      <div className="relative w-full lg:w-40 h-32 border-2 border-dashed border-slate-300 bg-white rounded-lg flex flex-col items-center justify-center hover:border-blue-500 transition-colors flex-shrink-0 overflow-hidden">
                         <input type="file" multiple onChange={(e) => updateArrayItem('placesToVisit', place.id, 'imageFiles', e.target.files)} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
                         {place.imageFiles?.length > 0 ? (
                            <><CheckCircle className="text-green-500 mb-2" size={20} /><span className="text-[10px] text-green-600 font-medium text-center px-2">{place.imageFiles.length} files</span></>
@@ -184,11 +179,51 @@ export default function AddDestinationPage() {
                         )}
                       </div>
                       
-                      {/* Details */}
-                      <div className="flex-1 space-y-3">
-                        <input type="text" value={place.heading} onChange={(e) => updateArrayItem('placesToVisit', place.id, 'heading', e.target.value)} placeholder="Place Heading (e.g. Har Ki Pauri)" className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
-                        <textarea value={place.description} onChange={(e) => updateArrayItem('placesToVisit', place.id, 'description', e.target.value)} placeholder="Description..." rows={2} className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500 resize-none" />
-                        <input type="text" value={place.quickInfo} onChange={(e) => updateArrayItem('placesToVisit', place.id, 'quickInfo', e.target.value)} placeholder="Bullet Points (e.g. 2 Days, Entry Free)" className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+                      {/* Place Details */}
+                      <div className="flex-1 space-y-4">
+                        <div>
+                          <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Heading</label>
+                          <input type="text" value={place.heading} onChange={(e) => updateArrayItem('placesToVisit', place.id, 'heading', e.target.value)} placeholder="Place Heading (e.g. Har Ki Pauri)" className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+                        </div>
+                        
+                        {/* Dynamic Description Paragraphs */}
+                        <div>
+                          <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Description Paragraphs</label>
+                          <div className="space-y-2">
+                            {place.description.map((para, idx) => (
+                              <div key={idx} className="flex gap-2">
+                                <textarea value={para} onChange={(e) => {
+                                  const newArr = [...place.description]; newArr[idx] = e.target.value;
+                                  updateArrayItem('placesToVisit', place.id, 'description', newArr);
+                                }} placeholder={`Paragraph ${idx + 1}...`} rows={2} className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500 resize-none" />
+                                {place.description.length > 1 && (
+                                  <button type="button" onClick={() => updateArrayItem('placesToVisit', place.id, 'description', place.description.filter((_, i) => i !== idx))} className="text-slate-400 hover:text-red-500"><Trash2 size={16}/></button>
+                                )}
+                              </div>
+                            ))}
+                            <button type="button" onClick={() => updateArrayItem('placesToVisit', place.id, 'description', [...place.description, ''])} className="text-[10px] font-semibold text-blue-600 hover:underline flex items-center gap-1"><Plus size={12}/> Add Paragraph</button>
+                          </div>
+                        </div>
+
+                        {/* Dynamic Quick Info Bullets */}
+                        <div>
+                          <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Quick Info Bullets</label>
+                          <div className="space-y-2">
+                            {place.quickInfo.map((bullet, idx) => (
+                              <div key={idx} className="flex gap-2">
+                                <input type="text" value={bullet} onChange={(e) => {
+                                  const newArr = [...place.quickInfo]; newArr[idx] = e.target.value;
+                                  updateArrayItem('placesToVisit', place.id, 'quickInfo', newArr);
+                                }} placeholder={`Bullet ${idx + 1} (e.g. 2 Days)`} className="w-full p-2 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+                                {place.quickInfo.length > 1 && (
+                                  <button type="button" onClick={() => updateArrayItem('placesToVisit', place.id, 'quickInfo', place.quickInfo.filter((_, i) => i !== idx))} className="text-slate-400 hover:text-red-500"><Trash2 size={16}/></button>
+                                )}
+                              </div>
+                            ))}
+                            <button type="button" onClick={() => updateArrayItem('placesToVisit', place.id, 'quickInfo', [...place.quickInfo, ''])} className="text-[10px] font-semibold text-blue-600 hover:underline flex items-center gap-1"><Plus size={12}/> Add Bullet Point</button>
+                          </div>
+                        </div>
+
                       </div>
                     </div>
                   </div>
@@ -207,9 +242,10 @@ export default function AddDestinationPage() {
                   <div key={hotel.id} className="p-5 border border-slate-200 rounded-xl space-y-5 relative group">
                     <button onClick={() => removeHotel(hotel.id)} className="absolute top-4 right-4 text-slate-400 hover:text-red-500 hidden group-hover:block transition-colors"><Trash2 size={16}/></button>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                      {/* Hotel Images */}
                       <div className="col-span-1 relative">
-                        <label className="block text-xs font-medium text-slate-500 mb-1">Hotel Images</label>
+                        <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Hotel Images</label>
                         <div className="h-32 border-2 border-dashed border-slate-300 bg-slate-50 rounded-lg flex flex-col items-center justify-center hover:border-blue-500 transition-colors relative overflow-hidden">
                           <input type="file" multiple onChange={(e) => updateHotel(hotel.id, 'imageFiles', e.target.files)} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
                           {hotel.imageFiles?.length > 0 ? (
@@ -220,20 +256,55 @@ export default function AddDestinationPage() {
                         </div>
                       </div>
                       
-                      <div className="col-span-2 space-y-3">
+                      {/* Hotel Details */}
+                      <div className="col-span-2 space-y-4">
                         <div className="grid grid-cols-2 gap-3">
                           <div>
-                            <label className="block text-xs font-medium text-slate-500 mb-1">Hotel Name</label>
-                            <input type="text" value={hotel.name} onChange={(e) => updateHotel(hotel.id, 'name', e.target.value)} placeholder="e.g. Ganga Lahari" className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+                            <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Hotel Name</label>
+                            <input type="text" value={hotel.name} onChange={(e) => updateHotel(hotel.id, 'name', e.target.value)} placeholder="e.g. Ganga Lahari" className="w-full p-2 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
                           </div>
                           <div>
-                            <label className="block text-xs font-medium text-slate-500 mb-1">Price Per Night</label>
-                            <input type="text" value={hotel.pricePerNight} onChange={(e) => updateHotel(hotel.id, 'pricePerNight', e.target.value)} placeholder="e.g. ₹5,000" className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+                            <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Price Per Night</label>
+                            <input type="text" value={hotel.pricePerNight} onChange={(e) => updateHotel(hotel.id, 'pricePerNight', e.target.value)} placeholder="e.g. ₹5,000" className="w-full p-2 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
                           </div>
                         </div>
+
+                        {/* Dynamic Hotel About Paragraphs */}
                         <div>
-                          <label className="block text-xs font-medium text-slate-500 mb-1">About Hotel</label>
-                          <textarea value={hotel.about} onChange={(e) => updateHotel(hotel.id, 'about', e.target.value)} rows={3} placeholder="Brief description..." className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500 resize-none" />
+                          <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">About Hotel</label>
+                          <div className="space-y-2">
+                            {hotel.about.map((para, idx) => (
+                              <div key={idx} className="flex gap-2">
+                                <textarea value={para} onChange={(e) => {
+                                  const newArr = [...hotel.about]; newArr[idx] = e.target.value;
+                                  updateHotel(hotel.id, 'about', newArr);
+                                }} placeholder={`Paragraph ${idx + 1}...`} rows={2} className="w-full p-2 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500 resize-none" />
+                                {hotel.about.length > 1 && (
+                                  <button type="button" onClick={() => updateHotel(hotel.id, 'about', hotel.about.filter((_, i) => i !== idx))} className="text-slate-400 hover:text-red-500"><Trash2 size={16}/></button>
+                                )}
+                              </div>
+                            ))}
+                            <button type="button" onClick={() => updateHotel(hotel.id, 'about', [...hotel.about, ''])} className="text-[10px] font-semibold text-blue-600 hover:underline flex items-center gap-1"><Plus size={12}/> Add Paragraph</button>
+                          </div>
+                        </div>
+
+                        {/* Dynamic Hotel Facilities Bullets */}
+                        <div>
+                          <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Facilities / Highlights</label>
+                          <div className="space-y-2">
+                            {hotel.facilities.map((bullet, idx) => (
+                              <div key={idx} className="flex gap-2">
+                                <input type="text" value={bullet} onChange={(e) => {
+                                  const newArr = [...hotel.facilities]; newArr[idx] = e.target.value;
+                                  updateHotel(hotel.id, 'facilities', newArr);
+                                }} placeholder={`Facility ${idx + 1} (e.g. Free Wi-Fi)`} className="w-full p-2 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+                                {hotel.facilities.length > 1 && (
+                                  <button type="button" onClick={() => updateHotel(hotel.id, 'facilities', hotel.facilities.filter((_, i) => i !== idx))} className="text-slate-400 hover:text-red-500"><Trash2 size={16}/></button>
+                                )}
+                              </div>
+                            ))}
+                            <button type="button" onClick={() => updateHotel(hotel.id, 'facilities', [...hotel.facilities, ''])} className="text-[10px] font-semibold text-blue-600 hover:underline flex items-center gap-1"><Plus size={12}/> Add Facility</button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -245,10 +316,10 @@ export default function AddDestinationPage() {
                       </h3>
                       <div className="space-y-4">
                         {hotel.rooms.map((room) => (
-                          <div key={room.id} className="flex flex-col md:flex-row gap-4 p-4 bg-slate-50 rounded-lg border border-slate-100 relative group/room">
+                          <div key={room.id} className="flex flex-col lg:flex-row gap-4 p-4 bg-slate-50 rounded-lg border border-slate-100 relative group/room">
                              <button onClick={() => removeRoom(hotel.id, room.id)} className="absolute top-2 right-2 text-slate-400 hover:text-red-500 hidden group-hover/room:block transition-colors"><Trash2 size={14}/></button>
                              
-                             <div className="relative w-full md:w-24 h-24 border-2 border-dashed border-slate-300 bg-white rounded-lg flex flex-col items-center justify-center hover:border-blue-500 transition-colors flex-shrink-0 overflow-hidden">
+                             <div className="relative w-full lg:w-24 h-24 border-2 border-dashed border-slate-300 bg-white rounded-lg flex flex-col items-center justify-center hover:border-blue-500 transition-colors flex-shrink-0 overflow-hidden">
                                 <input type="file" multiple onChange={(e) => updateRoom(hotel.id, room.id, 'imageFiles', e.target.files)} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
                                 {room.imageFiles?.length > 0 ? (
                                     <><CheckCircle className="text-green-500 mb-1" size={16} /><span className="text-[8px] text-green-600 text-center">{room.imageFiles.length} files</span></>
@@ -257,16 +328,43 @@ export default function AddDestinationPage() {
                                 )}
                              </div>
 
-                             <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-3">
-                               <div className="space-y-3">
+                             <div className="flex-1 space-y-4">
+                               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                                  <input type="text" value={room.type} onChange={(e) => updateRoom(hotel.id, room.id, 'type', e.target.value)} placeholder="Room Type (e.g. Suite)" className="w-full p-2 border border-slate-200 rounded text-xs outline-none focus:border-blue-500" />
-                                 <div className="flex gap-2">
-                                   <input type="text" value={room.bedType} onChange={(e) => updateRoom(hotel.id, room.id, 'bedType', e.target.value)} placeholder="Bed (e.g. Double)" className="w-1/2 p-2 border border-slate-200 rounded text-xs outline-none focus:border-blue-500" />
-                                   <input type="text" value={room.capacity} onChange={(e) => updateRoom(hotel.id, room.id, 'capacity', e.target.value)} placeholder="Capacity (e.g. 3)" className="w-1/2 p-2 border border-slate-200 rounded text-xs outline-none focus:border-blue-500" />
-                                 </div>
+                                 <input type="text" value={room.bedType} onChange={(e) => updateRoom(hotel.id, room.id, 'bedType', e.target.value)} placeholder="Bed (e.g. Double)" className="w-full p-2 border border-slate-200 rounded text-xs outline-none focus:border-blue-500" />
+                                 <input type="text" value={room.capacity} onChange={(e) => updateRoom(hotel.id, room.id, 'capacity', e.target.value)} placeholder="Capacity (e.g. 3)" className="w-full p-2 border border-slate-200 rounded text-xs outline-none focus:border-blue-500" />
                                </div>
-                               <div>
-                                 <textarea value={room.description} onChange={(e) => updateRoom(hotel.id, room.id, 'description', e.target.value)} placeholder="Room Description..." rows={3} className="w-full p-2 border border-slate-200 rounded text-xs outline-none resize-none h-full focus:border-blue-500" />
+
+                               {/* Dynamic Room Description */}
+                               <div className="space-y-2">
+                                  {room.description.map((para, idx) => (
+                                    <div key={idx} className="flex gap-2">
+                                      <textarea value={para} onChange={(e) => {
+                                        const newArr = [...room.description]; newArr[idx] = e.target.value;
+                                        updateRoom(hotel.id, room.id, 'description', newArr);
+                                      }} placeholder={`Room Description Paragraph ${idx + 1}...`} rows={2} className="w-full p-2 border border-slate-200 rounded text-xs outline-none focus:border-blue-500 resize-none" />
+                                      {room.description.length > 1 && (
+                                        <button type="button" onClick={() => updateRoom(hotel.id, room.id, 'description', room.description.filter((_, i) => i !== idx))} className="text-slate-400 hover:text-red-500"><Trash2 size={14}/></button>
+                                      )}
+                                    </div>
+                                  ))}
+                                  <button type="button" onClick={() => updateRoom(hotel.id, room.id, 'description', [...room.description, ''])} className="text-[10px] font-semibold text-blue-600 hover:underline flex items-center gap-1"><Plus size={10}/> Add Paragraph</button>
+                               </div>
+
+                               {/* Dynamic Room Amenities */}
+                               <div className="space-y-2">
+                                  {room.amenities.map((bullet, idx) => (
+                                    <div key={idx} className="flex gap-2">
+                                      <input type="text" value={bullet} onChange={(e) => {
+                                        const newArr = [...room.amenities]; newArr[idx] = e.target.value;
+                                        updateRoom(hotel.id, room.id, 'amenities', newArr);
+                                      }} placeholder={`Amenity ${idx + 1} (e.g. Ocean View)`} className="w-full p-2 border border-slate-200 rounded text-xs outline-none focus:border-blue-500" />
+                                      {room.amenities.length > 1 && (
+                                        <button type="button" onClick={() => updateRoom(hotel.id, room.id, 'amenities', room.amenities.filter((_, i) => i !== idx))} className="text-slate-400 hover:text-red-500"><Trash2 size={14}/></button>
+                                      )}
+                                    </div>
+                                  ))}
+                                  <button type="button" onClick={() => updateRoom(hotel.id, room.id, 'amenities', [...room.amenities, ''])} className="text-[10px] font-semibold text-blue-600 hover:underline flex items-center gap-1"><Plus size={10}/> Add Amenity</button>
                                </div>
                              </div>
                           </div>
