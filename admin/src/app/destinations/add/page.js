@@ -2,27 +2,31 @@
 import React, { useState } from 'react';
 import { 
   ArrowLeft, UploadCloud, Plus, Trash2, 
-  ImageIcon, MapPin, Plane, Train 
+  ImageIcon, MapPin, Plane, Train, CheckCircle
 } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
 
+// Helper functions to generate clean initial state with fresh IDs
+const getInitialDestData = () => ({
+  name: '', slug: '', introHeading: '', introDescription: '', locationMap: '',
+  placesToVisit: [{ id: Date.now(), heading: '', description: '', quickInfo: '', imageFiles: [] }],
+  gettingThere: [{ id: Date.now() + 1, mode: 'Airport', detail: '' }],
+  nearbyAttractions: [{ id: Date.now() + 2, name: '', distance: '' }]
+});
+
+const getInitialHotels = () => [{
+  id: Date.now() + 3, name: '', rating: 5, pricePerNight: '', about: '', imageFiles: [],
+  rooms: [{ id: Date.now() + 4, type: '', bedType: '', capacity: '', description: '', imageFiles: [] }]
+}];
+
 export default function AddDestinationPage() {
   // --- STATE MANAGEMENT ---
-  const [destData, setDestData] = useState({
-    name: '', slug: '', introHeading: '', introDescription: '',
-    placesToVisit: [{ id: Date.now(), heading: '', description: '', quickInfo: '', image: null }],
-    gettingThere: [{ id: Date.now(), mode: 'Airport', detail: '' }],
-    nearbyAttractions: [{ id: Date.now(), name: '', distance: '' }],
-    locationMap: ''
-  });
+  const [bannerFile, setBannerFile] = useState(null);
+  const [destData, setDestData] = useState(getInitialDestData());
+  const [hotels, setHotels] = useState(getInitialHotels());
 
-  const [hotels, setHotels] = useState([{
-    id: Date.now(), name: '', rating: 5, pricePerNight: '', about: '', facilities: '', images: [],
-    rooms: [{ id: Date.now(), type: '', bedType: '', capacity: '', description: '', image: null }]
-  }]);
-
-  // --- HANDLERS ---
+  // --- HANDLERS: DESTINATION ---
   const handleDestChange = (e) => {
     const { name, value } = e.target;
     if (name === 'name') {
@@ -33,29 +37,96 @@ export default function AddDestinationPage() {
     }
   };
 
-  const addPlace = () => setDestData({ ...destData, placesToVisit: [...destData.placesToVisit, { id: Date.now(), heading: '', description: '', quickInfo: '', image: null }] });
+  // --- HANDLERS: DYNAMIC ARRAYS ---
+  const updateArrayItem = (arrayName, id, field, value) => {
+    setDestData(prev => ({
+      ...prev,
+      [arrayName]: prev[arrayName].map(item => item.id === id ? { ...item, [field]: value } : item)
+    }));
+  };
+
+  const addPlace = () => setDestData({ ...destData, placesToVisit: [...destData.placesToVisit, { id: Date.now(), heading: '', description: '', quickInfo: '', imageFiles: [] }] });
   const removePlace = (id) => setDestData({ ...destData, placesToVisit: destData.placesToVisit.filter(p => p.id !== id) });
 
-  const addHotel = () => setHotels([...hotels, { id: Date.now(), name: '', rating: 5, pricePerNight: '', about: '', facilities: '', images: [], rooms: [] }]);
+  const addGettingThere = () => setDestData({ ...destData, gettingThere: [...destData.gettingThere, { id: Date.now(), mode: 'Airport', detail: '' }] });
+  const addAttraction = () => setDestData({ ...destData, nearbyAttractions: [...destData.nearbyAttractions, { id: Date.now(), name: '', distance: '' }] });
+
+  // --- HANDLERS: HOTELS & ROOMS ---
+  const addHotel = () => setHotels([...hotels, { id: Date.now(), name: '', rating: 5, pricePerNight: '', about: '', imageFiles: [], rooms: [] }]);
   const removeHotel = (id) => setHotels(hotels.filter(h => h.id !== id));
   
+  const updateHotel = (id, field, value) => {
+    setHotels(hotels.map(h => h.id === id ? { ...h, [field]: value } : h));
+  };
+
   const addRoom = (hotelId) => {
-    setHotels(hotels.map(h => h.id === hotelId ? { ...h, rooms: [...h.rooms, { id: Date.now(), type: '', bedType: '', capacity: '', description: '', image: null }] } : h));
+    setHotels(hotels.map(h => h.id === hotelId ? { ...h, rooms: [...h.rooms, { id: Date.now(), type: '', bedType: '', capacity: '', description: '', imageFiles: [] }] } : h));
   };
   const removeRoom = (hotelId, roomId) => {
     setHotels(hotels.map(h => h.id === hotelId ? { ...h, rooms: h.rooms.filter(r => r.id !== roomId) } : h));
   };
+  const updateRoom = (hotelId, roomId, field, value) => {
+    setHotels(hotels.map(h => h.id === hotelId ? {
+      ...h, rooms: h.rooms.map(r => r.id === roomId ? { ...r, [field]: value } : r)
+    } : h));
+  };
 
-  const handleSave = () => {
-    console.log("Saving Destination:", destData);
-    console.log("Saving Hotels:", hotels);
-    toast.success("Destination & Hotels Saved Successfully!");
+  // --- API SUBMISSION ---
+  const handleSave = async () => {
+    if (!destData.name) return toast.error("Destination name is required");
+
+    const formData = new FormData();
+
+    // 1. Append JSON data
+    formData.append('data', JSON.stringify({ destData, hotels }));
+
+    // 2. Append Banner Image
+    if (bannerFile) formData.append('bannerImage', bannerFile);
+
+    // 3. Append Place Images (Now supports multiple)
+    destData.placesToVisit.forEach((place, index) => {
+      if (place.imageFiles) {
+        Array.from(place.imageFiles).forEach(file => formData.append(`placeImage_${index}`, file));
+      }
+    });
+
+    // 4. Append Hotel & Room Images
+    hotels.forEach((hotel, hIdx) => {
+      if (hotel.imageFiles) {
+        Array.from(hotel.imageFiles).forEach(file => formData.append(`hotel_${hIdx}_images`, file));
+      }
+      hotel.rooms.forEach((room, rIdx) => {
+        if (room.imageFiles) {
+          Array.from(room.imageFiles).forEach(file => formData.append(`hotel_${hIdx}_room_${rIdx}_images`, file));
+        }
+      });
+    });
+
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/user/destinations/sync`, {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        toast.success("Destination Saved Successfully!");
+        // Clear the form on success
+        setDestData(getInitialDestData());
+        setHotels(getInitialHotels());
+        setBannerFile(null);
+      } else {
+        toast.error(data.message || "Failed to save");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred while saving.");
+    }
   };
 
   return (
     <div className="w-full bg-[#f8f9fa] min-h-screen pb-24 text-slate-800 font-sans">
-      
-      {/* --- HEADER --- */}
+      {/* HEADER */}
       <div className="bg-white px-8 py-5 flex items-center justify-between border-b border-slate-200 sticky top-0 z-40">
         <div className="flex items-center gap-4">
           <Link href="/destinations" className="p-2 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors">
@@ -68,12 +139,10 @@ export default function AddDestinationPage() {
       <div className="max-w-[1600px] mx-auto p-6 lg:p-8">
         <div className="flex flex-col lg:flex-row gap-8">
           
-          {/* ========================================== */}
-          {/* LEFT COLUMN: CONTENT & DATA                */}
-          {/* ========================================== */}
+          {/* LEFT COLUMN: CONTENT */}
           <div className="flex-1 space-y-8">
             
-            {/* 1. Destination Description */}
+            {/* 1. Destination Details */}
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
               <h2 className="text-sm font-bold text-[#1a2b49] mb-5 uppercase tracking-wide">Destination Details</h2>
               <div className="space-y-5">
@@ -96,28 +165,30 @@ export default function AddDestinationPage() {
               </div>
             </div>
 
-            {/* 2. Places to Visit (Multiple with specific image upload) */}
+            {/* 2. Places to Visit */}
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-              <div className="flex justify-between items-center mb-5">
-                <h2 className="text-sm font-bold text-[#1a2b49] uppercase tracking-wide">Places to Visit</h2>
-              </div>
+              <h2 className="text-sm font-bold text-[#1a2b49] mb-5 uppercase tracking-wide">Places to Visit</h2>
               <div className="space-y-6">
-                {destData.placesToVisit.map((place, i) => (
+                {destData.placesToVisit.map((place) => (
                   <div key={place.id} className="p-5 border border-slate-100 bg-slate-50/50 rounded-xl relative group">
                     <button onClick={() => removePlace(place.id)} className="absolute top-4 right-4 text-slate-400 hover:text-red-500 hidden group-hover:block transition-colors"><Trash2 size={16}/></button>
                     
                     <div className="flex flex-col md:flex-row gap-5">
-                      {/* Place-specific Image Uploader */}
-                      <div className="w-full md:w-40 h-32 border-2 border-dashed border-slate-300 bg-white rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors flex-shrink-0">
-                        <UploadCloud className="text-slate-400 mb-2" size={20} />
-                        <span className="text-[10px] text-slate-500 font-medium">Place Photo</span>
+                      {/* Multi-Image Uploader for Places */}
+                      <div className="relative w-full md:w-40 h-32 border-2 border-dashed border-slate-300 bg-white rounded-lg flex flex-col items-center justify-center hover:border-blue-500 transition-colors flex-shrink-0 overflow-hidden">
+                        <input type="file" multiple onChange={(e) => updateArrayItem('placesToVisit', place.id, 'imageFiles', e.target.files)} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
+                        {place.imageFiles?.length > 0 ? (
+                           <><CheckCircle className="text-green-500 mb-2" size={20} /><span className="text-[10px] text-green-600 font-medium text-center px-2">{place.imageFiles.length} files</span></>
+                        ) : (
+                           <><UploadCloud className="text-slate-400 mb-2" size={20} /><span className="text-[10px] text-slate-500 font-medium">Upload Photos</span></>
+                        )}
                       </div>
                       
-                      {/* Place Details */}
+                      {/* Details */}
                       <div className="flex-1 space-y-3">
-                        <input type="text" placeholder="Place Heading (e.g. Har Ki Pauri)" className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
-                        <textarea placeholder="Description..." rows={2} className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500 resize-none" />
-                        <input type="text" placeholder="Bullet Points (e.g. 2 Days, Entry Free)" className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+                        <input type="text" value={place.heading} onChange={(e) => updateArrayItem('placesToVisit', place.id, 'heading', e.target.value)} placeholder="Place Heading (e.g. Har Ki Pauri)" className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+                        <textarea value={place.description} onChange={(e) => updateArrayItem('placesToVisit', place.id, 'description', e.target.value)} placeholder="Description..." rows={2} className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500 resize-none" />
+                        <input type="text" value={place.quickInfo} onChange={(e) => updateArrayItem('placesToVisit', place.id, 'quickInfo', e.target.value)} placeholder="Bullet Points (e.g. 2 Days, Entry Free)" className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
                       </div>
                     </div>
                   </div>
@@ -128,42 +199,41 @@ export default function AddDestinationPage() {
               </div>
             </div>
 
-            {/* 3. Hotels & Rooms (Multiple with specific image uploads) */}
+            {/* 3. Linked Hotels */}
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-              <div className="flex justify-between items-center mb-5">
-                <h2 className="text-sm font-bold text-[#1a2b49] uppercase tracking-wide">Linked Hotels</h2>
-              </div>
-              
+              <h2 className="text-sm font-bold text-[#1a2b49] mb-5 uppercase tracking-wide">Linked Hotels</h2>
               <div className="space-y-8">
-                {hotels.map((hotel, hIdx) => (
+                {hotels.map((hotel) => (
                   <div key={hotel.id} className="p-5 border border-slate-200 rounded-xl space-y-5 relative group">
                     <button onClick={() => removeHotel(hotel.id)} className="absolute top-4 right-4 text-slate-400 hover:text-red-500 hidden group-hover:block transition-colors"><Trash2 size={16}/></button>
                     
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                      {/* Hotel Multi-Image Uploader */}
-                      <div className="col-span-1">
+                      <div className="col-span-1 relative">
                         <label className="block text-xs font-medium text-slate-500 mb-1">Hotel Images</label>
-                        <div className="h-32 border-2 border-dashed border-slate-300 bg-slate-50 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors">
-                          <UploadCloud className="text-slate-400 mb-2" size={24} />
-                          <p className="text-[10px] text-slate-500 text-center px-2">Upload multiple gallery photos</p>
+                        <div className="h-32 border-2 border-dashed border-slate-300 bg-slate-50 rounded-lg flex flex-col items-center justify-center hover:border-blue-500 transition-colors relative overflow-hidden">
+                          <input type="file" multiple onChange={(e) => updateHotel(hotel.id, 'imageFiles', e.target.files)} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
+                          {hotel.imageFiles?.length > 0 ? (
+                            <><CheckCircle className="text-green-500 mb-2" size={24} /><p className="text-[10px] text-green-600 text-center px-2">{hotel.imageFiles.length} files selected</p></>
+                          ) : (
+                            <><UploadCloud className="text-slate-400 mb-2" size={24} /><p className="text-[10px] text-slate-500 text-center px-2">Upload multiple photos</p></>
+                          )}
                         </div>
                       </div>
                       
-                      {/* Hotel Info */}
                       <div className="col-span-2 space-y-3">
                         <div className="grid grid-cols-2 gap-3">
                           <div>
                             <label className="block text-xs font-medium text-slate-500 mb-1">Hotel Name</label>
-                            <input type="text" placeholder="e.g. Ganga Lahari" className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+                            <input type="text" value={hotel.name} onChange={(e) => updateHotel(hotel.id, 'name', e.target.value)} placeholder="e.g. Ganga Lahari" className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
                           </div>
                           <div>
                             <label className="block text-xs font-medium text-slate-500 mb-1">Price Per Night</label>
-                            <input type="text" placeholder="e.g. ₹5,000" className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+                            <input type="text" value={hotel.pricePerNight} onChange={(e) => updateHotel(hotel.id, 'pricePerNight', e.target.value)} placeholder="e.g. ₹5,000" className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
                           </div>
                         </div>
                         <div>
                           <label className="block text-xs font-medium text-slate-500 mb-1">About Hotel</label>
-                          <textarea rows={3} placeholder="Brief description..." className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500 resize-none" />
+                          <textarea value={hotel.about} onChange={(e) => updateHotel(hotel.id, 'about', e.target.value)} rows={3} placeholder="Brief description..." className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500 resize-none" />
                         </div>
                       </div>
                     </div>
@@ -174,26 +244,29 @@ export default function AddDestinationPage() {
                         Room Types <button onClick={() => addRoom(hotel.id)} className="text-blue-500 flex items-center gap-1"><Plus size={12}/> Add Room</button>
                       </h3>
                       <div className="space-y-4">
-                        {hotel.rooms.map((room, rIdx) => (
+                        {hotel.rooms.map((room) => (
                           <div key={room.id} className="flex flex-col md:flex-row gap-4 p-4 bg-slate-50 rounded-lg border border-slate-100 relative group/room">
                              <button onClick={() => removeRoom(hotel.id, room.id)} className="absolute top-2 right-2 text-slate-400 hover:text-red-500 hidden group-hover/room:block transition-colors"><Trash2 size={14}/></button>
                              
-                             {/* Room Specific Image */}
-                             <div className="w-full md:w-24 h-24 border-2 border-dashed border-slate-300 bg-white rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 transition-colors flex-shrink-0">
-                                <ImageIcon size={16} className="text-slate-400 mb-1" />
-                                <span className="text-[8px] text-slate-500">Room Photo</span>
+                             <div className="relative w-full md:w-24 h-24 border-2 border-dashed border-slate-300 bg-white rounded-lg flex flex-col items-center justify-center hover:border-blue-500 transition-colors flex-shrink-0 overflow-hidden">
+                                <input type="file" multiple onChange={(e) => updateRoom(hotel.id, room.id, 'imageFiles', e.target.files)} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
+                                {room.imageFiles?.length > 0 ? (
+                                    <><CheckCircle className="text-green-500 mb-1" size={16} /><span className="text-[8px] text-green-600 text-center">{room.imageFiles.length} files</span></>
+                                ) : (
+                                    <><ImageIcon size={16} className="text-slate-400 mb-1" /><span className="text-[8px] text-slate-500 text-center">Room Photos</span></>
+                                )}
                              </div>
 
                              <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-3">
                                <div className="space-y-3">
-                                 <input type="text" placeholder="Room Type (e.g. Suite)" className="w-full p-2 border border-slate-200 rounded text-xs outline-none focus:border-blue-500" />
+                                 <input type="text" value={room.type} onChange={(e) => updateRoom(hotel.id, room.id, 'type', e.target.value)} placeholder="Room Type (e.g. Suite)" className="w-full p-2 border border-slate-200 rounded text-xs outline-none focus:border-blue-500" />
                                  <div className="flex gap-2">
-                                   <input type="text" placeholder="Bed (e.g. Double)" className="w-1/2 p-2 border border-slate-200 rounded text-xs outline-none focus:border-blue-500" />
-                                   <input type="text" placeholder="Capacity (e.g. 3)" className="w-1/2 p-2 border border-slate-200 rounded text-xs outline-none focus:border-blue-500" />
+                                   <input type="text" value={room.bedType} onChange={(e) => updateRoom(hotel.id, room.id, 'bedType', e.target.value)} placeholder="Bed (e.g. Double)" className="w-1/2 p-2 border border-slate-200 rounded text-xs outline-none focus:border-blue-500" />
+                                   <input type="text" value={room.capacity} onChange={(e) => updateRoom(hotel.id, room.id, 'capacity', e.target.value)} placeholder="Capacity (e.g. 3)" className="w-1/2 p-2 border border-slate-200 rounded text-xs outline-none focus:border-blue-500" />
                                  </div>
                                </div>
                                <div>
-                                 <textarea placeholder="Room Description..." rows={3} className="w-full p-2 border border-slate-200 rounded text-xs outline-none resize-none h-full focus:border-blue-500" />
+                                 <textarea value={room.description} onChange={(e) => updateRoom(hotel.id, room.id, 'description', e.target.value)} placeholder="Room Description..." rows={3} className="w-full p-2 border border-slate-200 rounded text-xs outline-none resize-none h-full focus:border-blue-500" />
                                </div>
                              </div>
                           </div>
@@ -207,72 +280,56 @@ export default function AddDestinationPage() {
                 </button>
               </div>
             </div>
-
           </div>
 
-          {/* ========================================== */}
-          {/* RIGHT COLUMN: IMAGES, LOGISTICS & PUBLISH  */}
-          {/* ========================================== */}
+          {/* RIGHT COLUMN */}
           <div className="w-full lg:w-[400px] space-y-8">
-
-            {/* 1. Master Media Upload (Matches Reference Image) */}
+            {/* 1. Master Media */}
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-              <h2 className="text-sm font-bold text-[#1a2b49] mb-5 uppercase tracking-wide">Destination Images</h2>
-              
-              <div className="grid grid-cols-3 gap-3">
-                {/* Main Large Image Slot */}
-                <div className="col-span-1 bg-slate-100 rounded-lg h-32 flex items-center justify-center overflow-hidden border border-slate-200">
-                   <div className="text-center p-2">
-                     <ImageIcon className="mx-auto text-slate-400 mb-1" size={20} />
-                     <p className="text-[9px] text-slate-500 font-medium">Banner</p>
-                   </div>
-                </div>
-                
-                {/* Dashed Upload Box */}
-                <div className="col-span-1 border-2 border-dashed border-slate-300 bg-slate-50 rounded-lg h-32 flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors">
-                   <UploadCloud className="text-slate-400 mb-2" size={24} />
-                   <p className="text-[9px] text-slate-500 text-center px-2">Drop images or click to browse</p>
-                </div>
-
-                {/* Small Thumbnail Slots */}
-                <div className="col-span-1 flex flex-col gap-3 h-32">
-                  <div className="flex-1 bg-slate-100 rounded-lg flex items-center justify-center border border-slate-200">
-                     <ImageIcon size={14} className="text-slate-300" />
-                  </div>
-                  <div className="flex-1 bg-slate-100 rounded-lg flex items-center justify-center border border-slate-200">
-                     <ImageIcon size={14} className="text-slate-300" />
-                  </div>
-                </div>
+              <h2 className="text-sm font-bold text-[#1a2b49] mb-5 uppercase tracking-wide">Destination Banner</h2>
+              <div className="relative border-2 border-dashed border-slate-300 bg-slate-50 rounded-lg h-32 flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors overflow-hidden">
+                <input type="file" onChange={(e) => setBannerFile(e.target.files[0])} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
+                {bannerFile ? (
+                   <><CheckCircle className="text-green-500 mb-2" size={24} /><p className="text-[10px] text-green-600 font-medium px-2">{bannerFile.name}</p></>
+                ) : (
+                   <><UploadCloud className="text-slate-400 mb-2" size={24} /><p className="text-[9px] text-slate-500 text-center px-2">Drop banner image here</p></>
+                )}
               </div>
-              <p className="text-[10px] text-slate-400 mt-3 text-center">First image will be used as the hero banner.</p>
             </div>
 
-            {/* 2. Logistics & Map */}
+            {/* 2. Logistics */}
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
               <h2 className="text-sm font-bold text-[#1a2b49] mb-5 uppercase tracking-wide">Logistics</h2>
               <div className="space-y-5">
                 <div>
                   <label className="block text-xs font-medium text-slate-500 mb-1.5">Getting There</label>
-                  <div className="flex gap-2 mb-2">
-                    <select className="w-1/3 p-3 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500">
-                      <option>Airport</option>
-                      <option>Train</option>
-                    </select>
-                    <input type="text" placeholder="Detail (e.g. 34km)" className="w-2/3 p-3 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
-                  </div>
-                  <button className="text-[10px] font-semibold text-blue-600 hover:underline">+ Add Another Option</button>
+                  {destData.gettingThere.map(item => (
+                    <div key={item.id} className="flex gap-2 mb-2">
+                      <select value={item.mode} onChange={(e) => updateArrayItem('gettingThere', item.id, 'mode', e.target.value)} className="w-1/3 p-3 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500">
+                        <option value="Airport">Airport</option>
+                        <option value="Train">Train</option>
+                        <option value="Road">Road</option>
+                      </select>
+                      <input type="text" value={item.detail} onChange={(e) => updateArrayItem('gettingThere', item.id, 'detail', e.target.value)} placeholder="Detail (e.g. 34km)" className="w-2/3 p-3 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+                    </div>
+                  ))}
+                  <button onClick={addGettingThere} className="text-[10px] font-semibold text-blue-600 hover:underline">+ Add Option</button>
                 </div>
+                
                 <div>
                   <label className="block text-xs font-medium text-slate-500 mb-1.5">Nearby Attractions</label>
-                  <div className="flex gap-2 mb-2">
-                    <input type="text" placeholder="Name" className="w-2/3 p-3 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
-                    <input type="text" placeholder="KM" className="w-1/3 p-3 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
-                  </div>
-                  <button className="text-[10px] font-semibold text-blue-600 hover:underline">+ Add Attraction</button>
+                  {destData.nearbyAttractions.map(item => (
+                    <div key={item.id} className="flex gap-2 mb-2">
+                      <input type="text" value={item.name} onChange={(e) => updateArrayItem('nearbyAttractions', item.id, 'name', e.target.value)} placeholder="Name" className="w-2/3 p-3 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+                      <input type="text" value={item.distance} onChange={(e) => updateArrayItem('nearbyAttractions', item.id, 'distance', e.target.value)} placeholder="KM" className="w-1/3 p-3 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+                    </div>
+                  ))}
+                  <button onClick={addAttraction} className="text-[10px] font-semibold text-blue-600 hover:underline">+ Add Attraction</button>
                 </div>
+
                 <div>
                   <label className="block text-xs font-medium text-slate-500 mb-1.5">Google Maps Iframe</label>
-                  <textarea rows={3} placeholder="<iframe src='...'></iframe>" className="w-full p-3 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500 resize-none font-mono text-[10px]" />
+                  <textarea name="locationMap" value={destData.locationMap} onChange={handleDestChange} rows={3} placeholder="<iframe src='...'></iframe>" className="w-full p-3 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500 resize-none font-mono text-[10px]" />
                 </div>
               </div>
             </div>
@@ -280,19 +337,359 @@ export default function AddDestinationPage() {
             {/* 3. Action Buttons */}
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-3">
                <button onClick={handleSave} className="w-full py-3 bg-[#1a2b49] text-white rounded-lg text-sm font-semibold hover:bg-[#111c33] transition-colors">
-                 Add Destination
-               </button>
-               <button className="w-full py-3 bg-white border border-slate-200 text-slate-700 rounded-lg text-sm font-semibold hover:bg-slate-50 transition-colors">
-                 Save as Draft
-               </button>
-               <button className="w-full py-3 text-red-500 text-sm font-semibold hover:underline">
-                 Discard
+                 Save & Sync
                </button>
             </div>
-
           </div>
         </div>
       </div>
     </div>
   );
 }
+
+
+
+
+// 'use client';
+// import React, { useState } from 'react';
+// import { 
+//   ArrowLeft, UploadCloud, Plus, Trash2, 
+//   ImageIcon, MapPin, Plane, Train, CheckCircle
+// } from 'lucide-react';
+// import Link from 'next/link';
+// import { toast } from 'react-toastify';
+
+// export default function AddDestinationPage() {
+//   // --- STATE MANAGEMENT ---
+//   const [bannerFile, setBannerFile] = useState(null);
+  
+//   const [destData, setDestData] = useState({
+//     name: '', slug: '', introHeading: '', introDescription: '', locationMap: '',
+//     placesToVisit: [{ id: Date.now(), heading: '', description: '', quickInfo: '', imageFile: null }],
+//     gettingThere: [{ id: Date.now(), mode: 'Airport', detail: '' }],
+//     nearbyAttractions: [{ id: Date.now(), name: '', distance: '' }]
+//   });
+
+//   const [hotels, setHotels] = useState([{
+//     id: Date.now(), name: '', rating: 5, pricePerNight: '', about: '', imageFiles: [],
+//     rooms: [{ id: Date.now(), type: '', bedType: '', capacity: '', description: '', imageFiles: [] }]
+//   }]);
+
+//   // --- HANDLERS: DESTINATION ---
+//   const handleDestChange = (e) => {
+//     const { name, value } = e.target;
+//     if (name === 'name') {
+//       const slug = value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+//       setDestData({ ...destData, name: value, slug });
+//     } else {
+//       setDestData({ ...destData, [name]: value });
+//     }
+//   };
+
+//   // --- HANDLERS: DYNAMIC ARRAYS ---
+//   const updateArrayItem = (arrayName, id, field, value) => {
+//     setDestData(prev => ({
+//       ...prev,
+//       [arrayName]: prev[arrayName].map(item => item.id === id ? { ...item, [field]: value } : item)
+//     }));
+//   };
+
+//   const addPlace = () => setDestData({ ...destData, placesToVisit: [...destData.placesToVisit, { id: Date.now(), heading: '', description: '', quickInfo: '', imageFile: null }] });
+//   const removePlace = (id) => setDestData({ ...destData, placesToVisit: destData.placesToVisit.filter(p => p.id !== id) });
+
+//   const addGettingThere = () => setDestData({ ...destData, gettingThere: [...destData.gettingThere, { id: Date.now(), mode: 'Airport', detail: '' }] });
+//   const addAttraction = () => setDestData({ ...destData, nearbyAttractions: [...destData.nearbyAttractions, { id: Date.now(), name: '', distance: '' }] });
+
+//   // --- HANDLERS: HOTELS & ROOMS ---
+//   const addHotel = () => setHotels([...hotels, { id: Date.now(), name: '', rating: 5, pricePerNight: '', about: '', imageFiles: [], rooms: [] }]);
+//   const removeHotel = (id) => setHotels(hotels.filter(h => h.id !== id));
+  
+//   const updateHotel = (id, field, value) => {
+//     setHotels(hotels.map(h => h.id === id ? { ...h, [field]: value } : h));
+//   };
+
+//   const addRoom = (hotelId) => {
+//     setHotels(hotels.map(h => h.id === hotelId ? { ...h, rooms: [...h.rooms, { id: Date.now(), type: '', bedType: '', capacity: '', description: '', imageFiles: [] }] } : h));
+//   };
+//   const removeRoom = (hotelId, roomId) => {
+//     setHotels(hotels.map(h => h.id === hotelId ? { ...h, rooms: h.rooms.filter(r => r.id !== roomId) } : h));
+//   };
+//   const updateRoom = (hotelId, roomId, field, value) => {
+//     setHotels(hotels.map(h => h.id === hotelId ? {
+//       ...h, rooms: h.rooms.map(r => r.id === roomId ? { ...r, [field]: value } : r)
+//     } : h));
+//   };
+
+//   // --- API SUBMISSION ---
+//   const handleSave = async () => {
+//     if (!destData.name) return toast.error("Destination name is required");
+
+//     const formData = new FormData();
+
+//     // 1. Append JSON data
+//     formData.append('data', JSON.stringify({ destData, hotels }));
+
+//     // 2. Append Banner Image
+//     if (bannerFile) formData.append('bannerImage', bannerFile);
+
+//     // 3. Append Place Images
+//     destData.placesToVisit.forEach((place, index) => {
+//       if (place.imageFile) formData.append(`placeImage_${index}`, place.imageFile);
+//     });
+
+//     // 4. Append Hotel & Room Images
+//     hotels.forEach((hotel, hIdx) => {
+//       if (hotel.imageFiles) {
+//         Array.from(hotel.imageFiles).forEach(file => formData.append(`hotel_${hIdx}_images`, file));
+//       }
+//       hotel.rooms.forEach((room, rIdx) => {
+//         if (room.imageFiles) {
+//           Array.from(room.imageFiles).forEach(file => formData.append(`hotel_${hIdx}_room_${rIdx}_images`, file));
+//         }
+//       });
+//     });
+
+//     try {
+//       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/user/destinations/sync`, {
+//         method: 'POST',
+//         body: formData,
+//         // Don't set Content-Type header manually; browser needs to set multipart/form-data with boundary
+//       });
+//       const data = await res.json();
+
+//       if (data.success) {
+//         toast.success("Destination Saved Successfully!");
+//       } else {
+//         toast.error(data.message || "Failed to save");
+//       }
+//     } catch (error) {
+//       console.error(error);
+//       toast.error("An error occurred while saving.");
+//     }
+//   };
+
+//   return (
+//     <div className="w-full bg-[#f8f9fa] min-h-screen pb-24 text-slate-800 font-sans">
+//       {/* HEADER */}
+//       <div className="bg-white px-8 py-5 flex items-center justify-between border-b border-slate-200 sticky top-0 z-40">
+//         <div className="flex items-center gap-4">
+//           <Link href="/destinations" className="p-2 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors">
+//             <ArrowLeft size={18} className="text-slate-600" />
+//           </Link>
+//           <h1 className="text-2xl font-bold text-[#1a2b49]">New Destination</h1>
+//         </div>
+//       </div>
+
+//       <div className="max-w-[1600px] mx-auto p-6 lg:p-8">
+//         <div className="flex flex-col lg:flex-row gap-8">
+          
+//           {/* LEFT COLUMN: CONTENT */}
+//           <div className="flex-1 space-y-8">
+            
+//             {/* 1. Destination Details */}
+//             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+//               <h2 className="text-sm font-bold text-[#1a2b49] mb-5 uppercase tracking-wide">Destination Details</h2>
+//               <div className="space-y-5">
+//                 <div>
+//                   <label className="block text-xs font-medium text-slate-500 mb-1.5">Destination Name</label>
+//                   <input type="text" name="name" value={destData.name} onChange={handleDestChange} placeholder="e.g. Haridwar" className="w-full p-3 border border-slate-200 rounded-lg focus:outline-none focus:border-blue-500 text-sm" />
+//                 </div>
+//                 <div>
+//                   <label className="block text-xs font-medium text-slate-500 mb-1.5">URL Slug</label>
+//                   <input type="text" name="slug" value={destData.slug} readOnly className="w-full p-3 border border-slate-200 rounded-lg bg-slate-50 text-slate-400 text-sm" />
+//                 </div>
+//                 <div>
+//                   <label className="block text-xs font-medium text-slate-500 mb-1.5">Intro Heading</label>
+//                   <input type="text" name="introHeading" value={destData.introHeading} onChange={handleDestChange} placeholder="Gateway to the Gods" className="w-full p-3 border border-slate-200 rounded-lg focus:outline-none focus:border-blue-500 text-sm" />
+//                 </div>
+//                 <div>
+//                   <label className="block text-xs font-medium text-slate-500 mb-1.5">Editorial Description</label>
+//                   <textarea name="introDescription" value={destData.introDescription} onChange={handleDestChange} rows={4} className="w-full p-3 border border-slate-200 rounded-lg focus:outline-none focus:border-blue-500 text-sm resize-none" placeholder="Write a compelling introduction..." />
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* 2. Places to Visit */}
+//             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+//               <h2 className="text-sm font-bold text-[#1a2b49] mb-5 uppercase tracking-wide">Places to Visit</h2>
+//               <div className="space-y-6">
+//                 {destData.placesToVisit.map((place) => (
+//                   <div key={place.id} className="p-5 border border-slate-100 bg-slate-50/50 rounded-xl relative group">
+//                     <button onClick={() => removePlace(place.id)} className="absolute top-4 right-4 text-slate-400 hover:text-red-500 hidden group-hover:block transition-colors"><Trash2 size={16}/></button>
+                    
+//                     <div className="flex flex-col md:flex-row gap-5">
+//                       {/* Image Uploader */}
+//                       <div className="relative w-full md:w-40 h-32 border-2 border-dashed border-slate-300 bg-white rounded-lg flex flex-col items-center justify-center hover:border-blue-500 transition-colors flex-shrink-0 overflow-hidden">
+//                         <input type="file" onChange={(e) => updateArrayItem('placesToVisit', place.id, 'imageFile', e.target.files[0])} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
+//                         {place.imageFile ? (
+//                            <><CheckCircle className="text-green-500 mb-2" size={20} /><span className="text-[10px] text-green-600 font-medium text-center px-2">{place.imageFile.name}</span></>
+//                         ) : (
+//                            <><UploadCloud className="text-slate-400 mb-2" size={20} /><span className="text-[10px] text-slate-500 font-medium">Upload Photo</span></>
+//                         )}
+//                       </div>
+                      
+//                       {/* Details */}
+//                       <div className="flex-1 space-y-3">
+//                         <input type="text" value={place.heading} onChange={(e) => updateArrayItem('placesToVisit', place.id, 'heading', e.target.value)} placeholder="Place Heading (e.g. Har Ki Pauri)" className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+//                         <textarea value={place.description} onChange={(e) => updateArrayItem('placesToVisit', place.id, 'description', e.target.value)} placeholder="Description..." rows={2} className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500 resize-none" />
+//                         <input type="text" value={place.quickInfo} onChange={(e) => updateArrayItem('placesToVisit', place.id, 'quickInfo', e.target.value)} placeholder="Bullet Points (e.g. 2 Days, Entry Free)" className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+//                       </div>
+//                     </div>
+//                   </div>
+//                 ))}
+//                 <button onClick={addPlace} className="text-sm font-semibold text-blue-600 flex items-center gap-1 hover:underline">
+//                   <Plus size={16}/> Add Another Place
+//                 </button>
+//               </div>
+//             </div>
+
+//             {/* 3. Linked Hotels */}
+//             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+//               <h2 className="text-sm font-bold text-[#1a2b49] mb-5 uppercase tracking-wide">Linked Hotels</h2>
+//               <div className="space-y-8">
+//                 {hotels.map((hotel) => (
+//                   <div key={hotel.id} className="p-5 border border-slate-200 rounded-xl space-y-5 relative group">
+//                     <button onClick={() => removeHotel(hotel.id)} className="absolute top-4 right-4 text-slate-400 hover:text-red-500 hidden group-hover:block transition-colors"><Trash2 size={16}/></button>
+                    
+//                     <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+//                       <div className="col-span-1 relative">
+//                         <label className="block text-xs font-medium text-slate-500 mb-1">Hotel Images</label>
+//                         <div className="h-32 border-2 border-dashed border-slate-300 bg-slate-50 rounded-lg flex flex-col items-center justify-center hover:border-blue-500 transition-colors relative overflow-hidden">
+//                           <input type="file" multiple onChange={(e) => updateHotel(hotel.id, 'imageFiles', e.target.files)} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
+//                           {hotel.imageFiles?.length > 0 ? (
+//                             <><CheckCircle className="text-green-500 mb-2" size={24} /><p className="text-[10px] text-green-600 text-center px-2">{hotel.imageFiles.length} files selected</p></>
+//                           ) : (
+//                             <><UploadCloud className="text-slate-400 mb-2" size={24} /><p className="text-[10px] text-slate-500 text-center px-2">Upload multiple photos</p></>
+//                           )}
+//                         </div>
+//                       </div>
+                      
+//                       <div className="col-span-2 space-y-3">
+//                         <div className="grid grid-cols-2 gap-3">
+//                           <div>
+//                             <label className="block text-xs font-medium text-slate-500 mb-1">Hotel Name</label>
+//                             <input type="text" value={hotel.name} onChange={(e) => updateHotel(hotel.id, 'name', e.target.value)} placeholder="e.g. Ganga Lahari" className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+//                           </div>
+//                           <div>
+//                             <label className="block text-xs font-medium text-slate-500 mb-1">Price Per Night</label>
+//                             <input type="text" value={hotel.pricePerNight} onChange={(e) => updateHotel(hotel.id, 'pricePerNight', e.target.value)} placeholder="e.g. ₹5,000" className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+//                           </div>
+//                         </div>
+//                         <div>
+//                           <label className="block text-xs font-medium text-slate-500 mb-1">About Hotel</label>
+//                           <textarea value={hotel.about} onChange={(e) => updateHotel(hotel.id, 'about', e.target.value)} rows={3} placeholder="Brief description..." className="w-full p-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500 resize-none" />
+//                         </div>
+//                       </div>
+//                     </div>
+                    
+//                     {/* Nested Rooms */}
+//                     <div className="bg-white border border-slate-100 p-4 rounded-lg shadow-sm">
+//                       <h3 className="text-xs font-bold text-slate-600 uppercase mb-4 flex justify-between">
+//                         Room Types <button onClick={() => addRoom(hotel.id)} className="text-blue-500 flex items-center gap-1"><Plus size={12}/> Add Room</button>
+//                       </h3>
+//                       <div className="space-y-4">
+//                         {hotel.rooms.map((room) => (
+//                           <div key={room.id} className="flex flex-col md:flex-row gap-4 p-4 bg-slate-50 rounded-lg border border-slate-100 relative group/room">
+//                              <button onClick={() => removeRoom(hotel.id, room.id)} className="absolute top-2 right-2 text-slate-400 hover:text-red-500 hidden group-hover/room:block transition-colors"><Trash2 size={14}/></button>
+                             
+//                              <div className="relative w-full md:w-24 h-24 border-2 border-dashed border-slate-300 bg-white rounded-lg flex flex-col items-center justify-center hover:border-blue-500 transition-colors flex-shrink-0 overflow-hidden">
+//                                 <input type="file" multiple onChange={(e) => updateRoom(hotel.id, room.id, 'imageFiles', e.target.files)} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
+//                                 {room.imageFiles?.length > 0 ? (
+//                                     <><CheckCircle className="text-green-500 mb-1" size={16} /><span className="text-[8px] text-green-600 text-center">{room.imageFiles.length} files</span></>
+//                                 ) : (
+//                                     <><ImageIcon size={16} className="text-slate-400 mb-1" /><span className="text-[8px] text-slate-500 text-center">Room Photos</span></>
+//                                 )}
+//                              </div>
+
+//                              <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-3">
+//                                <div className="space-y-3">
+//                                  <input type="text" value={room.type} onChange={(e) => updateRoom(hotel.id, room.id, 'type', e.target.value)} placeholder="Room Type (e.g. Suite)" className="w-full p-2 border border-slate-200 rounded text-xs outline-none focus:border-blue-500" />
+//                                  <div className="flex gap-2">
+//                                    <input type="text" value={room.bedType} onChange={(e) => updateRoom(hotel.id, room.id, 'bedType', e.target.value)} placeholder="Bed (e.g. Double)" className="w-1/2 p-2 border border-slate-200 rounded text-xs outline-none focus:border-blue-500" />
+//                                    <input type="text" value={room.capacity} onChange={(e) => updateRoom(hotel.id, room.id, 'capacity', e.target.value)} placeholder="Capacity (e.g. 3)" className="w-1/2 p-2 border border-slate-200 rounded text-xs outline-none focus:border-blue-500" />
+//                                  </div>
+//                                </div>
+//                                <div>
+//                                  <textarea value={room.description} onChange={(e) => updateRoom(hotel.id, room.id, 'description', e.target.value)} placeholder="Room Description..." rows={3} className="w-full p-2 border border-slate-200 rounded text-xs outline-none resize-none h-full focus:border-blue-500" />
+//                                </div>
+//                              </div>
+//                           </div>
+//                         ))}
+//                       </div>
+//                     </div>
+//                   </div>
+//                 ))}
+//                 <button onClick={addHotel} className="w-full py-3 border-2 border-dashed border-blue-200 rounded-xl text-blue-600 font-semibold text-sm hover:bg-blue-50 transition-colors">
+//                   + Add New Hotel to {destData.name || 'Destination'}
+//                 </button>
+//               </div>
+//             </div>
+//           </div>
+
+//           {/* RIGHT COLUMN */}
+//           <div className="w-full lg:w-[400px] space-y-8">
+//             {/* 1. Master Media */}
+//             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+//               <h2 className="text-sm font-bold text-[#1a2b49] mb-5 uppercase tracking-wide">Destination Banner</h2>
+//               <div className="relative border-2 border-dashed border-slate-300 bg-slate-50 rounded-lg h-32 flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors overflow-hidden">
+//                 <input type="file" onChange={(e) => setBannerFile(e.target.files[0])} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
+//                 {bannerFile ? (
+//                    <><CheckCircle className="text-green-500 mb-2" size={24} /><p className="text-[10px] text-green-600 font-medium px-2">{bannerFile.name}</p></>
+//                 ) : (
+//                    <><UploadCloud className="text-slate-400 mb-2" size={24} /><p className="text-[9px] text-slate-500 text-center px-2">Drop banner image here</p></>
+//                 )}
+//               </div>
+//             </div>
+
+//             {/* 2. Logistics */}
+//             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+//               <h2 className="text-sm font-bold text-[#1a2b49] mb-5 uppercase tracking-wide">Logistics</h2>
+//               <div className="space-y-5">
+//                 <div>
+//                   <label className="block text-xs font-medium text-slate-500 mb-1.5">Getting There</label>
+//                   {destData.gettingThere.map(item => (
+//                     <div key={item.id} className="flex gap-2 mb-2">
+//                       <select value={item.mode} onChange={(e) => updateArrayItem('gettingThere', item.id, 'mode', e.target.value)} className="w-1/3 p-3 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500">
+//                         <option value="Airport">Airport</option>
+//                         <option value="Train">Train</option>
+//                         <option value="Road">Road</option>
+//                       </select>
+//                       <input type="text" value={item.detail} onChange={(e) => updateArrayItem('gettingThere', item.id, 'detail', e.target.value)} placeholder="Detail (e.g. 34km)" className="w-2/3 p-3 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+//                     </div>
+//                   ))}
+//                   <button onClick={addGettingThere} className="text-[10px] font-semibold text-blue-600 hover:underline">+ Add Option</button>
+//                 </div>
+                
+//                 <div>
+//                   <label className="block text-xs font-medium text-slate-500 mb-1.5">Nearby Attractions</label>
+//                   {destData.nearbyAttractions.map(item => (
+//                     <div key={item.id} className="flex gap-2 mb-2">
+//                       <input type="text" value={item.name} onChange={(e) => updateArrayItem('nearbyAttractions', item.id, 'name', e.target.value)} placeholder="Name" className="w-2/3 p-3 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+//                       <input type="text" value={item.distance} onChange={(e) => updateArrayItem('nearbyAttractions', item.id, 'distance', e.target.value)} placeholder="KM" className="w-1/3 p-3 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500" />
+//                     </div>
+//                   ))}
+//                   <button onClick={addAttraction} className="text-[10px] font-semibold text-blue-600 hover:underline">+ Add Attraction</button>
+//                 </div>
+
+//                 <div>
+//                   <label className="block text-xs font-medium text-slate-500 mb-1.5">Google Maps Iframe</label>
+//                   <textarea name="locationMap" value={destData.locationMap} onChange={handleDestChange} rows={3} placeholder="<iframe src='...'></iframe>" className="w-full p-3 border border-slate-200 rounded-lg text-sm outline-none focus:border-blue-500 resize-none font-mono text-[10px]" />
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* 3. Action Buttons */}
+//             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-3">
+//                <button onClick={handleSave} className="w-full py-3 bg-[#1a2b49] text-white rounded-lg text-sm font-semibold hover:bg-[#111c33] transition-colors">
+//                  Save & Sync
+//                </button>
+//                {/* <button className="w-full py-3 bg-white border border-slate-200 text-slate-700 rounded-lg text-sm font-semibold hover:bg-slate-50 transition-colors">
+//                  Discard Changes
+//                </button> */}
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }

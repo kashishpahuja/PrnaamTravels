@@ -4,7 +4,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 const path = require('path');
-
+const destinationRoutes = require('./routes/destinations');
 // Load environment variables
 dotenv.config();
 
@@ -37,7 +37,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Linked to auth.js (handles request-otp, verify-otp, and /me)
 // Path set to /user to match your frontend fetch calls
 app.use('/user', authRoutes);
-
+app.use('/user/destinations', destinationRoutes);
 // Commented out routes until you link their controllers/models
 /*
 app.use('/api/destinations', destinationRoutes);

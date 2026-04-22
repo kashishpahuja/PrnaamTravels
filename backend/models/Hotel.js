@@ -11,8 +11,8 @@ const hotelSchema = new mongoose.Schema({
   
   // Dynamic Array for Rooms
   rooms: [{
-    type: String, // e.g., "Deluxe Double Room"
-    bedType: String, // e.g., "Double Bed"
+    type: { type: String }, // FIX: This is how you allow a field named "type" in Mongoose
+    bedType: String,
     description: String,
     capacity: String,
     images: [String]
